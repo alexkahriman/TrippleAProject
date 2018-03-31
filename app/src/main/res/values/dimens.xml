@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="default_margin">8dp</dimen>
+
+    <!-- Event -->
+    <dimen name="event_card_view_height">70dp</dimen>
+
+</resources>
