@@ -14,14 +14,16 @@ import java.util.List;
 
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.domain.database.Event;
+import ftn.com.trippleaproject.ui.activity.EventActivity_;
 import ftn.com.trippleaproject.ui.adapter.EventsAdapter;
+import ftn.com.trippleaproject.ui.view.EventItemView;
 
 /**
  * Presents a list of events.
  */
 
 @EFragment(R.layout.fragment_events)
-public class EventsFragment extends Fragment {
+public class EventsFragment extends Fragment implements EventItemView.EventActionListener {
 
     @ViewById
     RecyclerView recyclerView;
@@ -39,6 +41,12 @@ public class EventsFragment extends Fragment {
             events.add(new Event("title" + i));
         }
 
+        eventsAdapter.setEventActionListener(this);
         eventsAdapter.setEvents(events);
+    }
+
+    @Override
+    public void eventSelected(Event event) {
+        EventActivity_.intent(getContext()).event(event).start();
     }
 }

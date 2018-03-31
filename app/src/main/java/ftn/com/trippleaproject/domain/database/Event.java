@@ -1,10 +1,12 @@
 package ftn.com.trippleaproject.domain.database;
 
+import java.io.Serializable;
+
 /**
  * Event representation.
  */
 
-public class Event {
+public class Event implements Serializable {
 
     private String title;
 

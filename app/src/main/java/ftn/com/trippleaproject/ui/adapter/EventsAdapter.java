@@ -25,6 +25,8 @@ public class EventsAdapter extends RecyclerViewAdapterBase<Event, EventItemView>
     @RootContext
     Context context;
 
+    private EventItemView.EventActionListener eventActionListener;
+
     @Override
     protected EventItemView onCreateItemView(ViewGroup parent, int viewType) {
         return EventItemView_.build(context);
@@ -32,12 +34,16 @@ public class EventsAdapter extends RecyclerViewAdapterBase<Event, EventItemView>
 
     @Override
     public void onBindViewHolder(@NonNull ViewWrapper<EventItemView> holder, int position) {
-        holder.getView().bind(items.get(position));
+        holder.getView().bind(items.get(position), eventActionListener);
     }
 
     public void setEvents(List<Event> events) {
 
         this.items = events;
         notifyDataSetChanged();
+    }
+
+    public void setEventActionListener(EventItemView.EventActionListener eventActionListener) {
+        this.eventActionListener = eventActionListener;
     }
 }

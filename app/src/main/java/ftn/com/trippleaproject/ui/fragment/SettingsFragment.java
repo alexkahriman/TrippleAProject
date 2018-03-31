@@ -7,7 +7,7 @@ import org.androidannotations.annotations.EFragment;
 import ftn.com.trippleaproject.R;
 
 /**
- * Created by aradosevic on 3/31/18.
+ *  Presents list of settings options.
  */
 
 @EFragment(R.layout.fragment_settings)

@@ -16,7 +16,7 @@ import ftn.com.trippleaproject.ui.fragment.NewsFragment_;
 import ftn.com.trippleaproject.ui.fragment.SettingsFragment_;
 
 /**
- * Created by aradosevic on 3/31/18.
+ * Home screen tab adapter.
  */
 
 @EBean

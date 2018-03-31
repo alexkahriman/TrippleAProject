@@ -25,6 +25,8 @@ public class NewsAdapter  extends RecyclerViewAdapterBase<News, NewsItemView> {
     @RootContext
     Context context;
 
+    private NewsItemView.NewsActionListener newsActionListener;
+
     @Override
     protected NewsItemView onCreateItemView(ViewGroup parent, int viewType) {
         return NewsItemView_.build(context);
@@ -32,12 +34,16 @@ public class NewsAdapter  extends RecyclerViewAdapterBase<News, NewsItemView> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewWrapper<NewsItemView> holder, int position) {
-        holder.getView().bind(items.get(position));
+        holder.getView().bind(items.get(position), newsActionListener);
     }
 
     public void setNews(List<News> news) {
 
         items = news;
         notifyDataSetChanged();
+    }
+
+    public void setNewsActionListener(NewsItemView.NewsActionListener newsActionListener) {
+        this.newsActionListener = newsActionListener;
     }
 }

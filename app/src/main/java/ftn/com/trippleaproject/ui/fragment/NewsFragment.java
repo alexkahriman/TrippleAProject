@@ -14,14 +14,16 @@ import java.util.List;
 
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.domain.database.News;
+import ftn.com.trippleaproject.ui.activity.NewsActivity_;
 import ftn.com.trippleaproject.ui.adapter.NewsAdapter;
+import ftn.com.trippleaproject.ui.view.NewsItemView;
 
 /**
  * Presents a list of news.
  */
 
 @EFragment(R.layout.fragment_news)
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements NewsItemView.NewsActionListener {
 
     @ViewById
     RecyclerView recyclerView;
@@ -39,6 +41,12 @@ public class NewsFragment extends Fragment {
             news.add(new News("title" + i));
         }
 
+        newsAdapter.setNewsActionListener(this);
         newsAdapter.setNews(news);
+    }
+
+    @Override
+    public void newsSelected(News news) {
+        NewsActivity_.intent(getContext()).news(news).start();
     }
 }

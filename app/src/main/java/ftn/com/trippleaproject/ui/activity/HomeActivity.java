@@ -13,6 +13,10 @@ import org.androidannotations.annotations.ViewById;
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.ui.adapter.HomeTabAdapter;
 
+/**
+ * Home screen.
+ */
+
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends AppCompatActivity {
 
@@ -39,13 +43,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setTabIcons() {
+        Drawable drawable;
+        TabLayout.Tab tab;
         for (int i = 0; i < tabIcons.length; i++) {
 
-            Drawable drawable = this.getDrawable(tabIcons[i]);
+            drawable = this.getDrawable(tabIcons[i]);
             if (drawable != null) {
                 drawable.setTintList(getResources().getColorStateList(R.color.tab_icon));
 
-                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                tab = tabLayout.getTabAt(i);
 
                 if (tab != null) {
                     tab.setIcon(drawable);

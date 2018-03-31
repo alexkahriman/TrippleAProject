@@ -1,10 +1,12 @@
 package ftn.com.trippleaproject.domain.database;
 
+import java.io.Serializable;
+
 /**
  * News representation.
  */
 
-public class News {
+public class News implements Serializable {
 
     private String title;
 
