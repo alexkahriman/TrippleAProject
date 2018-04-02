@@ -15,10 +15,6 @@ import ftn.com.trippleaproject.ui.adapter.generic.ViewWrapper;
 import ftn.com.trippleaproject.ui.view.EventItemView;
 import ftn.com.trippleaproject.ui.view.EventItemView_;
 
-/**
- * Events {@link android.support.v7.widget.RecyclerView RecyclerView} adapter.
- */
-
 @EBean
 public class EventsAdapter extends RecyclerViewAdapterBase<Event, EventItemView> {
 

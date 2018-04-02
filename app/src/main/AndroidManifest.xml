@@ -18,7 +18,7 @@
         </activity>
 
         <activity android:name=".ui.activity.EventActivity_"/>
-        <activity android:name=".ui.activity.NewsActivity_"/>
+        <activity android:name=".ui.activity.NewsArticleActivity_"/>
     </application>
 
 </manifest>

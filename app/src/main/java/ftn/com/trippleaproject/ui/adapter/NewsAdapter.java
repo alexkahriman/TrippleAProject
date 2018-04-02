@@ -12,29 +12,25 @@ import java.util.List;
 import ftn.com.trippleaproject.domain.database.News;
 import ftn.com.trippleaproject.ui.adapter.generic.RecyclerViewAdapterBase;
 import ftn.com.trippleaproject.ui.adapter.generic.ViewWrapper;
-import ftn.com.trippleaproject.ui.view.NewsItemView;
-import ftn.com.trippleaproject.ui.view.NewsItemView_;
-
-/**
- * News {@link android.support.v7.widget.RecyclerView RecyclerView} adapter.
- */
+import ftn.com.trippleaproject.ui.view.NewsFeedItemView;
+import ftn.com.trippleaproject.ui.view.NewsFeedItemView_;
 
 @EBean
-public class NewsAdapter  extends RecyclerViewAdapterBase<News, NewsItemView> {
+public class NewsAdapter  extends RecyclerViewAdapterBase<News, NewsFeedItemView> {
 
     @RootContext
     Context context;
 
-    private NewsItemView.NewsActionListener newsActionListener;
+    private NewsFeedItemView.NewsFeedActionListener newsFeedActionListener;
 
     @Override
-    protected NewsItemView onCreateItemView(ViewGroup parent, int viewType) {
-        return NewsItemView_.build(context);
+    protected NewsFeedItemView onCreateItemView(ViewGroup parent, int viewType) {
+        return NewsFeedItemView_.build(context);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewWrapper<NewsItemView> holder, int position) {
-        holder.getView().bind(items.get(position), newsActionListener);
+    public void onBindViewHolder(@NonNull ViewWrapper<NewsFeedItemView> holder, int position) {
+        holder.getView().bind(items.get(position), newsFeedActionListener);
     }
 
     public void setNews(List<News> news) {
@@ -43,7 +39,7 @@ public class NewsAdapter  extends RecyclerViewAdapterBase<News, NewsItemView> {
         notifyDataSetChanged();
     }
 
-    public void setNewsActionListener(NewsItemView.NewsActionListener newsActionListener) {
-        this.newsActionListener = newsActionListener;
+    public void setNewsFeedActionListener(NewsFeedItemView.NewsFeedActionListener newsFeedActionListener) {
+        this.newsFeedActionListener = newsFeedActionListener;
     }
 }

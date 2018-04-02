@@ -18,10 +18,6 @@ import ftn.com.trippleaproject.ui.activity.EventActivity_;
 import ftn.com.trippleaproject.ui.adapter.EventsAdapter;
 import ftn.com.trippleaproject.ui.view.EventItemView;
 
-/**
- * Presents a list of events.
- */
-
 @EFragment(R.layout.fragment_events)
 public class EventsFragment extends Fragment implements EventItemView.EventActionListener {
 

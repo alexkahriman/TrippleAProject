@@ -12,12 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ftn.com.trippleaproject.ui.fragment.EventsFragment_;
-import ftn.com.trippleaproject.ui.fragment.NewsFragment_;
+import ftn.com.trippleaproject.ui.fragment.NewsFeedFragment_;
 import ftn.com.trippleaproject.ui.fragment.SettingsFragment_;
-
-/**
- * Home screen tab adapter.
- */
 
 @EBean
 public class HomeTabAdapter extends FragmentStatePagerAdapter {
@@ -28,7 +24,7 @@ public class HomeTabAdapter extends FragmentStatePagerAdapter {
 
         super(((AppCompatActivity) context).getSupportFragmentManager());
 
-        fragments.add(NewsFragment_.builder().build());
+        fragments.add(NewsFeedFragment_.builder().build());
 
         fragments.add(EventsFragment_.builder().build());
 

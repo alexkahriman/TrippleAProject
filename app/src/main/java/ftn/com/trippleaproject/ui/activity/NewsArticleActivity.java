@@ -11,12 +11,8 @@ import org.androidannotations.annotations.ViewById;
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.domain.database.News;
 
-/**
- * News screen.
- */
-
-@EActivity(R.layout.activity_news)
-public class NewsActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_news_article)
+public class NewsArticleActivity extends AppCompatActivity {
 
     @Extra
     News news;

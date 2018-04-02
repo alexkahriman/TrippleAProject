@@ -11,10 +11,6 @@ import org.androidannotations.annotations.ViewById;
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.domain.database.Event;
 
-/**
- * Presents one event in the list.
- */
-
 @EViewGroup(R.layout.item_view_event)
 public class EventItemView extends RelativeLayout {
 

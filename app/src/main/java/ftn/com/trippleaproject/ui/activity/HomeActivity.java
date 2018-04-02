@@ -13,10 +13,6 @@ import org.androidannotations.annotations.ViewById;
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.ui.adapter.HomeTabAdapter;
 
-/**
- * Home screen.
- */
-
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends AppCompatActivity {
 

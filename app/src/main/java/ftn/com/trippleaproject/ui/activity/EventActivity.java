@@ -11,10 +11,6 @@ import org.androidannotations.annotations.ViewById;
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.domain.database.Event;
 
-/**
- * Event screen.
- */
-
 @EActivity(R.layout.activity_event)
 public class EventActivity extends AppCompatActivity {
 
