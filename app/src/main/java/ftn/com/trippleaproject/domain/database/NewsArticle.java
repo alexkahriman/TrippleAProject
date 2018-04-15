@@ -14,8 +14,9 @@ public class NewsArticle implements Serializable {
 
     private int date;
 
-    public NewsArticle(String title) {
+    public NewsArticle(String title, String imageUrl) {
         this.title = title;
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {

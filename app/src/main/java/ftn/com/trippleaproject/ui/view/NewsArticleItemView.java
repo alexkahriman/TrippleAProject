@@ -1,8 +1,11 @@
 package ftn.com.trippleaproject.ui.view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
@@ -12,16 +15,19 @@ import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.domain.database.NewsArticle;
 
 @EViewGroup(R.layout.item_view_news_article)
-public class NewsFeedItemView extends RelativeLayout {
+public class NewsArticleItemView extends RelativeLayout {
 
     @ViewById
     TextView title;
+
+    @ViewById
+    SimpleDraweeView image;
 
     private NewsArticle newsArticle;
 
     private NewsFeedActionListener newsFeedActionListener;
 
-    public NewsFeedItemView(Context context) {
+    public NewsArticleItemView(Context context) {
         super(context);
     }
 
@@ -31,6 +37,7 @@ public class NewsFeedItemView extends RelativeLayout {
         this.newsFeedActionListener = newsFeedActionListener;
 
         title.setText(newsArticle.getTitle());
+        image.setImageURI(Uri.parse(newsArticle.getImageUrl()));
     }
 
     @Click

@@ -12,24 +12,24 @@ import java.util.List;
 import ftn.com.trippleaproject.domain.database.NewsArticle;
 import ftn.com.trippleaproject.ui.adapter.generic.RecyclerViewAdapterBase;
 import ftn.com.trippleaproject.ui.adapter.generic.ViewWrapper;
-import ftn.com.trippleaproject.ui.view.NewsFeedItemView;
-import ftn.com.trippleaproject.ui.view.NewsFeedItemView_;
+import ftn.com.trippleaproject.ui.view.NewsArticleItemView;
+import ftn.com.trippleaproject.ui.view.NewsArticleItemView_;
 
 @EBean
-public class NewsAdapter  extends RecyclerViewAdapterBase<NewsArticle, NewsFeedItemView> {
+public class NewsAdapter  extends RecyclerViewAdapterBase<NewsArticle, NewsArticleItemView> {
 
     @RootContext
     Context context;
 
-    private NewsFeedItemView.NewsFeedActionListener newsFeedActionListener;
+    private NewsArticleItemView.NewsFeedActionListener newsFeedActionListener;
 
     @Override
-    protected NewsFeedItemView onCreateItemView(ViewGroup parent, int viewType) {
-        return NewsFeedItemView_.build(context);
+    protected NewsArticleItemView onCreateItemView(ViewGroup parent, int viewType) {
+        return NewsArticleItemView_.build(context);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewWrapper<NewsFeedItemView> holder, int position) {
+    public void onBindViewHolder(@NonNull ViewWrapper<NewsArticleItemView> holder, int position) {
         holder.getView().bind(items.get(position), newsFeedActionListener);
     }
 
@@ -39,7 +39,7 @@ public class NewsAdapter  extends RecyclerViewAdapterBase<NewsArticle, NewsFeedI
         notifyDataSetChanged();
     }
 
-    public void setNewsFeedActionListener(NewsFeedItemView.NewsFeedActionListener newsFeedActionListener) {
+    public void setNewsFeedActionListener(NewsArticleItemView.NewsFeedActionListener newsFeedActionListener) {
         this.newsFeedActionListener = newsFeedActionListener;
     }
 }

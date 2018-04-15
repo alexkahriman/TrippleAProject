@@ -19,13 +19,13 @@ import ftn.com.trippleaproject.TrippleAApplication;
 import ftn.com.trippleaproject.domain.database.NewsArticle;
 import ftn.com.trippleaproject.ui.activity.NewsArticleActivity_;
 import ftn.com.trippleaproject.ui.adapter.NewsAdapter;
-import ftn.com.trippleaproject.ui.view.NewsFeedItemView;
+import ftn.com.trippleaproject.ui.view.NewsArticleItemView;
 import ftn.com.trippleaproject.usecase.crud.NewsArticleCrudUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
 @EFragment(R.layout.fragment_news_feed)
-public class NewsFeedFragment extends Fragment implements Consumer<List<NewsArticle>>, NewsFeedItemView.NewsFeedActionListener {
+public class NewsFeedFragment extends Fragment implements Consumer<List<NewsArticle>>, NewsArticleItemView.NewsFeedActionListener {
 
     @App
     TrippleAApplication application;

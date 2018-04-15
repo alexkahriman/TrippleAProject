@@ -43,13 +43,13 @@ dependencies {
     implementation "com.google.dagger:dagger:$rootProject.DaggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.DaggerVersion"
 
-    //Retrofit
+    // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.RetrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.OkHttpLoggingInterceptorVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.RetrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.RetrofitVersion"
 
-    //Rx
+    // Rx
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.RxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.RxAndroidVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding:$rootProject.RxBindingVersion"
@@ -59,6 +59,9 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:$rootProject.ArchRoomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ArchRoomVersion"
     debugImplementation "com.amitshekhar.android:debug-db:$rootProject.DebugDbVersion"
+
+    // Fresco
+    implementation "com.facebook.fresco:fresco:$rootProject.FrescoVersion"
 
     // Tests
     testImplementation "junit:junit:$rootProject.JUnitVersion"

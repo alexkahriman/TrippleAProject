@@ -38,6 +38,7 @@ ext {
     RxBindingVersion = "2.1.0"
     ArchRoomVersion = "1.0.0"
     DebugDbVersion = "1.0.3"
+    FrescoVersion = "1.9.0"
 
     JUnitVersion = "4.12"
     TestRunnerVersion = "1.0.1"

@@ -13,8 +13,8 @@ public class NewsArticleCrudUseCaseMock implements NewsArticleCrudUseCase {
     public Flowable<List<NewsArticle>> read() {
 
         final List<NewsArticle> newsArticles = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            newsArticles.add(new NewsArticle("title" + i));
+        for (int i = 0; i < 100; i++) {
+            newsArticles.add(new NewsArticle("Title " + i, "https://www.autocar.co.uk/sites/autocar.co.uk/files/audi-rs7_1.jpg"));
         }
 
         return Flowable.just(newsArticles);

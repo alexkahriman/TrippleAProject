@@ -2,6 +2,8 @@ package ftn.com.trippleaproject;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import org.androidannotations.annotations.EApplication;
 
 import ftn.com.trippleaproject.usecase.UseCaseModule;
@@ -17,6 +19,8 @@ public class TrippleAApplication extends Application {
 
         // TODO: This seems to be deprecated. Fix this when time allows for it.
         diComponent = DaggerDiComponent.builder().useCaseModule(new UseCaseModule()).build();
+
+        Fresco.initialize(this);
     }
 
     public DiComponent getDiComponent() {
