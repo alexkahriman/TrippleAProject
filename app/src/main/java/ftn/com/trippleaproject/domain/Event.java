@@ -1,10 +1,6 @@
-package ftn.com.trippleaproject.domain.database;
+package ftn.com.trippleaproject.domain;
 
 import java.io.Serializable;
-
-/**
- * Event representation.
- */
 
 public class Event implements Serializable {
 

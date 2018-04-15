@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ftn.com.trippleaproject.domain.database.NewsArticle;
-import ftn.com.trippleaproject.repository.remote.dao.NewsArticleRemoteDao;
+import ftn.com.trippleaproject.domain.NewsArticle;
+import ftn.com.trippleaproject.usecase.crud.repository.remote.NewsArticleRemoteDao;
 import io.reactivex.Single;
 
 public class NewsArticleRemoteDaoMock implements NewsArticleRemoteDao {
@@ -17,6 +17,7 @@ public class NewsArticleRemoteDaoMock implements NewsArticleRemoteDao {
         final List<NewsArticle> newsArticles = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             newsArticles.add(new NewsArticle(
+                    i,
                     "Title " + i,
                     "https://www.autocar.co.uk/sites/autocar.co.uk/files/audi-rs7_1.jpg",
                     new ArrayList<>(),

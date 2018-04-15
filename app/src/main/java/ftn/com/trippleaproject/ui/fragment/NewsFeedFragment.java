@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.TrippleAApplication;
-import ftn.com.trippleaproject.domain.database.NewsArticle;
+import ftn.com.trippleaproject.domain.NewsArticle;
 import ftn.com.trippleaproject.ui.activity.NewsArticleActivity_;
 import ftn.com.trippleaproject.ui.adapter.NewsAdapter;
 import ftn.com.trippleaproject.ui.view.NewsArticleItemView;

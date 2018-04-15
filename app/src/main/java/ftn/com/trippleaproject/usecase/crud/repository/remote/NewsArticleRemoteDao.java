@@ -1,9 +1,9 @@
-package ftn.com.trippleaproject.repository.remote.dao;
+package ftn.com.trippleaproject.usecase.crud.repository.remote;
 
 
 import java.util.List;
 
-import ftn.com.trippleaproject.domain.database.NewsArticle;
+import ftn.com.trippleaproject.domain.NewsArticle;
 import io.reactivex.Single;
 
 public interface NewsArticleRemoteDao {

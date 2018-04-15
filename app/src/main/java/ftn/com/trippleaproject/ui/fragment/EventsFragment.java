@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.Event;
+import ftn.com.trippleaproject.domain.Event;
 import ftn.com.trippleaproject.ui.activity.EventActivity_;
 import ftn.com.trippleaproject.ui.adapter.EventsAdapter;
 import ftn.com.trippleaproject.ui.view.EventItemView;

@@ -1,12 +1,13 @@
-package ftn.com.trippleaproject.domain.database;
+package ftn.com.trippleaproject.domain;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import ftn.com.trippleaproject.domain.database.articlepart.NewsArticlePart;
+import ftn.com.trippleaproject.domain.articlepart.NewsArticlePart;
 
-public class NewsArticle implements Serializable {
+
+public class NewsArticle extends BaseModel implements Serializable {
 
     private String title;
 
@@ -16,7 +17,8 @@ public class NewsArticle implements Serializable {
 
     private Date date;
 
-    public NewsArticle(String title, String imageUrl, List<NewsArticlePart> parts, Date date) {
+    public NewsArticle(int id, String title, String imageUrl, List<NewsArticlePart> parts, Date date) {
+        super(id);
         this.title = title;
         this.imageUrl = imageUrl;
         this.parts = parts;
@@ -57,7 +59,7 @@ public class NewsArticle implements Serializable {
 
     @Override
     public String toString() {
-        return "NewsArticle{" +
+        return "NewsArticleDb{" +
                 "title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", parts=" + parts +

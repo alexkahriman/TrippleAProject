@@ -6,7 +6,7 @@
     <!-- News -->
     <dimen name="news_card_view_height">200dp</dimen>
 
-    <!-- Event -->
+    <!-- Events -->
     <dimen name="event_card_view_height">70dp</dimen>
 
 </resources>

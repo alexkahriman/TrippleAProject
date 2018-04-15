@@ -9,7 +9,7 @@ import org.androidannotations.annotations.RootContext;
 
 import java.util.List;
 
-import ftn.com.trippleaproject.domain.database.NewsArticle;
+import ftn.com.trippleaproject.domain.NewsArticle;
 import ftn.com.trippleaproject.ui.adapter.generic.RecyclerViewAdapterBase;
 import ftn.com.trippleaproject.ui.adapter.generic.ViewWrapper;
 import ftn.com.trippleaproject.ui.view.NewsArticleItemView;

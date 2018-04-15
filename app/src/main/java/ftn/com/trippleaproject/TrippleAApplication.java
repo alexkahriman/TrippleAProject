@@ -1,7 +1,9 @@
 package ftn.com.trippleaproject;
 
 import android.app.Application;
+import android.util.Log;
 
+import com.amitshekhar.DebugDB;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.androidannotations.annotations.EApplication;
@@ -23,10 +25,12 @@ public class TrippleAApplication extends Application {
         diComponent = DaggerDiComponent.builder()
                 .useCaseModule(new UseCaseModule())
                 .remoteRepositoryModule(new RemoteRepositoryModule())
-                .localRepositoryModule(new LocalRepositoryModule())
+                .localRepositoryModule(new LocalRepositoryModule(this))
                 .build();
 
         Fresco.initialize(this);
+
+        Log.d("Database", DebugDB.getAddressLog());
     }
 
     public DiComponent getDiComponent() {

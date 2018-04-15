@@ -12,7 +12,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.NewsArticle;
+import ftn.com.trippleaproject.domain.NewsArticle;
 
 @EViewGroup(R.layout.item_view_news_article)
 public class NewsArticleItemView extends RelativeLayout {

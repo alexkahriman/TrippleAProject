@@ -1,11 +1,11 @@
-package ftn.com.trippleaproject.domain.database.articlepart;
-
+package ftn.com.trippleaproject.domain.articlepart;
 
 public class ImageNewsArticlePart extends NewsArticlePart {
 
     private String url;
 
-    public ImageNewsArticlePart(String url) {
+    public ImageNewsArticlePart(int id, String url) {
+        super(id);
         this.url = url;
     }
 
@@ -19,7 +19,7 @@ public class ImageNewsArticlePart extends NewsArticlePart {
 
     @Override
     public String toString() {
-        return "ImageNewsArticlePart{" +
+        return "ImageNewsArticlePartDb{" +
                 "url='" + url + '\'' +
                 "} " + super.toString();
     }

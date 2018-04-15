@@ -4,15 +4,17 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import ftn.com.trippleaproject.repository.remote.dao.NewsArticleRemoteDao;
+import ftn.com.trippleaproject.usecase.crud.repository.remote.NewsArticleRemoteDao;
 import ftn.com.trippleaproject.usecase.crud.NewsArticleCrudUseCase;
+import ftn.com.trippleaproject.usecase.crud.repository.local.NewsArticleLocalDao;
 
 @Module
 public class UseCaseModule {
 
     @Provides
     @Singleton
-    NewsArticleCrudUseCase provideNewsArticleCrudUseCase(NewsArticleRemoteDao newsArticleRemoteDao) {
-        return new NewsArticleCrudUseCase(newsArticleRemoteDao);
+    NewsArticleCrudUseCase provideNewsArticleCrudUseCase(NewsArticleRemoteDao newsArticleRemoteDao,
+                                                         NewsArticleLocalDao newsArticleLocalDao) {
+        return new NewsArticleCrudUseCase(newsArticleRemoteDao, newsArticleLocalDao);
     }
 }

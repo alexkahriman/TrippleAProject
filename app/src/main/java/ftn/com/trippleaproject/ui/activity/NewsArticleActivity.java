@@ -9,7 +9,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.NewsArticle;
+import ftn.com.trippleaproject.domain.NewsArticle;
 
 @EActivity(R.layout.activity_news_article)
 public class NewsArticleActivity extends AppCompatActivity {
