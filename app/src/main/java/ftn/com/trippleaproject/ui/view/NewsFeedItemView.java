@@ -9,15 +9,15 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.News;
+import ftn.com.trippleaproject.domain.database.NewsArticle;
 
-@EViewGroup(R.layout.item_view_news_feed)
+@EViewGroup(R.layout.item_view_news_article)
 public class NewsFeedItemView extends RelativeLayout {
 
     @ViewById
     TextView title;
 
-    private News news;
+    private NewsArticle newsArticle;
 
     private NewsFeedActionListener newsFeedActionListener;
 
@@ -25,32 +25,31 @@ public class NewsFeedItemView extends RelativeLayout {
         super(context);
     }
 
-    public void bind(News news, NewsFeedActionListener newsFeedActionListener) {
+    public void bind(NewsArticle newsArticle, NewsFeedActionListener newsFeedActionListener) {
 
-        this.news = news;
+        this.newsArticle = newsArticle;
         this.newsFeedActionListener = newsFeedActionListener;
 
-        title.setText(news.getTitle());
+        title.setText(newsArticle.getTitle());
     }
 
     @Click
     void card() {
-
         if (newsFeedActionListener != null) {
-            newsFeedActionListener.newsFeedSelected(news);
+            newsFeedActionListener.newsFeedSelected(newsArticle);
         }
     }
 
     /**
-     * Handles actions in news feed list.
+     * Handles actions on news feed list.
      */
     public interface NewsFeedActionListener {
 
         /**
-         * Handles tap on news feed.
+         * Handles tap on news article.
          *
-         * @param news Tapped event.
+         * @param newsArticle Tapped event.
          */
-        void newsFeedSelected(News news);
+        void newsFeedSelected(NewsArticle newsArticle);
     }
 }

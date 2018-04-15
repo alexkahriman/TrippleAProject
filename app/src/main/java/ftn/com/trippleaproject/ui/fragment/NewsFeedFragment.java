@@ -5,21 +5,30 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.IgnoreWhen;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.News;
+import ftn.com.trippleaproject.TrippleAApplication;
+import ftn.com.trippleaproject.domain.database.NewsArticle;
 import ftn.com.trippleaproject.ui.activity.NewsArticleActivity_;
 import ftn.com.trippleaproject.ui.adapter.NewsAdapter;
 import ftn.com.trippleaproject.ui.view.NewsFeedItemView;
+import ftn.com.trippleaproject.usecase.crud.NewsArticleCrudUseCase;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 @EFragment(R.layout.fragment_news_feed)
-public class NewsFeedFragment extends Fragment implements NewsFeedItemView.NewsFeedActionListener {
+public class NewsFeedFragment extends Fragment implements Consumer<List<NewsArticle>>, NewsFeedItemView.NewsFeedActionListener {
+
+    @App
+    TrippleAApplication application;
 
     @ViewById
     RecyclerView recyclerView;
@@ -27,22 +36,30 @@ public class NewsFeedFragment extends Fragment implements NewsFeedItemView.NewsF
     @Bean
     NewsAdapter  newsAdapter;
 
+    @Inject
+    NewsArticleCrudUseCase newsArticleCrudUseCase;
+
     @AfterViews
     void init() {
+
+        application.getDiComponent().inject(this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(newsAdapter);
 
-        List<News> news = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            news.add(new News("title" + i));
-        }
+        newsArticleCrudUseCase.read().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 
         newsAdapter.setNewsFeedActionListener(this);
-        newsAdapter.setNews(news);
+    }
+
+    @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
+    @Override
+    public void accept(List<NewsArticle> newsArticles) {
+        newsAdapter.setNews(newsArticles);
     }
 
     @Override
-    public void newsFeedSelected(News news) {
-        NewsArticleActivity_.intent(getContext()).news(news).start();
+    public void newsFeedSelected(NewsArticle newsArticle) {
+        NewsArticleActivity_.intent(getContext()).newsArticle(newsArticle).start();
     }
 }

@@ -2,13 +2,11 @@ package ftn.com.trippleaproject.domain.database;
 
 import java.io.Serializable;
 
-/**
- * News representation.
- */
-
-public class News implements Serializable {
+public class NewsArticle implements Serializable {
 
     private String title;
+
+    private String imageUrl;
 
     private String description;
 
@@ -16,18 +14,8 @@ public class News implements Serializable {
 
     private int date;
 
-    public News() {
-    }
-
-    public News(String title) {
+    public NewsArticle(String title) {
         this.title = title;
-    }
-
-    public News(String title, String description, String shortDescription, int date) {
-        this.title = title;
-        this.description = description;
-        this.shortDescription = shortDescription;
-        this.date = date;
     }
 
     public String getTitle() {
@@ -36,6 +24,14 @@ public class News implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {
@@ -60,5 +56,16 @@ public class News implements Serializable {
 
     public void setDate(int date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "NewsArticle{" +
+                "title='" + title + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", description='" + description + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

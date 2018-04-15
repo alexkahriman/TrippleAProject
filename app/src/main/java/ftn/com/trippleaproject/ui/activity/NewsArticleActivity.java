@@ -9,13 +9,13 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.News;
+import ftn.com.trippleaproject.domain.database.NewsArticle;
 
 @EActivity(R.layout.activity_news_article)
 public class NewsArticleActivity extends AppCompatActivity {
 
     @Extra
-    News news;
+    NewsArticle newsArticle;
 
     @ViewById
     TextView title;
@@ -23,10 +23,10 @@ public class NewsArticleActivity extends AppCompatActivity {
     @AfterViews
     void init() {
 
-        if (news == null) {
+        if (newsArticle == null) {
             return;
         }
 
-        title.setText(news.getTitle());
+        title.setText(newsArticle.getTitle());
     }
 }

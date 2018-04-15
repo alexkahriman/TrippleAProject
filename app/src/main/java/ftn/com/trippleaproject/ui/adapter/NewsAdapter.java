@@ -9,14 +9,14 @@ import org.androidannotations.annotations.RootContext;
 
 import java.util.List;
 
-import ftn.com.trippleaproject.domain.database.News;
+import ftn.com.trippleaproject.domain.database.NewsArticle;
 import ftn.com.trippleaproject.ui.adapter.generic.RecyclerViewAdapterBase;
 import ftn.com.trippleaproject.ui.adapter.generic.ViewWrapper;
 import ftn.com.trippleaproject.ui.view.NewsFeedItemView;
 import ftn.com.trippleaproject.ui.view.NewsFeedItemView_;
 
 @EBean
-public class NewsAdapter  extends RecyclerViewAdapterBase<News, NewsFeedItemView> {
+public class NewsAdapter  extends RecyclerViewAdapterBase<NewsArticle, NewsFeedItemView> {
 
     @RootContext
     Context context;
@@ -33,9 +33,9 @@ public class NewsAdapter  extends RecyclerViewAdapterBase<News, NewsFeedItemView
         holder.getView().bind(items.get(position), newsFeedActionListener);
     }
 
-    public void setNews(List<News> news) {
+    public void setNews(List<NewsArticle> newsArticles) {
 
-        items = news;
+        items = newsArticles;
         notifyDataSetChanged();
     }
 
