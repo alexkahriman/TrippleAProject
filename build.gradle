@@ -25,3 +25,21 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    SupportVersion = '27.1.1'
+    ConstraintLayoutVersion = "1.0.2"
+    AAVersion = '4.3.1'
+    DaggerVersion = "2.15"
+    RetrofitVersion = "2.3.0"
+    OkHttpLoggingInterceptorVersion = "3.10.0"
+    RxJavaVersion = "2.1.6"
+    RxAndroidVersion = "2.0.1"
+    RxBindingVersion = "2.1.0"
+    ArchRoomVersion = "1.0.0"
+    DebugDbVersion = "1.0.3"
+
+    JUnitVersion = "4.12"
+    TestRunnerVersion = "1.0.1"
+    EspressoVersion = "3.0.1"
+}
