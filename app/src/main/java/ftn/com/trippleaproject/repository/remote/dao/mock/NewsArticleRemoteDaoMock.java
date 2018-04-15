@@ -2,6 +2,7 @@ package ftn.com.trippleaproject.repository.remote.dao.mock;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ftn.com.trippleaproject.domain.database.NewsArticle;
@@ -15,7 +16,11 @@ public class NewsArticleRemoteDaoMock implements NewsArticleRemoteDao {
 
         final List<NewsArticle> newsArticles = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            newsArticles.add(new NewsArticle("Title " + i, "https://www.autocar.co.uk/sites/autocar.co.uk/files/audi-rs7_1.jpg"));
+            newsArticles.add(new NewsArticle(
+                    "Title " + i,
+                    "https://www.autocar.co.uk/sites/autocar.co.uk/files/audi-rs7_1.jpg",
+                    new ArrayList<>(),
+                    new Date()));
         }
 
         return Single.just(newsArticles);

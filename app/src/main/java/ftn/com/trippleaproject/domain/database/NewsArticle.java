@@ -1,6 +1,10 @@
 package ftn.com.trippleaproject.domain.database;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import ftn.com.trippleaproject.domain.database.articlepart.NewsArticlePart;
 
 public class NewsArticle implements Serializable {
 
@@ -8,15 +12,15 @@ public class NewsArticle implements Serializable {
 
     private String imageUrl;
 
-    private String description;
+    private List<NewsArticlePart> parts;
 
-    private String shortDescription;
+    private Date date;
 
-    private int date;
-
-    public NewsArticle(String title, String imageUrl) {
+    public NewsArticle(String title, String imageUrl, List<NewsArticlePart> parts, Date date) {
         this.title = title;
         this.imageUrl = imageUrl;
+        this.parts = parts;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -35,27 +39,19 @@ public class NewsArticle implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public String getDescription() {
-        return description;
+    public List<NewsArticlePart> getParts() {
+        return parts;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setParts(List<NewsArticlePart> parts) {
+        this.parts = parts;
     }
 
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public int getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -64,8 +60,7 @@ public class NewsArticle implements Serializable {
         return "NewsArticle{" +
                 "title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", description='" + description + '\'' +
-                ", shortDescription='" + shortDescription + '\'' +
+                ", parts=" + parts +
                 ", date=" + date +
                 '}';
     }
