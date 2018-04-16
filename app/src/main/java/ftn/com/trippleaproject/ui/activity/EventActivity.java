@@ -9,7 +9,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.Event;
+import ftn.com.trippleaproject.domain.Event;
 
 @EActivity(R.layout.activity_event)
 public class EventActivity extends AppCompatActivity {

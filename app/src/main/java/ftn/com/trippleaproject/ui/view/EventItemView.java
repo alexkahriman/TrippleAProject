@@ -9,7 +9,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import ftn.com.trippleaproject.R;
-import ftn.com.trippleaproject.domain.database.Event;
+import ftn.com.trippleaproject.domain.Event;
 
 @EViewGroup(R.layout.item_view_event)
 public class EventItemView extends RelativeLayout {
