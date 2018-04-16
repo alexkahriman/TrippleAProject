@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="@dimen/default_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Description"
             android:textSize="16sp" />
@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Time :"
             android:textSize="12sp" />
@@ -40,15 +40,15 @@
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/small_margin"
             android:hint="Set Time"
-            android:padding="5dp"
+            android:padding="@dimen/small_padding"
             android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Latitude :"
             android:textSize="12sp" />
@@ -57,7 +57,7 @@
             android:id="@+id/latitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/small_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Latitude"
             android:textSize="16sp" />
@@ -65,7 +65,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Longitude :"
             android:textSize="12sp" />
@@ -74,7 +74,7 @@
             android:id="@+id/longitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/small_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Longitude"
             android:textSize="16sp" />

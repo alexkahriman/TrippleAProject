@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
+    android:layout_margin="@dimen/default_margin"
     android:orientation="vertical">
 
     <LinearLayout
@@ -27,25 +27,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/large_margin"
             android:weightSum="1">
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="@dimen/small_margin"
                 android:layout_weight="0.5"
                 android:background="@drawable/border_text_view"
                 android:gravity="center"
                 android:hint="Set Time"
-                android:padding="5dp" />
+                android:padding="@dimen/small_padding" />
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/small_margin"
                 android:layout_weight="0.5"
                 android:background="@drawable/border_text_view"
                 android:gravity="center"
@@ -58,7 +58,7 @@
             android:id="@+id/latitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Latitude"
             android:inputType="number" />
@@ -67,7 +67,7 @@
             android:id="@+id/longitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Longitude"
             android:inputType="number" />
