@@ -13,7 +13,7 @@ public class UseCaseModule {
 
     @Provides
     @Singleton
-    NewsArticleUseCase provideNewsArticleCrudUseCase(NewsArticleRemoteDao newsArticleRemoteDao,
+    NewsArticleUseCase provideNewsArticleUseCase(NewsArticleRemoteDao newsArticleRemoteDao,
                                                      NewsArticleLocalDao newsArticleLocalDao) {
         return new NewsArticleUseCase(newsArticleRemoteDao, newsArticleLocalDao);
     }
