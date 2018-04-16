@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TrippleAProject</string>
+    <string name="title_activity_login">Sign In</string>
+
+    <!-- Strings related to login -->
+    <string name="action_sign_in">Google Sign In</string>
+    <string name="server_client_id">CLIENT_ID</string>
+    <string name="failed_login_message">Failed to sign in via Google account</string>
 </resources>
