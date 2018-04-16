@@ -5,7 +5,7 @@ import java.util.List;
 import ftn.com.trippleaproject.domain.Event;
 import ftn.com.trippleaproject.repository.local.dao.room.EventDao;
 import ftn.com.trippleaproject.repository.local.model.EventDb;
-import ftn.com.trippleaproject.usecase.crud.repository.local.EventLocalDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.local.EventLocalDao;
 import io.reactivex.Flowable;
 
 public class EventDaoAdapter implements EventLocalDao {

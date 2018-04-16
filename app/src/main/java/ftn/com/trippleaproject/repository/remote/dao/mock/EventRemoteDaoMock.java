@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import ftn.com.trippleaproject.domain.Event;
-import ftn.com.trippleaproject.usecase.crud.repository.remote.EventRemoteDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.remote.EventRemoteDao;
 import io.reactivex.Single;
 
 public class EventRemoteDaoMock implements EventRemoteDao {

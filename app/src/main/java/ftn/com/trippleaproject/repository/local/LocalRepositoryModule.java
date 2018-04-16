@@ -9,8 +9,8 @@ import dagger.Module;
 import dagger.Provides;
 import ftn.com.trippleaproject.repository.local.dao.adapter.EventDaoAdapter;
 import ftn.com.trippleaproject.repository.local.dao.adapter.NewsArticleDaoAdapter;
-import ftn.com.trippleaproject.usecase.crud.repository.local.EventLocalDao;
-import ftn.com.trippleaproject.usecase.crud.repository.local.NewsArticleLocalDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.local.EventLocalDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.local.NewsArticleLocalDao;
 
 @Module
 public class LocalRepositoryModule {

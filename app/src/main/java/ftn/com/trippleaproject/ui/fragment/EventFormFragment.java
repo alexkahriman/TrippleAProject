@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.TrippleAApplication;
 import ftn.com.trippleaproject.domain.Event;
-import ftn.com.trippleaproject.usecase.crud.EventCrudUseCase;
+import ftn.com.trippleaproject.usecase.repository.EventCrudUseCase;
 
 import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.DATE_FORMAT;
 import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.TIME_FORMAT;

@@ -23,7 +23,7 @@ import ftn.com.trippleaproject.repository.local.model.articlepart.TextNewsArticl
 @TypeConverters({DateTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
-    public static final String DATABASE_NAME = "db";
+    public static final String DATABASE_NAME = "tap_db";
 
     public abstract NewsArticleDao newsArticleDao();
 

@@ -1,4 +1,4 @@
-package ftn.com.trippleaproject.usecase.crud;
+package ftn.com.trippleaproject.usecase.repository;
 
 import org.reactivestreams.Subscriber;
 
@@ -7,8 +7,8 @@ import java.util.List;
 
 import ftn.com.trippleaproject.domain.Event;
 import ftn.com.trippleaproject.repository.local.model.EventDb;
-import ftn.com.trippleaproject.usecase.crud.repository.local.EventLocalDao;
-import ftn.com.trippleaproject.usecase.crud.repository.remote.EventRemoteDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.local.EventLocalDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.remote.EventRemoteDao;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;

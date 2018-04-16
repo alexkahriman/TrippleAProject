@@ -23,7 +23,7 @@ import ftn.com.trippleaproject.ui.activity.EventActivity_;
 import ftn.com.trippleaproject.ui.activity.EventFormActivity_;
 import ftn.com.trippleaproject.ui.adapter.EventsAdapter;
 import ftn.com.trippleaproject.ui.view.EventItemView;
-import ftn.com.trippleaproject.usecase.crud.EventCrudUseCase;
+import ftn.com.trippleaproject.usecase.repository.EventCrudUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import ftn.com.trippleaproject.domain.NewsArticle;
-import ftn.com.trippleaproject.usecase.crud.repository.remote.NewsArticleRemoteDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.remote.NewsArticleRemoteDao;
 import io.reactivex.Single;
 
 public class NewsArticleRemoteDaoMock implements NewsArticleRemoteDao {

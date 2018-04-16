@@ -4,26 +4,27 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import ftn.com.trippleaproject.usecase.crud.EventCrudUseCase;
-import ftn.com.trippleaproject.usecase.crud.repository.local.EventLocalDao;
-import ftn.com.trippleaproject.usecase.crud.repository.remote.EventRemoteDao;
-import ftn.com.trippleaproject.usecase.crud.repository.remote.NewsArticleRemoteDao;
-import ftn.com.trippleaproject.usecase.crud.NewsArticleCrudUseCase;
-import ftn.com.trippleaproject.usecase.crud.repository.local.NewsArticleLocalDao;
+import ftn.com.trippleaproject.usecase.repository.EventCrudUseCase;
+import ftn.com.trippleaproject.usecase.repository.NewsArticleUseCase;
+import ftn.com.trippleaproject.usecase.repository.dependencies.local.EventLocalDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.local.NewsArticleLocalDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.remote.EventRemoteDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.remote.NewsArticleRemoteDao;
 
 @Module
 public class UseCaseModule {
 
     @Provides
     @Singleton
-    NewsArticleCrudUseCase provideNewsArticleCrudUseCase(NewsArticleRemoteDao newsArticleRemoteDao,
-                                                         NewsArticleLocalDao newsArticleLocalDao) {
-        return new NewsArticleCrudUseCase(newsArticleRemoteDao, newsArticleLocalDao);
+    NewsArticleUseCase provideNewsArticleUseCase(NewsArticleRemoteDao newsArticleRemoteDao,
+                                                 NewsArticleLocalDao newsArticleLocalDao) {
+        return new NewsArticleUseCase(newsArticleRemoteDao, newsArticleLocalDao);
     }
 
     @Provides
     @Singleton
-    EventCrudUseCase providesEventCrudUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao) {
+    EventCrudUseCase providesEventCrudUseCase(EventRemoteDao eventRemoteDao,
+                                              EventLocalDao eventLocalDao) {
         return new EventCrudUseCase(eventRemoteDao, eventLocalDao);
     }
 }

@@ -20,7 +20,7 @@ import ftn.com.trippleaproject.domain.NewsArticle;
 import ftn.com.trippleaproject.ui.activity.NewsArticleActivity_;
 import ftn.com.trippleaproject.ui.adapter.NewsAdapter;
 import ftn.com.trippleaproject.ui.view.NewsArticleItemView;
-import ftn.com.trippleaproject.usecase.crud.NewsArticleCrudUseCase;
+import ftn.com.trippleaproject.usecase.repository.NewsArticleUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
@@ -37,7 +37,7 @@ public class NewsFeedFragment extends Fragment implements Consumer<List<NewsArti
     NewsAdapter  newsAdapter;
 
     @Inject
-    NewsArticleCrudUseCase newsArticleCrudUseCase;
+    NewsArticleUseCase newsArticleUseCase;
 
     @AfterViews
     void init() {
@@ -47,7 +47,7 @@ public class NewsFeedFragment extends Fragment implements Consumer<List<NewsArti
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(newsAdapter);
 
-        newsArticleCrudUseCase.read().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+        newsArticleUseCase.read().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 
         newsAdapter.setNewsFeedActionListener(this);
     }

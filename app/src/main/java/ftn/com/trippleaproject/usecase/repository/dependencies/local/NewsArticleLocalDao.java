@@ -1,4 +1,4 @@
-package ftn.com.trippleaproject.usecase.crud.repository.local;
+package ftn.com.trippleaproject.usecase.repository.dependencies.local;
 
 
 import ftn.com.trippleaproject.domain.NewsArticle;
