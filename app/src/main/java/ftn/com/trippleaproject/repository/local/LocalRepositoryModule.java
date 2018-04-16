@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ftn.com.trippleaproject.repository.local.dao.adapter.NewsArticleDaoAdapter;
-import ftn.com.trippleaproject.usecase.crud.repository.local.NewsArticleLocalDao;
+import ftn.com.trippleaproject.usecase.repository.dependencies.local.NewsArticleLocalDao;
 
 @Module
 public class LocalRepositoryModule {

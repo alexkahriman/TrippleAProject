@@ -1,4 +1,4 @@
-package ftn.com.trippleaproject.usecase.crud.repository.remote;
+package ftn.com.trippleaproject.usecase.repository.dependencies.remote;
 
 
 import java.util.List;
