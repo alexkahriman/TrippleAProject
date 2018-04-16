@@ -2,27 +2,22 @@ package ftn.com.trippleaproject.repository.local.model;
 
 import android.arch.persistence.room.Entity;
 
-@Entity(tableName = "event", primaryKeys = "id")
+import java.util.Date;
+
+@Entity(tableName = "event")
 public class EventDb extends BaseModelDb {
 
     private String title;
 
     private String description;
 
-    private int date;
+    private Date date;
 
     private long latitude;
 
     private long longitude;
 
-    public EventDb() {
-    }
-
-    public EventDb(String title) {
-        this.title = title;
-    }
-
-    public EventDb(String title, String description, int date, long latitude, long longitude) {
+    public EventDb(String title, String description, Date date, long latitude, long longitude) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -46,11 +41,11 @@ public class EventDb extends BaseModelDb {
         this.description = description;
     }
 
-    public int getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -68,5 +63,16 @@ public class EventDb extends BaseModelDb {
 
     public void setLongitude(long longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "EventDb{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

@@ -5,13 +5,16 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 
 import ftn.com.trippleaproject.repository.local.converter.DateTypeConverter;
+import ftn.com.trippleaproject.repository.local.dao.room.EventDao;
 import ftn.com.trippleaproject.repository.local.dao.room.NewsArticleDao;
+import ftn.com.trippleaproject.repository.local.model.EventDb;
 import ftn.com.trippleaproject.repository.local.model.NewsArticleDb;
 import ftn.com.trippleaproject.repository.local.model.articlepart.ImageNewsArticlePartDb;
 import ftn.com.trippleaproject.repository.local.model.articlepart.TextNewsArticlePartDb;
 
 @Database(entities = {
         NewsArticleDb.class,
+        EventDb.class,
         TextNewsArticlePartDb.class,
         ImageNewsArticlePartDb.class},
         version = 1,
@@ -23,5 +26,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "db";
 
     public abstract NewsArticleDao newsArticleDao();
+
+    public abstract EventDao eventDao();
 }
 

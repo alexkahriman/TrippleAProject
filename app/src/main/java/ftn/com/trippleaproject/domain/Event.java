@@ -1,6 +1,7 @@
 package ftn.com.trippleaproject.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Event implements Serializable {
 
@@ -8,7 +9,7 @@ public class Event implements Serializable {
 
     private String description;
 
-    private int date;
+    private Date date;
 
     private long latitude;
 
@@ -21,7 +22,7 @@ public class Event implements Serializable {
         this.title = title;
     }
 
-    public Event(String title, String description, int date, long latitude, long longitude) {
+    public Event(String title, String description, Date date, long latitude, long longitude) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -45,11 +46,11 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public int getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

@@ -7,7 +7,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ftn.com.trippleaproject.repository.local.dao.adapter.EventDaoAdapter;
 import ftn.com.trippleaproject.repository.local.dao.adapter.NewsArticleDaoAdapter;
+import ftn.com.trippleaproject.usecase.crud.repository.local.EventLocalDao;
 import ftn.com.trippleaproject.usecase.crud.repository.local.NewsArticleLocalDao;
 
 @Module
@@ -29,5 +31,11 @@ public class LocalRepositoryModule {
     @Singleton
     NewsArticleLocalDao provideNewsArticleLocalDao(AppDatabase appDatabase) {
         return new NewsArticleDaoAdapter(appDatabase.newsArticleDao());
+    }
+
+    @Provides
+    @Singleton
+    EventLocalDao providesEventLocalDao(AppDatabase appDatabase) {
+        return new EventDaoAdapter(appDatabase.eventDao());
     }
 }

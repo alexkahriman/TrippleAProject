@@ -15,12 +15,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/title"
+            <ImageView
+                android:id="@+id/eventImage"
+                android:layout_width="@dimen/extra_large_image_view_size"
+                android:layout_height="@dimen/extra_large_image_view_size"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_event"
+                android:tint="@color/colorPrimary" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="@dimen/default_margin" />
+                android:layout_toEndOf="@+id/eventImage"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
         </RelativeLayout>
 

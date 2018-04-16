@@ -4,6 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ftn.com.trippleaproject.repository.remote.dao.mock.EventRemoteDaoMock;
+import ftn.com.trippleaproject.usecase.crud.repository.remote.EventRemoteDao;
 import ftn.com.trippleaproject.usecase.crud.repository.remote.NewsArticleRemoteDao;
 import ftn.com.trippleaproject.repository.remote.dao.mock.NewsArticleRemoteDaoMock;
 
@@ -14,5 +16,11 @@ public class RemoteRepositoryModule {
     @Singleton
     NewsArticleRemoteDao provideNewsArticleRemoteDao() {
         return new NewsArticleRemoteDaoMock();
+    }
+
+    @Provides
+    @Singleton
+    EventRemoteDao providesEventRemoteDao() {
+        return new EventRemoteDaoMock();
     }
 }

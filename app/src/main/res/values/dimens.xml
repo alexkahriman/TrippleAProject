@@ -3,6 +3,11 @@
 
     <dimen name="default_margin">8dp</dimen>
 
+    <!--Image View-->
+    <dimen name="normal_image_view_size">16dp</dimen>
+    <dimen name="large_image_view_size">24dp</dimen>
+    <dimen name="extra_large_image_view_size">48dp</dimen>
+
     <!-- News -->
     <dimen name="news_card_view_height">200dp</dimen>
 

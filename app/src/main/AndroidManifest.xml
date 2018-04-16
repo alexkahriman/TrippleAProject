@@ -22,6 +22,7 @@
 
         <activity android:name=".ui.activity.EventActivity_"/>
         <activity android:name=".ui.activity.NewsArticleActivity_"/>
+        <activity android:name=".ui.activity.EventFormActivity_"/>
     </application>
 
 </manifest>
