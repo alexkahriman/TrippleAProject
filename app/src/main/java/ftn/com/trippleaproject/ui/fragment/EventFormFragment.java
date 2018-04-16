@@ -24,6 +24,10 @@ import ftn.com.trippleaproject.TrippleAApplication;
 import ftn.com.trippleaproject.domain.Event;
 import ftn.com.trippleaproject.usecase.crud.EventCrudUseCase;
 
+import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.DATE_FORMAT;
+import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.TIME_FORMAT;
+
+
 @EFragment(R.layout.fragment_event_form)
 public class EventFormFragment extends Fragment implements TimePickerFragment.TimeSetActionListener,
                                                             DatePickerFragment.DateSetActionListener {
@@ -58,8 +62,10 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
             return;
         }
 
-        timeFormatter = new SimpleDateFormat("HH:mm", context.getResources().getConfiguration().locale);
-        dateFormatter = new SimpleDateFormat("dd MMM yyyy", context.getResources().getConfiguration().locale);
+        timeFormatter = new SimpleDateFormat(TIME_FORMAT,
+                context.getResources().getConfiguration().locale);
+        dateFormatter = new SimpleDateFormat(DATE_FORMAT,
+                context.getResources().getConfiguration().locale);
 
         calendar = Calendar.getInstance();
         setTimeText(calendar);

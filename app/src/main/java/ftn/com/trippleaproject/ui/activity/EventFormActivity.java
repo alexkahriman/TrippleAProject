@@ -30,7 +30,7 @@ public class EventFormActivity extends AppCompatActivity {
         } else {
             employeesFragment = EventFormFragment_.builder().build();
         }
-        fragmentTransaction.replace(R.id.eventForFragmentContainer, employeesFragment);
+        fragmentTransaction.replace(R.id.eventFormFragmentContainer, employeesFragment);
         fragmentTransaction.commit();
     }
 }
