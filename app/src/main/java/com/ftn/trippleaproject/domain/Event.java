@@ -55,31 +55,31 @@ public class Event extends BaseModel implements Serializable {
 
     public static class Location implements Serializable {
 
-        public long latitude;
+        public double latitude;
 
-        public long longitude;
+        public double longitude;
 
         public Location() {
         }
 
-        public Location(long latitude, long longitude) {
+        public Location(double latitude, double longitude) {
             this.latitude = latitude;
             this.longitude = longitude;
         }
 
-        public long getLatitude() {
+        public double getLatitude() {
             return latitude;
         }
 
-        public void setLatitude(long latitude) {
+        public void setLatitude(double latitude) {
             this.latitude = latitude;
         }
 
-        public long getLongitude() {
+        public double getLongitude() {
             return longitude;
         }
 
-        public void setLongitude(long longitude) {
+        public void setLongitude(double longitude) {
             this.longitude = longitude;
         }
 

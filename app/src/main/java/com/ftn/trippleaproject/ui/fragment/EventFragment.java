@@ -1,5 +1,7 @@
 package com.ftn.trippleaproject.ui.fragment;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
@@ -14,6 +16,10 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 @EFragment(R.layout.fragment_event)
@@ -26,7 +32,16 @@ public class EventFragment extends Fragment {
     Event event;
 
     @ViewById
-    TextView title, description, time, latitude, longitude;
+    TextView title;
+
+    @ViewById
+    TextView description;
+
+    @ViewById
+    TextView time;
+
+    @ViewById
+    TextView location;
 
     @Inject
     DateTimeFormatterUseCase dateTimeFormatterUseCase;
@@ -43,7 +58,16 @@ public class EventFragment extends Fragment {
         title.setText(event.getTitle());
         description.setText(event.getDescription());
         time.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getDate()));
-        latitude.setText(String.valueOf(event.getLocation().getLatitude()));
-        longitude.setText(String.valueOf(event.getLocation().getLongitude()));
+
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(event.getLocation().getLatitude(),
+                    event.getLocation().getLongitude(), 1);
+            String cityName = addresses.get(0).getAddressLine(0);
+
+            location.setText(cityName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

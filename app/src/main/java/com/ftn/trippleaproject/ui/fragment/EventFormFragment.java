@@ -115,8 +115,8 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
                 title.getText().toString(),
                 description.getText().toString(),
                 calendar.getTime(),
-                new Event.Location(Long.valueOf(latitude.getText().toString()),
-                        Long.valueOf(longitude.getText().toString())));
+                new Event.Location(Double.parseDouble(latitude.getText().toString()),
+                        Double.parseDouble(longitude.getText().toString())));
 
         eventUseCase.create(event).blockingSubscribe();
 
