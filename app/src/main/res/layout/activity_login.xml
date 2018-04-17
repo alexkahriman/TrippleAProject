@@ -7,11 +7,11 @@
     android:orientation="vertical"
     tools:context=".ui.activity.LoginActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/login_background"
-        android:scaleType="centerCrop"/>
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/login_background"-->
+        <!--android:scaleType="centerCrop"/>-->
 
     <Button
         android:id="@+id/login_button"

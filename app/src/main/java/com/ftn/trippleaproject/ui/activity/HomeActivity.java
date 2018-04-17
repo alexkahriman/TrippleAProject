@@ -6,15 +6,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.system.PrefManager_;
 import com.ftn.trippleaproject.ui.adapter.HomeTabAdapter;
+import com.ftn.trippleaproject.ui.fragment.SettingsFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements SettingsFragment_.SettingsNavigationSelected {
 
     @ViewById
     TabLayout tabLayout;
@@ -25,6 +28,9 @@ public class HomeActivity extends AppCompatActivity {
     @Bean
     HomeTabAdapter homeTabAdapter;
 
+    @Pref
+    PrefManager_ prefManager;
+
     private final int[] tabIcons = {
             R.drawable.ic_news,
             R.drawable.ic_calendar,
@@ -33,16 +39,20 @@ public class HomeActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
+        homeTabAdapter.setSettingsNavigationSelected(this);
         pager.setAdapter(homeTabAdapter);
         tabLayout.setupWithViewPager(pager);
         setTabIcons();
+
+        if (prefManager.startWithEvents().get()) {
+            pager.setCurrentItem(1);
+        }
     }
 
     private void setTabIcons() {
         Drawable drawable;
         TabLayout.Tab tab;
         for (int i = 0; i < tabIcons.length; i++) {
-
             drawable = this.getDrawable(tabIcons[i]);
             if (drawable != null) {
                 drawable.setTintList(getResources().getColorStateList(R.color.tab_icon));
@@ -55,4 +65,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void newsFeedSelected() {
+        pager.setCurrentItem(0, true);
+    }
+
+    @Override
+    public void eventsSelected() {
+        pager.setCurrentItem(1, true);
+    }
+
 }
