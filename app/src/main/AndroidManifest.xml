@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ftn.com.trippleaproject">
+    package="com.ftn.trippleaproject">
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.HomeActivity_">
+        <activity android:name=".ui.activity.LoginActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,9 +24,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.EventActivity_"/>
-        <activity android:name=".ui.activity.NewsArticleActivity_"/>
-        <activity android:name=".ui.activity.EventFormActivity_"/>
+        <activity android:name=".ui.activity.EventActivity_" />
+        <activity android:name=".ui.activity.NewsArticleActivity_" />
+        <activity android:name=".ui.activity.EventFormActivity_" />
+        <activity android:name=".ui.activity.HomeActivity_" />
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>

@@ -1,19 +1,32 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+            storeFile file('/Users/aradosevic/.android/debug.keystore')
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
-        applicationId "ftn.com.trippleaproject"
+        applicationId "com.ftn.trippleaproject"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     packagingOptions {
@@ -23,11 +36,12 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Support
     implementation "com.android.support:design:$rootProject.SupportVersion"
@@ -62,6 +76,9 @@ dependencies {
 
     // Fresco
     implementation "com.facebook.fresco:fresco:$rootProject.FrescoVersion"
+
+    // Google Play services
+    implementation "com.google.android.gms:play-services-auth:$rootProject.GoogleAuthVersion"
 
     // Tests
     testImplementation "junit:junit:$rootProject.JUnitVersion"
