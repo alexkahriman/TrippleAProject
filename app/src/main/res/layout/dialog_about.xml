@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:padding="@dimen/default_padding">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ok"
+        android:layout_marginBottom="@dimen/large_margin">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/dialogTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/app_name"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/firstDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dialogTitle"
+                android:layout_marginTop="@dimen/large_margin"
+                android:gravity="center_vertical"
+                android:text="Application shows latest news from Lord of the Rings community about new cars, fashion and much more."
+                android:textColor="@color/colorAccent" />
+
+
+            <TextView
+                android:id="@+id/contactDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/firstDialog"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/contact"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contactDialog"
+                android:layout_marginTop="@dimen/default_margin"
+                android:padding="8dp"
+                android:text="@string/email"
+                android:textColor="@android:color/holo_blue_bright" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email"
+                android:layout_marginTop="@dimen/default_margin"
+                android:padding="@dimen/default_padding"
+                android:text="@string/phone"
+                android:textColor="@android:color/holo_blue_bright" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/round_button"
+        android:text="@string/ok"
+        android:textColor="@color/colorPrimary" />
+
+</RelativeLayout>

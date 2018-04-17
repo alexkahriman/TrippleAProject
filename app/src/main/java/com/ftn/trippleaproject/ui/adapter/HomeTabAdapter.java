@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ftn.trippleaproject.ui.fragment.EventsFragment_;
 import com.ftn.trippleaproject.ui.fragment.NewsFeedFragment_;
+import com.ftn.trippleaproject.ui.fragment.SettingsFragment;
 import com.ftn.trippleaproject.ui.fragment.SettingsFragment_;
 
 import org.androidannotations.annotations.EBean;
@@ -21,13 +22,9 @@ public class HomeTabAdapter extends FragmentStatePagerAdapter {
     private final List<Fragment> fragments = new ArrayList<>();
 
     HomeTabAdapter(Context context) {
-
         super(((AppCompatActivity) context).getSupportFragmentManager());
-
         fragments.add(NewsFeedFragment_.builder().build());
-
         fragments.add(EventsFragment_.builder().build());
-
         fragments.add(SettingsFragment_.builder().build());
     }
 
@@ -45,5 +42,10 @@ public class HomeTabAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return null;
+    }
+
+    public void setSettingsNavigationSelected(SettingsFragment.SettingsNavigationSelected settingsNavigationSelected) {
+        SettingsFragment settingsFragment = (SettingsFragment) fragments.get(2);
+        settingsFragment.setSettingsNavigationSelected(settingsNavigationSelected);
     }
 }
