@@ -6,13 +6,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.domain.NewsArticle;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
-
-import com.ftn.trippleaproject.R;
-import com.ftn.trippleaproject.domain.NewsArticle;
 
 @EViewGroup(R.layout.item_view_news_article)
 public class NewsArticleItemView extends RelativeLayout {

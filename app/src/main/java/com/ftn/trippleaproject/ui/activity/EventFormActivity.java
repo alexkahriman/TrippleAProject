@@ -6,14 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.domain.Event;
-import com.ftn.trippleaproject.ui.fragment.EventFragment_;
+import com.ftn.trippleaproject.ui.fragment.EventFormFragment;
+import com.ftn.trippleaproject.ui.fragment.EventFormFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 
-@EActivity(R.layout.activity_event)
-public class EventActivity extends AppCompatActivity {
+@EActivity(R.layout.actrivity_event_form)
+public class EventFormActivity extends AppCompatActivity implements EventFormFragment.EventFormFragmentActionListener {
 
     @Extra
     Event event;
@@ -21,13 +22,16 @@ public class EventActivity extends AppCompatActivity {
     @AfterViews
     void init() {
 
-        if (event == null) {
-            return;
-        }
-
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.eventFragmentContainer, EventFragment_.builder().event(event).build());
+        EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).build();
+        eventFormFragment.setEventFormFragmentActionListener(this);
+        fragmentTransaction.replace(R.id.eventFormFragmentContainer, eventFormFragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
     }
 }

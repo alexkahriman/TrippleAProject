@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/default_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:gravity="center"
+            android:hint="Title"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:backgroundTint="@color/colorPrimary"
+            android:hint="Description"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:backgroundTint="@color/colorPrimary"
+            android:hint="Time :"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:hint="Set Time"
+            android:padding="@dimen/small_padding"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:backgroundTint="@color/colorPrimary"
+            android:hint="Latitude :"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/latitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:backgroundTint="@color/colorPrimary"
+            android:hint="Latitude"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:backgroundTint="@color/colorPrimary"
+            android:hint="Longitude :"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:backgroundTint="@color/colorPrimary"
+            android:hint="Longitude"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

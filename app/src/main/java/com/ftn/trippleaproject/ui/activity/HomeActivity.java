@@ -5,13 +5,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.ui.adapter.HomeTabAdapter;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import com.ftn.trippleaproject.R;
-import com.ftn.trippleaproject.ui.adapter.HomeTabAdapter;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends AppCompatActivity {

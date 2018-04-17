@@ -4,16 +4,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
-import java.util.List;
-
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.ui.adapter.generic.RecyclerViewAdapterBase;
 import com.ftn.trippleaproject.ui.adapter.generic.ViewWrapper;
 import com.ftn.trippleaproject.ui.view.EventItemView;
 import com.ftn.trippleaproject.ui.view.EventItemView_;
+
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+
+import java.util.List;
 
 @EBean
 public class EventsAdapter extends RecyclerViewAdapterBase<Event, EventItemView> {

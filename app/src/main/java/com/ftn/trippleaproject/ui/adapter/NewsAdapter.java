@@ -4,19 +4,19 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
-import java.util.List;
-
 import com.ftn.trippleaproject.domain.NewsArticle;
 import com.ftn.trippleaproject.ui.adapter.generic.RecyclerViewAdapterBase;
 import com.ftn.trippleaproject.ui.adapter.generic.ViewWrapper;
 import com.ftn.trippleaproject.ui.view.NewsArticleItemView;
 import com.ftn.trippleaproject.ui.view.NewsArticleItemView_;
 
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+
+import java.util.List;
+
 @EBean
-public class NewsAdapter  extends RecyclerViewAdapterBase<NewsArticle, NewsArticleItemView> {
+public class NewsAdapter extends RecyclerViewAdapterBase<NewsArticle, NewsArticleItemView> {
 
     @RootContext
     Context context;

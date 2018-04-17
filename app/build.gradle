@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('/Users/novke/.android/debug.keystore')
-            storePassword 'android'
-        }
-    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.ftn.trippleaproject"
@@ -17,16 +9,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
         debug {
-            signingConfig signingConfigs.config
         }
     }
     packagingOptions {
@@ -39,8 +28,7 @@ android {
 }
 
 dependencies {
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Support
     implementation "com.android.support:design:$rootProject.SupportVersion"
@@ -83,5 +71,4 @@ dependencies {
     testImplementation "junit:junit:$rootProject.JUnitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.TestRunnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.EspressoVersion"
-
 }

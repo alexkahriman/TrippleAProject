@@ -4,16 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.IgnoreWhen;
-import org.androidannotations.annotations.ViewById;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.NewsArticle;
@@ -21,6 +11,18 @@ import com.ftn.trippleaproject.ui.activity.NewsArticleActivity_;
 import com.ftn.trippleaproject.ui.adapter.NewsAdapter;
 import com.ftn.trippleaproject.ui.view.NewsArticleItemView;
 import com.ftn.trippleaproject.usecase.repository.NewsArticleUseCase;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.IgnoreWhen;
+import org.androidannotations.annotations.ViewById;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
@@ -34,7 +36,7 @@ public class NewsFeedFragment extends Fragment implements Consumer<List<NewsArti
     RecyclerView recyclerView;
 
     @Bean
-    NewsAdapter  newsAdapter;
+    NewsAdapter newsAdapter;
 
     @Inject
     NewsArticleUseCase newsArticleUseCase;

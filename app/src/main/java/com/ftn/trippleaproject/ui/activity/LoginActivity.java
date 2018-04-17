@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ftn.trippleaproject.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -16,8 +17,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
-
-import com.ftn.trippleaproject.R;
 
 /**
  * A login screen that offers login via email/password.
@@ -34,9 +33,9 @@ public class LoginActivity extends AppCompatActivity {
     void init() {
         final GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
-                .requestEmail()
-                .build();
+                        .requestIdToken(getString(R.string.server_client_id))
+                        .requestEmail()
+                        .build();
 
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -48,6 +47,11 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null) {
             final Intent homeIntent = new Intent(this, HomeActivity_.class);
             startActivity(homeIntent);
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Successfuly signed in",
+                    Toast.LENGTH_SHORT
+            ).show();
         } else {
             Toast.makeText(
                     getApplicationContext(),

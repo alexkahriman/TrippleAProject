@@ -6,14 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 
+import com.ftn.trippleaproject.ui.fragment.EventsFragment_;
+import com.ftn.trippleaproject.ui.fragment.NewsFeedFragment_;
+import com.ftn.trippleaproject.ui.fragment.SettingsFragment_;
+
 import org.androidannotations.annotations.EBean;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ftn.trippleaproject.ui.fragment.EventsFragment_;
-import com.ftn.trippleaproject.ui.fragment.NewsFeedFragment_;
-import com.ftn.trippleaproject.ui.fragment.SettingsFragment_;
 
 @EBean
 public class HomeTabAdapter extends FragmentStatePagerAdapter {
@@ -44,6 +44,6 @@ public class HomeTabAdapter extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return  null;
+        return null;
     }
 }
