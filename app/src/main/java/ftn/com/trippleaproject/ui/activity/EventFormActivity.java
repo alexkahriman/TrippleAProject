@@ -14,7 +14,7 @@ import ftn.com.trippleaproject.ui.fragment.EventFormFragment;
 import ftn.com.trippleaproject.ui.fragment.EventFormFragment_;
 
 @EActivity(R.layout.actrivity_event_form)
-public class EventFormActivity extends AppCompatActivity {
+public class EventFormActivity extends AppCompatActivity implements EventFormFragment.EventFormFragmentActionListener {
 
     @Extra
     Event event;
@@ -24,13 +24,14 @@ public class EventFormActivity extends AppCompatActivity {
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        EventFormFragment employeesFragment;
-        if (event != null) {
-            employeesFragment = EventFormFragment_.builder().event(event).build();
-        } else {
-            employeesFragment = EventFormFragment_.builder().build();
-        }
-        fragmentTransaction.replace(R.id.eventFormFragmentContainer, employeesFragment);
+        EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).build();
+        eventFormFragment.setEventFormFragmentActionListener(this);
+        fragmentTransaction.replace(R.id.eventFormFragmentContainer, eventFormFragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
     }
 }

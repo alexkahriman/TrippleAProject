@@ -15,13 +15,11 @@ public class EventRemoteDaoMock implements EventRemoteDao {
 
         final List<Event> events = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            events.add(new Event(
+            events.add(new Event((long) i,
                     "Title" + i,
                     "Description" + i,
                     new Date(),
-                    2,
-                    5)
-            );
+                    new Event.Location(1, 2)));
         }
 
         return Single.just(events);

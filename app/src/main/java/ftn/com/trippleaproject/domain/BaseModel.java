@@ -5,13 +5,13 @@ import java.io.Serializable;
 
 public abstract class BaseModel implements Serializable {
 
-    private int id;
+    private long id;
 
-    public BaseModel(int id) {
+    public BaseModel(long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

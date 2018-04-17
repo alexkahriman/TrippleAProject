@@ -1,9 +1,7 @@
 package ftn.com.trippleaproject.ui.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,7 +20,8 @@ import javax.inject.Inject;
 import ftn.com.trippleaproject.R;
 import ftn.com.trippleaproject.TrippleAApplication;
 import ftn.com.trippleaproject.domain.Event;
-import ftn.com.trippleaproject.usecase.repository.EventCrudUseCase;
+import ftn.com.trippleaproject.usecase.business.DateTimeFormatterUseCase;
+import ftn.com.trippleaproject.usecase.repository.EventUseCase;
 
 import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.DATE_FORMAT;
 import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.TIME_FORMAT;
@@ -30,16 +29,28 @@ import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.TIME_
 
 @EFragment(R.layout.fragment_event_form)
 public class EventFormFragment extends Fragment implements TimePickerFragment.TimeSetActionListener,
-                                                            DatePickerFragment.DateSetActionListener {
+        DatePickerFragment.DateSetActionListener {
 
     @App
     TrippleAApplication application;
 
     @Inject
-    EventCrudUseCase eventCrudUseCase;
+    EventUseCase eventUseCase;
+
+    @Inject
+    DateTimeFormatterUseCase dateTimeFormatterUseCase;
 
     @ViewById
-    EditText title, description, latitude, longitude;
+    EditText title;
+
+    @ViewById
+    EditText description;
+
+    @ViewById
+    EditText latitude;
+
+    @ViewById
+    EditText longitude;
 
     @ViewById
     TextView date, time;
@@ -47,10 +58,10 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     @FragmentArg
     Event event;
 
-    SimpleDateFormat timeFormatter;
-    SimpleDateFormat dateFormatter;
-    Context context;
-    Calendar calendar;
+    private Context context;
+    private Calendar calendar;
+
+    private EventFormFragmentActionListener eventFormFragmentActionListener;
 
     @AfterViews
     void init() {
@@ -58,14 +69,6 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
         application.getDiComponent().inject(this);
 
         context = getContext();
-        if (context == null) {
-            return;
-        }
-
-        timeFormatter = new SimpleDateFormat(TIME_FORMAT,
-                context.getResources().getConfiguration().locale);
-        dateFormatter = new SimpleDateFormat(DATE_FORMAT,
-                context.getResources().getConfiguration().locale);
 
         calendar = Calendar.getInstance();
         setTimeText(calendar);
@@ -77,12 +80,16 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
 
         title.setText(event.getTitle());
         description.setText(event.getDescription());
-        latitude.setText(String.valueOf(event.getLatitude()));
-        longitude.setText(String.valueOf(event.getLongitude()));
+        latitude.setText(String.valueOf(event.getLocation().getLatitude()));
+        longitude.setText(String.valueOf(event.getLocation().getLongitude()));
 
         calendar.setTime(event.getDate());
         setTimeText(calendar);
         setDateText(calendar);
+    }
+
+    public void setEventFormFragmentActionListener(EventFormFragmentActionListener eventFormFragmentActionListener) {
+        this.eventFormFragmentActionListener = eventFormFragmentActionListener;
     }
 
     @Click
@@ -90,10 +97,7 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
 
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.setTimeSetActionListener(this);
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager != null) {
-            timePickerFragment.show(fragmentManager, "timePicker");
-        }
+        timePickerFragment.show(getFragmentManager(), "timePicker");
     }
 
     @Click
@@ -101,33 +105,31 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
 
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.setDateSetActionListener(this);
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager != null) {
-            datePickerFragment.show(fragmentManager, "datePicker");
-        }
+        datePickerFragment.show(getFragmentManager(), "datePicker");
     }
 
     @Click
     void add() {
 
-        if (!validate()) {
+        if (!checkEditTextNullValues()) {
             return;
         }
 
-        Event event = new Event(title.getText().toString(),
+        Event event = new Event(1,
+                title.getText().toString(),
                 description.getText().toString(),
                 calendar.getTime(),
-                Long.valueOf(latitude.getText().toString()),
-                Long.valueOf(longitude.getText().toString()));
+                new Event.Location(Long.valueOf(latitude.getText().toString()),
+                        Long.valueOf(longitude.getText().toString())));
 
-        eventCrudUseCase.create(event).blockingSubscribe();
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.finish();
+        eventUseCase.create(event).blockingSubscribe();
+
+        if (eventFormFragmentActionListener != null) {
+            eventFormFragmentActionListener.finishActivity();
         }
     }
 
-    private boolean validate() {
+    private boolean checkEditTextNullValues() {
         return !title.getText().toString().isEmpty() &&
                 !description.getText().toString().isEmpty() &&
                 calendar != null &&
@@ -154,10 +156,14 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     }
 
     private void setTimeText(Calendar time) {
-        this.time.setText(timeFormatter.format(time.getTime()));
+        this.time.setText(dateTimeFormatterUseCase.timeFormat().format(time.getTime()));
     }
 
     private void setDateText(Calendar date) {
-        this.date.setText(dateFormatter.format(date.getTime()));
+        this.date.setText(dateTimeFormatterUseCase.dateFormat().format(date.getTime()));
+    }
+
+    public interface EventFormFragmentActionListener {
+        void finishActivity();
     }
 }

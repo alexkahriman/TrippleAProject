@@ -20,7 +20,10 @@ import static ftn.com.trippleaproject.ui.constatns.DateTimeFormatConstants.DATE_
 public class EventItemView extends RelativeLayout {
 
     @ViewById
-    TextView title, time;
+    TextView title;
+
+    @ViewById
+    TextView time;
 
     private Event event;
 

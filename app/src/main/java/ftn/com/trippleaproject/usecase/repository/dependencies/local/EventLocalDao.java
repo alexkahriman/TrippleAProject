@@ -12,5 +12,5 @@ public interface EventLocalDao {
 
     void update(Event event);
 
-    Flowable<List<EventDb>> read();
+    Flowable<List<Event>> read();
 }

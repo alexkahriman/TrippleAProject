@@ -23,7 +23,7 @@ import ftn.com.trippleaproject.ui.activity.EventActivity_;
 import ftn.com.trippleaproject.ui.activity.EventFormActivity_;
 import ftn.com.trippleaproject.ui.adapter.EventsAdapter;
 import ftn.com.trippleaproject.ui.view.EventItemView;
-import ftn.com.trippleaproject.usecase.repository.EventCrudUseCase;
+import ftn.com.trippleaproject.usecase.repository.EventUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
@@ -41,7 +41,7 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
     EventsAdapter eventsAdapter;
 
     @Inject
-    EventCrudUseCase eventCrudUseCase;
+    EventUseCase eventUseCase;
 
     @AfterViews
     void init() {
@@ -51,7 +51,7 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(eventsAdapter);
 
-        eventCrudUseCase.readAllLocal().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+        eventUseCase.readAllLocal().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 
         eventsAdapter.setEventActionListener(this);
     }

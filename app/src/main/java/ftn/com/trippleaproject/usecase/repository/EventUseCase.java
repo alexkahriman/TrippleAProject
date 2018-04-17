@@ -14,13 +14,13 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
 
-public class EventCrudUseCase {
+public class EventUseCase {
 
     private final EventRemoteDao eventRemoteDao;
 
     private final EventLocalDao eventLocalDao;
 
-    public EventCrudUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao) {
+    public EventUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao) {
 
         this.eventRemoteDao = eventRemoteDao;
         this.eventLocalDao = eventLocalDao;
@@ -33,10 +33,10 @@ public class EventCrudUseCase {
             protected void subscribeActual(Subscriber<? super List<Event>> subscriber) {
 
                 final List<Event> events = eventRemoteDao.read().blockingGet();
-                for (Event event: events) {
+                subscriber.onNext(events);
+                for (Event event : events) {
                     eventLocalDao.create(event);
                 }
-                subscriber.onNext(events);
                 subscriber.onComplete();
             }
         }.subscribeOn(Schedulers.io());
@@ -55,17 +55,6 @@ public class EventCrudUseCase {
 
     public Flowable<List<Event>> readAllLocal() {
 
-        return eventLocalDao.read().map(eventDbs -> {
-            List<Event> events = new ArrayList<>();
-            for (EventDb eventDb: eventDbs) {
-                events.add(new Event(eventDb.getTitle(),
-                        eventDb.getDescription(),
-                        eventDb.getDate(),
-                        eventDb.getLatitude(),
-                        eventDb.getLongitude()));
-            }
-
-            return events;
-        });
+        return eventLocalDao.read().subscribeOn(Schedulers.io());
     }
 }
