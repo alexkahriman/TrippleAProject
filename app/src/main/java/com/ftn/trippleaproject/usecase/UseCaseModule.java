@@ -3,10 +3,10 @@ package com.ftn.trippleaproject.usecase;
 import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 import com.ftn.trippleaproject.usecase.repository.NewsArticleUseCase;
-import com.ftn.trippleaproject.usecase.repository.dependencies.local.EventLocalDao;
-import com.ftn.trippleaproject.usecase.repository.dependencies.local.NewsArticleLocalDao;
-import com.ftn.trippleaproject.usecase.repository.dependencies.remote.EventRemoteDao;
-import com.ftn.trippleaproject.usecase.repository.dependencies.remote.NewsArticleRemoteDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLocalDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleRemoteDao;
 
 import javax.inject.Singleton;
 

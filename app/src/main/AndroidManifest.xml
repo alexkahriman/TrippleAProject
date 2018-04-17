@@ -25,14 +25,10 @@
 
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.activity.EventActivity_" />
         <activity android:name=".ui.activity.NewsArticleActivity_" />
         <activity android:name=".ui.activity.EventFormActivity_" />
         <activity android:name=".ui.activity.HomeActivity_" />
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>

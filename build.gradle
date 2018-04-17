@@ -28,7 +28,7 @@ task clean(type: Delete) {
 
 ext {
     SupportVersion = '27.1.1'
-    ConstraintLayoutVersion = "1.0.2"
+    ConstraintLayoutVersion = "1.1.0"
     AAVersion = '4.3.1'
     DaggerVersion = "2.15"
     RetrofitVersion = "2.3.0"

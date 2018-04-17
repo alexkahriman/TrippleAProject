@@ -1,7 +1,7 @@
 package com.ftn.trippleaproject.repository.remote.dao.mock;
 
 import com.ftn.trippleaproject.domain.Event;
-import com.ftn.trippleaproject.usecase.repository.dependencies.remote.EventRemoteDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 
 import java.util.ArrayList;
 import java.util.Date;

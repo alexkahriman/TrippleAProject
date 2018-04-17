@@ -1,4 +1,4 @@
-package com.ftn.trippleaproject.usecase.repository.dependencies.local;
+package com.ftn.trippleaproject.usecase.repository.dependency.local;
 
 
 import com.ftn.trippleaproject.domain.Event;

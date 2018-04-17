@@ -8,9 +8,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import com.ftn.trippleaproject.repository.local.dao.adapter.EventDaoAdapter;
-import com.ftn.trippleaproject.usecase.repository.dependencies.local.EventLocalDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
 import com.ftn.trippleaproject.repository.local.dao.adapter.NewsArticleDaoAdapter;
-import com.ftn.trippleaproject.usecase.repository.dependencies.local.NewsArticleLocalDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLocalDao;
 
 @Module
 public class LocalRepositoryModule {

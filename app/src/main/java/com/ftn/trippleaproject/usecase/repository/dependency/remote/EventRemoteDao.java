@@ -1,4 +1,4 @@
-package com.ftn.trippleaproject.usecase.repository.dependencies.remote;
+package com.ftn.trippleaproject.usecase.repository.dependency.remote;
 
 import com.ftn.trippleaproject.domain.Event;
 

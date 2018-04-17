@@ -5,8 +5,8 @@ import org.reactivestreams.Subscriber;
 import java.util.List;
 
 import com.ftn.trippleaproject.domain.NewsArticle;
-import com.ftn.trippleaproject.usecase.repository.dependencies.remote.NewsArticleRemoteDao;
-import com.ftn.trippleaproject.usecase.repository.dependencies.local.NewsArticleLocalDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleRemoteDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLocalDao;
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
 

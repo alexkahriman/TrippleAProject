@@ -1,8 +1,8 @@
 package com.ftn.trippleaproject.usecase.repository;
 
 import com.ftn.trippleaproject.domain.Event;
-import com.ftn.trippleaproject.usecase.repository.dependencies.local.EventLocalDao;
-import com.ftn.trippleaproject.usecase.repository.dependencies.remote.EventRemoteDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 
 import org.reactivestreams.Subscriber;
 

@@ -4,7 +4,7 @@ package com.ftn.trippleaproject.repository.local.dao.adapter;
 import com.ftn.trippleaproject.domain.NewsArticle;
 import com.ftn.trippleaproject.repository.local.dao.room.NewsArticleDao;
 import com.ftn.trippleaproject.repository.local.model.NewsArticleDb;
-import com.ftn.trippleaproject.usecase.repository.dependencies.local.NewsArticleLocalDao;
+import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLocalDao;
 
 public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
 
