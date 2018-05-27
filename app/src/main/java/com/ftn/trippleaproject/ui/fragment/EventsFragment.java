@@ -57,12 +57,6 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
         eventsAdapter.setEventActionListener(this);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        eventUseCase.read().blockingSubscribe();
-    }
-
     @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
     @Override
     public void accept(List<Event> events) throws Exception {

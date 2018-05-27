@@ -6,7 +6,9 @@ import com.ftn.trippleaproject.repository.remote.dto.NewsArticleDto;
 import java.util.List;
 
 import io.reactivex.Single;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface BackendApiService {
 
@@ -15,4 +17,7 @@ public interface BackendApiService {
 
     @GET("events")
     Single<List<EventDto>> readEvents();
+
+    @POST("events")
+    Single<EventDto> createEvent(@Body EventDto event);
 }

@@ -28,6 +28,12 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
                 .map(this::convertEventDtosToEvents).subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Single<Event> create(Event event) {
+        return backendApiService.createEvent(new EventDto(event))
+                .map(this::convertEventDtoToEvent).subscribeOn(Schedulers.io());
+    }
+
     private List<Event> convertEventDtosToEvents(List<EventDto> eventDtos) {
         List<Event> events = new ArrayList<>();
 
@@ -40,13 +46,23 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
         return events;
     }
 
-    private static Date convertMongoDate(String val) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    private Event convertEventDtoToEvent(EventDto eventDto) {
+        return new Event(eventDto.getId(), eventDto.getTitle(), eventDto.getDescription(),
+                convertMongoDate(eventDto.getStart()), new Event.Location(eventDto.getLat(), eventDto.getLon()));
+    }
+
+    public static Date convertMongoDate(String val) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         try {
             return inputFormat.parse(val);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return new Date();
+    }
+
+    public static String convertToMongoDate(Date date) {
+        SimpleDateFormat outputForm = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return outputForm.format(date);
     }
 }

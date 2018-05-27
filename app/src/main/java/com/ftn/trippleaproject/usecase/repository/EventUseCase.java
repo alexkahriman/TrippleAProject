@@ -43,13 +43,15 @@ public class EventUseCase {
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
-                eventLocalDao.create(event);
+                eventRemoteDao.create(event).subscribe(modelEvent ->
+                        eventLocalDao.create(modelEvent));
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
     }
 
     public Flowable<List<Event>> readAllLocal() {
+        read().blockingSubscribe();
         return eventLocalDao.read().subscribeOn(Schedulers.io());
     }
 }

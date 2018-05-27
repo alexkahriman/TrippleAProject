@@ -1,5 +1,8 @@
 package com.ftn.trippleaproject.repository.remote.dto;
 
+import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.repository.remote.dao.EventRemoteDaoImpl;
+
 public class EventDto {
 
     private long id;
@@ -19,6 +22,15 @@ public class EventDto {
     private String end;
 
     public EventDto() {
+    }
+
+    public EventDto(Event event) {
+        this.title = event.getTitle();
+        this.description = event.getDescription();
+        this.lat = (float) event.getLocation().getLatitude();
+        this.lon = (float) event.getLocation().getLongitude();
+        this.start = EventRemoteDaoImpl.convertToMongoDate(event.getDate());
+        this.end = EventRemoteDaoImpl.convertToMongoDate(event.getDate());
     }
 
     public long getId() {

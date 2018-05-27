@@ -25,4 +25,9 @@ public class EventRemoteDaoMock implements EventRemoteDao {
 
         return Single.just(events);
     }
+
+    @Override
+    public Single<Event> create(Event event) {
+        return null;
+    }
 }
