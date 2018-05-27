@@ -69,6 +69,9 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$rootProject.GoogleAuthVersion"
     implementation "com.google.android.gms:play-services-location:$rootProject.GoogleAuthVersion"
 
+    // Secure Preferences
+    implementation "com.scottyab:secure-preferences-lib:$rootProject.SecurePreferences"
+
     // Tests
     testImplementation "junit:junit:$rootProject.JUnitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.TestRunnerVersion"

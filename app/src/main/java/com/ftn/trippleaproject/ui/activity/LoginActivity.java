@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.TrippleAApplication;
+import com.ftn.trippleaproject.usecase.repository.AuthenticationUseCase;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -14,9 +16,12 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
+
+import javax.inject.Inject;
 
 /**
  * A login screen that offers login via email/password.
@@ -29,8 +34,17 @@ public class LoginActivity extends AppCompatActivity {
 
     private GoogleSignInClient googleSignInClient;
 
+    @App
+    TrippleAApplication application;
+
+    @Inject
+    AuthenticationUseCase authenticationUseCase;
+
     @AfterViews
     void init() {
+
+        application.getDiComponent().inject(this);
+
         final GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.server_client_id))
@@ -47,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null) {
             HomeActivity_.intent(this).start();
             Log.i(TAG, account.getIdToken());
+            authenticationUseCase.writeToken(account.getIdToken()).subscribe();
             Toast.makeText(
                     getApplicationContext(),
                     "Successfuly signed in",

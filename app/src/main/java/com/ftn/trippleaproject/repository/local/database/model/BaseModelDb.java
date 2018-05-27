@@ -1,4 +1,4 @@
-package com.ftn.trippleaproject.repository.local.model;
+package com.ftn.trippleaproject.repository.local.database.model;
 
 
 import android.arch.persistence.room.PrimaryKey;

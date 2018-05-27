@@ -1,4 +1,4 @@
-package com.ftn.trippleaproject.repository.local.converter;
+package com.ftn.trippleaproject.repository.local.database.converter;
 
 import android.arch.persistence.room.TypeConverter;
 
