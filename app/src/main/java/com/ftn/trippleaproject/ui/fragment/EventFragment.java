@@ -41,6 +41,9 @@ public class EventFragment extends Fragment {
     TextView time;
 
     @ViewById
+    TextView endTime;
+
+    @ViewById
     TextView location;
 
     @Inject
@@ -58,6 +61,7 @@ public class EventFragment extends Fragment {
         title.setText(event.getTitle());
         description.setText(event.getDescription());
         time.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getDate()));
+        endTime.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getEndDate()));
 
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {

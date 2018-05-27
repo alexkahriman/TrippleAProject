@@ -24,11 +24,8 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
-
 @EFragment(R.layout.fragment_event_form)
-public class EventFormFragment extends Fragment implements TimePickerFragment.TimeSetActionListener,
-        DatePickerFragment.DateSetActionListener,
-        MapFragment.MapFragmentActionListener {
+public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener {
 
     private static final String MAP_FRAGMENT_TAG = "mapFragment";
 
@@ -48,7 +45,16 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     EditText description;
 
     @ViewById
-    TextView date, time;
+    TextView startTime;
+
+    @ViewById
+    TextView startDate;
+
+    @ViewById
+    TextView endDate;
+
+    @ViewById
+    TextView endTime;
 
     @FragmentArg
     Event event;
@@ -57,6 +63,8 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     MapFragment mapFragment;
 
     private Calendar calendar;
+
+    private Calendar endCalendar;
 
     private EventFormFragmentActionListener eventFormFragmentActionListener;
 
@@ -80,6 +88,11 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
         setTimeText(calendar);
         setDateText(calendar);
 
+        endCalendar = Calendar.getInstance();
+        endCalendar.add(Calendar.MINUTE, 15);
+        setEndTimeText(endCalendar);
+        setEndDateText(endCalendar);
+
         if (event == null) {
             return;
         }
@@ -90,6 +103,10 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
         calendar.setTime(event.getDate());
         setTimeText(calendar);
         setDateText(calendar);
+
+        endCalendar.setTime(event.getEndDate());
+        setEndTimeText(endCalendar);
+        setEndDateText(endCalendar);
     }
 
     public void setEventFormFragmentActionListener(EventFormFragmentActionListener eventFormFragmentActionListener) {
@@ -97,9 +114,12 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     }
 
     @Click
-    void time() {
+    void startTime() {
         TimePickerFragment timePickerFragment = new TimePickerFragment();
-        timePickerFragment.setTimeSetActionListener(this);
+        timePickerFragment.setTimeSetActionListener(time -> {
+            setTimeText(time);
+            setCalendarTime(calendar, time);
+        });
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             timePickerFragment.show(fragmentManager, "timePicker");
@@ -107,9 +127,38 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     }
 
     @Click
-    void date() {
+    void startDate() {
         DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setDateSetActionListener(this);
+        datePickerFragment.setDateSetActionListener(date -> {
+            setDateText(date);
+            setCalendarDate(calendar, date);
+        });
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            datePickerFragment.show(fragmentManager, "datePicker");
+        }
+    }
+
+    @Click
+    void endTime() {
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.setTimeSetActionListener(time -> {
+            setEndTimeText(time);
+            setCalendarTime(endCalendar, time);
+        });
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            timePickerFragment.show(fragmentManager, "timePicker");
+        }
+    }
+
+    @Click
+    void endDate() {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setDateSetActionListener(date -> {
+            setEndDateText(date);
+            setCalendarDate(endCalendar, date);
+        });
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             datePickerFragment.show(fragmentManager, "datePicker");
@@ -126,6 +175,7 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
                 title.getText().toString(),
                 description.getText().toString(),
                 calendar.getTime(),
+                endCalendar.getTime(),
                 new Event.Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
 
@@ -144,27 +194,31 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
                 && mapFragment.getLocation().getLongitude() != 0;
     }
 
-    @Override
-    public void setTime(Calendar time) {
-        setTimeText(time);
+    private void setTimeText(Calendar time) {
+        startTime.setText(dateTimeFormatterUseCase.timeFormat(time.getTime()));
+    }
+
+    private void setDateText(Calendar date) {
+        startDate.setText(dateTimeFormatterUseCase.dateFormat(date.getTime()));
+    }
+
+    private void setEndTimeText(Calendar time) {
+        endTime.setText(dateTimeFormatterUseCase.timeFormat(time.getTime()));
+    }
+
+    private void setEndDateText(Calendar date) {
+        endDate.setText(dateTimeFormatterUseCase.dateFormat(date.getTime()));
+    }
+
+    private void setCalendarTime(Calendar calendar, Calendar time) {
         calendar.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
         calendar.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
     }
 
-    @Override
-    public void dateSet(Calendar date) {
-        setDateText(date);
+    private void setCalendarDate(Calendar calendar, Calendar date) {
         calendar.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.MONTH, date.get(Calendar.MONTH));
         calendar.set(Calendar.YEAR, date.get(Calendar.YEAR));
-    }
-
-    private void setTimeText(Calendar time) {
-        this.time.setText(dateTimeFormatterUseCase.timeFormat(time.getTime()));
-    }
-
-    private void setDateText(Calendar date) {
-        this.date.setText(dateTimeFormatterUseCase.dateFormat(date.getTime()));
     }
 
     @Override

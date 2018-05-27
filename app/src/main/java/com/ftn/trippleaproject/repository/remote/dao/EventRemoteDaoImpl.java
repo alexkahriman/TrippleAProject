@@ -39,7 +39,8 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
         for (EventDto eventDto : eventDtos) {
             final Event event = new Event(eventDto.getId(), eventDto.getTitle(), eventDto.getDescription(),
-                    convertMongoDate(eventDto.getStart()), new Event.Location(eventDto.getLat(), eventDto.getLon()));
+                    convertMongoDate(eventDto.getStart()), convertMongoDate(eventDto.getEnd()),
+                    new Event.Location(eventDto.getLat(), eventDto.getLon()));
             events.add(event);
         }
 
@@ -48,7 +49,8 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
     private Event convertEventDtoToEvent(EventDto eventDto) {
         return new Event(eventDto.getId(), eventDto.getTitle(), eventDto.getDescription(),
-                convertMongoDate(eventDto.getStart()), new Event.Location(eventDto.getLat(), eventDto.getLon()));
+                convertMongoDate(eventDto.getStart()), convertMongoDate(eventDto.getEnd()),
+                new Event.Location(eventDto.getLat(), eventDto.getLon()));
     }
 
     public static Date convertMongoDate(String val) {

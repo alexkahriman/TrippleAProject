@@ -11,13 +11,16 @@ public class Event extends BaseModel implements Serializable {
 
     private Date date;
 
+    private Date endDate;
+
     private Location location;
 
-    public Event(long id, String title, String description, Date date, Location location) {
+    public Event(long id, String title, String description, Date date, Date endDate, Location location) {
         super(id);
         this.title = title;
         this.description = description;
         this.date = date;
+        this.endDate = endDate;
         this.location = location;
     }
 
@@ -43,6 +46,14 @@ public class Event extends BaseModel implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public Location getLocation() {

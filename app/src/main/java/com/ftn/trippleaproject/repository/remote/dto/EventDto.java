@@ -30,7 +30,7 @@ public class EventDto {
         this.lat = (float) event.getLocation().getLatitude();
         this.lon = (float) event.getLocation().getLongitude();
         this.start = EventRemoteDaoImpl.convertToMongoDate(event.getDate());
-        this.end = EventRemoteDaoImpl.convertToMongoDate(event.getDate());
+        this.end = EventRemoteDaoImpl.convertToMongoDate(event.getEndDate());
     }
 
     public long getId() {

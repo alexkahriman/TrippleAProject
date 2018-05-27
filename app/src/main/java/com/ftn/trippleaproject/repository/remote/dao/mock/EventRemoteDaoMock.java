@@ -20,6 +20,7 @@ public class EventRemoteDaoMock implements EventRemoteDao {
                     "Title" + i,
                     "Description" + i,
                     new Date(),
+                    new Date(),
                     new Event.Location(1, 2)));
         }
 

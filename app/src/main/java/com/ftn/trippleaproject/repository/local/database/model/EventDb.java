@@ -13,15 +13,18 @@ public class EventDb extends BaseModelDb {
 
     private Date date;
 
+    private Date endDate;
+
     private double latitude;
 
     private double longitude;
 
-    public EventDb(long id, String title, String description, Date date, double latitude, double longitude) {
+    public EventDb(long id, String title, String description, Date date, Date endDate, double latitude, double longitude) {
         super(id);
         this.title = title;
         this.description = description;
         this.date = date;
+        this.endDate = endDate;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -48,6 +51,14 @@ public class EventDb extends BaseModelDb {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public double getLatitude() {
