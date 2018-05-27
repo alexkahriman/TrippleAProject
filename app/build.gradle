@@ -66,6 +66,8 @@ dependencies {
 
     // Google Play services
     implementation "com.google.android.gms:play-services-auth:$rootProject.GoogleAuthVersion"
+    implementation "com.google.android.gms:play-services-maps:$rootProject.GoogleAuthVersion"
+    implementation "com.google.android.gms:play-services-location:$rootProject.GoogleAuthVersion"
 
     // Tests
     testImplementation "junit:junit:$rootProject.JUnitVersion"

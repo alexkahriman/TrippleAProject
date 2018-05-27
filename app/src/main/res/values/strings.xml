@@ -10,6 +10,6 @@
 
     <!-- Strings related to login -->
     <string name="action_sign_in">Google Sign In</string>
-    <string name="server_client_id">CLIENT_ID</string>
+    <string name="server_client_id">924252812256-dum57vamgvum18mi4ui59fi3k5vf63li.apps.googleusercontent.com</string>
     <string name="failed_login_message">Failed to sign in via Google account</string>
 </resources>

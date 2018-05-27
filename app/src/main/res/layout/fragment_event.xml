@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/default_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -16,18 +17,18 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
             android:gravity="center"
-            android:text="Title"
             android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:text="Title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Details"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="Details" />
 
         <TextView
             android:id="@+id/description"
@@ -35,9 +36,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Description"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="Description" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,12 +110,6 @@
             </RelativeLayout>
 
         </LinearLayout>
-
-        <ImageView
-            android:src="@drawable/ic_google_maps"
-            android:layout_margin="@dimen/large_margin"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </LinearLayout>
 

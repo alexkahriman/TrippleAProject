@@ -45,8 +45,8 @@ public class LoginActivity extends AppCompatActivity {
 
     void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-            final Intent homeIntent = new Intent(this, HomeActivity_.class);
-            startActivity(homeIntent);
+            HomeActivity_.intent(this).start();
+            Log.i(TAG, account.getIdToken());
             Toast.makeText(
                     getApplicationContext(),
                     "Successfuly signed in",
