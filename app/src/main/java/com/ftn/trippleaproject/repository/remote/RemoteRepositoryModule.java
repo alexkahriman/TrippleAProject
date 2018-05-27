@@ -1,7 +1,11 @@
 package com.ftn.trippleaproject.repository.remote;
 
+import com.ftn.trippleaproject.repository.remote.client.BackendApiService;
+import com.ftn.trippleaproject.repository.remote.client.HttpClient;
+import com.ftn.trippleaproject.repository.remote.client.RetrofitClient;
+import com.ftn.trippleaproject.repository.remote.dao.NewsArticleRemoteDaoImpl;
 import com.ftn.trippleaproject.repository.remote.dao.mock.EventRemoteDaoMock;
-import com.ftn.trippleaproject.repository.remote.dao.mock.NewsArticleRemoteDaoMock;
+import com.ftn.trippleaproject.usecase.repository.AuthenticationUseCase;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleRemoteDao;
 
@@ -15,8 +19,20 @@ public class RemoteRepositoryModule {
 
     @Provides
     @Singleton
-    NewsArticleRemoteDao provideNewsArticleRemoteDao() {
-        return new NewsArticleRemoteDaoMock();
+    HttpClient provideHttpClient(AuthenticationUseCase authenticationUseCase) {
+        return new RetrofitClient(authenticationUseCase);
+    }
+
+    @Provides
+    @Singleton
+    BackendApiService provideBackendApiService(HttpClient httpClient) {
+        return httpClient.getService();
+    }
+
+    @Provides
+    @Singleton
+    NewsArticleRemoteDao provideNewsArticleRemoteDao(BackendApiService backendApiService) {
+        return new NewsArticleRemoteDaoImpl(backendApiService);
     }
 
     @Provides

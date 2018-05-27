@@ -1,27 +1,27 @@
-package com.ftn.trippleaproject.repository.local.model.articlepart;
+package com.ftn.trippleaproject.repository.local.database.model.articlepart;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 
-import com.ftn.trippleaproject.repository.local.model.NewsArticleDb;
+import com.ftn.trippleaproject.repository.local.database.model.NewsArticleDb;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "image_news_article_part",
+@Entity(tableName = "text_news_article_part",
         foreignKeys = @ForeignKey(entity = NewsArticleDb.class,
         parentColumns = "id",
         childColumns = "news_article_id",
         onDelete = CASCADE))
-public class ImageNewsArticlePartDb extends NewsArticlePartDb {
+public class TextNewsArticlePartDb extends NewsArticlePartDb {
 
     @ColumnInfo(name = "news_article_id")
     private long newsArticleId;
 
-    private String url;
+    private String text;
 
-    public ImageNewsArticlePartDb(String url) {
-        this.url = url;
+    public TextNewsArticlePartDb(String text) {
+        this.text = text;
     }
 
     public long getNewsArticleId() {
@@ -32,18 +32,18 @@ public class ImageNewsArticlePartDb extends NewsArticlePartDb {
         this.newsArticleId = newsArticleId;
     }
 
-    public String getUrl() {
-        return url;
+    public String getText() {
+        return text;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
     public String toString() {
-        return "ImageNewsArticlePartDb{" +
-                "url='" + url + '\'' +
+        return "TextNewsArticlePartDb{" +
+                "text='" + text + '\'' +
                 "} " + super.toString();
     }
 }

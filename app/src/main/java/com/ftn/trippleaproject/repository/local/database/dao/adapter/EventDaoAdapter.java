@@ -1,8 +1,8 @@
-package com.ftn.trippleaproject.repository.local.dao.adapter;
+package com.ftn.trippleaproject.repository.local.database.dao.adapter;
 
 import com.ftn.trippleaproject.domain.Event;
-import com.ftn.trippleaproject.repository.local.dao.room.EventDao;
-import com.ftn.trippleaproject.repository.local.model.EventDb;
+import com.ftn.trippleaproject.repository.local.database.dao.room.EventDao;
+import com.ftn.trippleaproject.repository.local.database.model.EventDb;
 import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
 
 import java.util.ArrayList;
