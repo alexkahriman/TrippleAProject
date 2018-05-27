@@ -26,11 +26,9 @@ public class EventUseCase {
     }
 
     public Flowable<List<Event>> read() {
-
         return new Flowable<List<Event>>() {
             @Override
             protected void subscribeActual(Subscriber<? super List<Event>> subscriber) {
-
                 final List<Event> events = eventRemoteDao.read().blockingGet();
                 subscriber.onNext(events);
                 for (Event event : events) {
@@ -42,7 +40,6 @@ public class EventUseCase {
     }
 
     public Observable create(Event event) {
-
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
@@ -53,7 +50,6 @@ public class EventUseCase {
     }
 
     public Flowable<List<Event>> readAllLocal() {
-
         return eventLocalDao.read().subscribeOn(Schedulers.io());
     }
 }

@@ -20,23 +20,20 @@ public class EventDaoAdapter implements EventLocalDao {
 
     @Override
     public void create(Event event) {
-
-        final EventDb eventDb = new EventDb(event.getTitle(), event.getDescription(), event.getDate(),
+        final EventDb eventDb = new EventDb(event.getId(), event.getTitle(), event.getDescription(), event.getDate(),
                 event.getLocation().getLatitude(), event.getLocation().getLongitude());
         eventDao.create(eventDb);
     }
 
     @Override
     public void update(Event event) {
-
-        final EventDb eventDb = new EventDb(event.getTitle(), event.getDescription(), event.getDate(),
+        final EventDb eventDb = new EventDb(event.getId(), event.getTitle(), event.getDescription(), event.getDate(),
                 event.getLocation().getLatitude(), event.getLocation().getLongitude());
         eventDao.update(eventDb);
     }
 
     @Override
     public Flowable<List<Event>> read() {
-
         return eventDao.readAll().map(eventDbs -> {
             List<Event> events = new ArrayList<>();
             for (EventDb eventDb : eventDbs) {
@@ -49,6 +46,5 @@ public class EventDaoAdapter implements EventLocalDao {
 
             return events;
         });
-
     }
 }

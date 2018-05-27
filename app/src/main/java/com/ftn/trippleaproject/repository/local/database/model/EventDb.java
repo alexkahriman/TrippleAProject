@@ -17,7 +17,8 @@ public class EventDb extends BaseModelDb {
 
     private double longitude;
 
-    public EventDb(String title, String description, Date date, double latitude, double longitude) {
+    public EventDb(long id, String title, String description, Date date, double latitude, double longitude) {
+        super(id);
         this.title = title;
         this.description = description;
         this.date = date;

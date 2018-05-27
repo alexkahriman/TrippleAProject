@@ -1,5 +1,6 @@
 package com.ftn.trippleaproject.repository.remote.client;
 
+import com.ftn.trippleaproject.repository.remote.dto.EventDto;
 import com.ftn.trippleaproject.repository.remote.dto.NewsArticleDto;
 
 import java.util.List;
@@ -11,4 +12,7 @@ public interface BackendApiService {
 
     @GET("news")
     Single<List<NewsArticleDto>> readNewsArticles();
+
+    @GET("events")
+    Single<List<EventDto>> readEvents();
 }
