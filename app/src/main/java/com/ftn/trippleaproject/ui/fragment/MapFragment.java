@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -78,6 +79,18 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             showEventLocation();
         } else {
             getCurrentLocation();
+        }
+
+        if (event == null) {
+            map.setOnMapClickListener(latLng -> {
+                currentLocation = new Location(LocationManager.GPS_PROVIDER);
+                currentLocation.setLatitude(latLng.latitude);
+                currentLocation.setLongitude(latLng.longitude);
+
+                MarkerOptions marker = new MarkerOptions().position(latLng).title(getGeoLocation(currentLocation));
+                map.clear();
+                map.addMarker(marker);
+            });
         }
     }
 
@@ -225,6 +238,10 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                     break;
             }
         });
+    }
+
+    public Location getLocation() {
+        return currentLocation;
     }
 
     public void setMapFragmentActionListener(MapFragmentActionListener mapFragmentActionListener) {

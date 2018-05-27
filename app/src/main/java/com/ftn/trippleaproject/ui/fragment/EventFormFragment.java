@@ -1,7 +1,8 @@
 package com.ftn.trippleaproject.ui.fragment;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.FragmentByTag;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
@@ -25,7 +27,10 @@ import javax.inject.Inject;
 
 @EFragment(R.layout.fragment_event_form)
 public class EventFormFragment extends Fragment implements TimePickerFragment.TimeSetActionListener,
-        DatePickerFragment.DateSetActionListener {
+        DatePickerFragment.DateSetActionListener,
+        MapFragment.MapFragmentActionListener {
+
+    private static final String MAP_FRAGMENT_TAG = "mapFragment";
 
     @App
     TrippleAApplication application;
@@ -43,28 +48,33 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     EditText description;
 
     @ViewById
-    EditText latitude;
-
-    @ViewById
-    EditText longitude;
-
-    @ViewById
     TextView date, time;
 
     @FragmentArg
     Event event;
 
-    private Context context;
+    @FragmentByTag(MAP_FRAGMENT_TAG)
+    MapFragment mapFragment;
+
     private Calendar calendar;
 
     private EventFormFragmentActionListener eventFormFragmentActionListener;
 
     @AfterViews
     void init() {
-
         application.getDiComponent().inject(this);
 
-        context = getContext();
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            if (mapFragment == null) {
+                mapFragment = MapFragment_.builder().event(null).build();
+                mapFragment.setMapFragmentActionListener(this);
+                mapFragment.setRetainInstance(true);
+            }
+            fragmentTransaction.replace(R.id.mapFragmentContainer, mapFragment, MAP_FRAGMENT_TAG);
+            fragmentTransaction.commit();
+        }
 
         calendar = Calendar.getInstance();
         setTimeText(calendar);
@@ -76,8 +86,6 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
 
         title.setText(event.getTitle());
         description.setText(event.getDescription());
-        latitude.setText(String.valueOf(event.getLocation().getLatitude()));
-        longitude.setText(String.valueOf(event.getLocation().getLongitude()));
 
         calendar.setTime(event.getDate());
         setTimeText(calendar);
@@ -90,23 +98,26 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
 
     @Click
     void time() {
-
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.setTimeSetActionListener(this);
-        timePickerFragment.show(getFragmentManager(), "timePicker");
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            timePickerFragment.show(fragmentManager, "timePicker");
+        }
     }
 
     @Click
     void date() {
-
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.setDateSetActionListener(this);
-        datePickerFragment.show(getFragmentManager(), "datePicker");
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            datePickerFragment.show(fragmentManager, "datePicker");
+        }
     }
 
     @Click
     void add() {
-
         if (!checkEditTextNullValues()) {
             return;
         }
@@ -115,8 +126,8 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
                 title.getText().toString(),
                 description.getText().toString(),
                 calendar.getTime(),
-                new Event.Location(Double.parseDouble(latitude.getText().toString()),
-                        Double.parseDouble(longitude.getText().toString())));
+                new Event.Location(mapFragment.getLocation().getLatitude(),
+                        mapFragment.getLocation().getLongitude()));
 
         eventUseCase.create(event).blockingSubscribe();
 
@@ -126,17 +137,15 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
     }
 
     private boolean checkEditTextNullValues() {
-        return !title.getText().toString().isEmpty() &&
-                !description.getText().toString().isEmpty() &&
-                calendar != null &&
-                !latitude.getText().toString().isEmpty() &&
-                !longitude.getText().toString().isEmpty();
-
+        return !title.getText().toString().isEmpty()
+                && !description.getText().toString().isEmpty()
+                && calendar != null
+                && mapFragment.getLocation().getLatitude() != 0
+                && mapFragment.getLocation().getLongitude() != 0;
     }
 
     @Override
     public void setTime(Calendar time) {
-
         setTimeText(time);
         calendar.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
         calendar.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
@@ -144,7 +153,6 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
 
     @Override
     public void dateSet(Calendar date) {
-
         setDateText(date);
         calendar.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.MONTH, date.get(Calendar.MONTH));
@@ -157,6 +165,11 @@ public class EventFormFragment extends Fragment implements TimePickerFragment.Ti
 
     private void setDateText(Calendar date) {
         this.date.setText(dateTimeFormatterUseCase.dateFormat(date.getTime()));
+    }
+
+    @Override
+    public void permissionDenied() {
+        eventFormFragmentActionListener.finishActivity();
     }
 
     public interface EventFormFragmentActionListener {

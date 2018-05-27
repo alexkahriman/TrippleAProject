@@ -38,7 +38,7 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
 
         fragmentTransaction.replace(R.id.eventFragmentContainer, EventFragment_.builder().event(event).build());
         if (mapFragment == null) {
-            mapFragment = MapFragment_.builder().event(null).build();
+            mapFragment = MapFragment_.builder().event(event).build();
             mapFragment.setMapFragmentActionListener(this);
             mapFragment.setRetainInstance(true);
         }
