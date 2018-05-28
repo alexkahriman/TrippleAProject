@@ -38,7 +38,7 @@ public class EventDaoAdapter implements EventLocalDao {
     }
 
     private List<Event> convertEventDbsToEvents(List<EventDb> eventDbs) {
-        List<Event> events = new ArrayList<>();
+        final List<Event> events = new ArrayList<>();
 
         for (EventDb eventDb : eventDbs) {
             final Event event = new Event(eventDb.getId(), eventDb.getOwner(), eventDb.getTitle(), eventDb.getDescription(),

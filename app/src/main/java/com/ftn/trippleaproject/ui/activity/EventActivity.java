@@ -19,7 +19,7 @@ import org.androidannotations.annotations.FragmentByTag;
 @EActivity(R.layout.activity_event)
 public class EventActivity extends AppCompatActivity implements MapFragment.MapFragmentActionListener {
 
-    public  static final int REQUEST_CHECK_SETTINGS = 33;
+    public static final int REQUEST_CHECK_SETTINGS = 33;
 
     @Extra
     Event event;
@@ -51,14 +51,12 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS:
-                if (resultCode == Activity.RESULT_OK) {
-                    mapFragment.getCurrentLocation();
-                } else {
-                    finish();
-                }
-                break;
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == Activity.RESULT_OK) {
+                mapFragment.getCurrentLocation();
+            } else {
+                finish();
+            }
         }
     }
 

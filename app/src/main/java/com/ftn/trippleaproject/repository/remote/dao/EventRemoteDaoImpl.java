@@ -36,7 +36,7 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
     }
 
     private List<Event> convertEventDtosToEvents(List<EventDto> eventDtos) {
-        List<Event> events = new ArrayList<>();
+        final List<Event> events = new ArrayList<>();
 
         for (EventDto eventDto : eventDtos) {
             events.add(convertEventDtoToEvent(eventDto));

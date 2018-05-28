@@ -72,7 +72,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     void init() {
         application.getDiComponent().inject(this);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (mapFragment == null) {
@@ -115,12 +115,12 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
 
     @Click
     void startTime() {
-        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        final TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.setTimeSetActionListener(time -> {
             setTimeText(time);
             setCalendarTime(calendar, time);
         });
-        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             timePickerFragment.show(fragmentManager, "timePicker");
         }
@@ -128,12 +128,12 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
 
     @Click
     void startDate() {
-        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        final DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.setDateSetActionListener(date -> {
             setDateText(date);
             setCalendarDate(calendar, date);
         });
-        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             datePickerFragment.show(fragmentManager, "datePicker");
         }
@@ -141,12 +141,12 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
 
     @Click
     void endTime() {
-        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        final TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.setTimeSetActionListener(time -> {
             setEndTimeText(time);
             setCalendarTime(endCalendar, time);
         });
-        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             timePickerFragment.show(fragmentManager, "timePicker");
         }
@@ -154,12 +154,12 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
 
     @Click
     void endDate() {
-        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        final DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.setDateSetActionListener(date -> {
             setEndDateText(date);
             setCalendarDate(endCalendar, date);
         });
-        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             datePickerFragment.show(fragmentManager, "datePicker");
         }
@@ -171,7 +171,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
             return;
         }
 
-        Event event = new Event(1,
+        final Event event = new Event(1,
                 title.getText().toString(),
                 description.getText().toString(),
                 calendar.getTime(),

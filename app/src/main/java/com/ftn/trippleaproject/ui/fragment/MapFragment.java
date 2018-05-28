@@ -1,6 +1,5 @@
 package com.ftn.trippleaproject.ui.fragment;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -40,6 +39,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.ftn.trippleaproject.ui.activity.EventActivity.REQUEST_CHECK_SETTINGS;
 
 @EFragment(R.layout.fragment_map)
@@ -98,8 +99,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     private void showEventLocation() {
-        LatLng latLng = new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude());
-        MarkerOptions marker = new MarkerOptions().position(latLng).title(event.getTitle());
+        final LatLng latLng = new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude());
+        final MarkerOptions marker = new MarkerOptions().position(latLng).title(event.getTitle());
         map.addMarker(marker);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18.0f));
     }
@@ -122,7 +123,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     private void getLastLocation() {
         if (checkLocationPermission()) {
-            LocationRequest locationRequest = LocationRequest.create();
+            final LocationRequest locationRequest = LocationRequest.create();
             locationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
             locationRequest.setFastestInterval(LOCATION_REQUEST_FASTEST_INTERVAL);
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -148,7 +149,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     private void showCurrentLocationOnMap() {
-        MarkerOptions marker = new MarkerOptions().position(
+        final MarkerOptions marker = new MarkerOptions().position(
                 new LatLng(currentLocation.getLatitude(),
                         currentLocation.getLongitude()))
                 .title(getGeoLocation(currentLocation));
@@ -158,27 +159,29 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
+        // Checks to see if the user has granted permissions for ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION
+        // If they are granted, we can continue with location access, if not, user shall be prompted for their activation
+        if (ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION)
+            && ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
-        if (ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
+        // Check to see if user has granted ACCESS_FINE_LOCATION, if not request permission for it
+        if (ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+            // Request permission for ACCESS_FINE_LOCATION
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             return;
         }
 
-        if (ContextCompat.checkSelfPermission(context.getApplicationContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION)
+        // Check to see if user has granted ACCESS_COARSE_LOCATION, if not request permission for it
+        if (ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+            // Request permission for ACCESS_COARSE_LOCATION
+            requestPermissions(new String[]{ACCESS_COARSE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
         }
     }
@@ -207,8 +210,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     private String getGeoLocation(Location location) {
-        String cityName = "Current location";
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        final String cityName = "Current location";
+        final Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),
                     location.getLongitude(), 1);
@@ -220,37 +223,35 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     private void displayLocationSettingsRequest() {
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
+        final GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API).build();
         googleApiClient.connect();
 
-        LocationRequest locationRequest = LocationRequest.create();
+        final LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(LOCATION_REQUEST_SHORT_INTERVAL);
         locationRequest.setFastestInterval(LOCATION_REQUEST_FASTEST_INTERVAL);
 
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        final LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
 
-        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        final PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
         result.setResultCallback(result1 -> {
             final Status status = result1.getStatus();
-            switch (status.getStatusCode()) {
-                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                    try {
-                        status.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                    break;
+            if (status.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                try {
+                    status.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
     private boolean checkLocationPermission() {
-        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+        return ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                && ActivityCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
