@@ -11,5 +11,9 @@ public interface NewsArticleLocalDao {
 
     Flowable<List<NewsArticle>> read();
 
+    Flowable<NewsArticle> read(long id);
+
     void create(NewsArticle newsArticle);
+
+    void update(NewsArticle newsArticle);
 }

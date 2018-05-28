@@ -27,6 +27,10 @@ public class NewsArticleUseCase {
         return newsArticleLocalDao.read().subscribeOn(Schedulers.io());
     }
 
+    public Flowable<NewsArticle> read(long id) {
+        return newsArticleLocalDao.read(id).map(this::addContentIfMissing).subscribeOn(Schedulers.io());
+    }
+
     private Observable sync() {
         return new Observable() {
             @Override
@@ -38,6 +42,17 @@ public class NewsArticleUseCase {
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
+    }
 
+    private NewsArticle addContentIfMissing(NewsArticle newsArticle) {
+
+        if (newsArticle.getContent() != null) {
+            return newsArticle;
+        }
+
+        final String content = newsArticleRemoteDao.readContent(newsArticle).blockingGet();
+        newsArticle.setContent(content);
+        newsArticleLocalDao.update(newsArticle);
+        return newsArticle;
     }
 }

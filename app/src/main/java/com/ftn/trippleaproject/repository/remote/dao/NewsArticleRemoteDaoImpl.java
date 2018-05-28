@@ -6,12 +6,14 @@ import com.ftn.trippleaproject.repository.remote.client.BackendApiService;
 import com.ftn.trippleaproject.repository.remote.dto.NewsArticleDto;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleRemoteDao;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class NewsArticleRemoteDaoImpl implements NewsArticleRemoteDao {
 
@@ -24,10 +26,15 @@ public class NewsArticleRemoteDaoImpl implements NewsArticleRemoteDao {
     @Override
     public Single<List<NewsArticle>> read() {
         return backendApiService.readNewsArticles()
-                .map(this::convertNewsArticleDtosToNewsArticles).subscribeOn(Schedulers.io());
+                .map(this::convertToNewsArticles).subscribeOn(Schedulers.io());
     }
 
-    private List<NewsArticle> convertNewsArticleDtosToNewsArticles(List<NewsArticleDto> newsArticleDtos) {
+    @Override
+    public Single<String> readContent(NewsArticle newsArticle) {
+        return Single.just(fetchContent(newsArticle)).subscribeOn(Schedulers.io());
+    }
+
+    private List<NewsArticle> convertToNewsArticles(List<NewsArticleDto> newsArticleDtos) {
 
         final List<NewsArticle> newsArticles = new ArrayList<>();
 
@@ -37,5 +44,15 @@ public class NewsArticleRemoteDaoImpl implements NewsArticleRemoteDao {
         }
 
         return newsArticles;
+    }
+
+    private String fetchContent(NewsArticle newsArticle) {
+        final ResponseBody responseBody = backendApiService.readNewsArticleContent(newsArticle.getLink()).blockingGet();
+        try {
+            return responseBody.string();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

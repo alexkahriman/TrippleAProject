@@ -12,7 +12,7 @@ public class RetrofitClient implements HttpClient {
 
     private static final String API_URL = "https://cryptic-caverns-12966.herokuapp.com/";
 
-    private final BackendApiService service;
+    private final BackendApiService backendApiService;
 
     public RetrofitClient(AuthenticationUseCase authenticationUseCase) {
 
@@ -29,16 +29,18 @@ public class RetrofitClient implements HttpClient {
 
         final OkHttpClient client = okHttpBuilder.build();
 
-        final Retrofit retrofit = new Retrofit.Builder().baseUrl(API_URL)
+        final Retrofit backendApiRetrofit = new Retrofit.Builder().baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
 
-        service = retrofit.create(BackendApiService.class);
+        backendApiService = backendApiRetrofit.create(BackendApiService.class);
     }
 
-    public BackendApiService getService() {
-        return service;
+    @Override
+    public BackendApiService getBackendApiService() {
+        return backendApiService;
     }
+
 }

@@ -9,4 +9,6 @@ import io.reactivex.Single;
 public interface NewsArticleRemoteDao {
 
     Single<List<NewsArticle>> read();
+
+    Single<String> readContent(NewsArticle newsArticle);
 }

@@ -26,7 +26,7 @@ public class RemoteRepositoryModule {
     @Provides
     @Singleton
     BackendApiService provideBackendApiService(HttpClient httpClient) {
-        return httpClient.getService();
+        return httpClient.getBackendApiService();
     }
 
     @Provides
