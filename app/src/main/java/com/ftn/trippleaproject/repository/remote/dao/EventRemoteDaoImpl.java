@@ -3,12 +3,10 @@ package com.ftn.trippleaproject.repository.remote.dao;
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.repository.remote.client.BackendApiService;
 import com.ftn.trippleaproject.repository.remote.dto.EventDto;
+import com.ftn.trippleaproject.repository.remote.util.DateTimeUtility;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -18,8 +16,11 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
     private final BackendApiService backendApiService;
 
-    public EventRemoteDaoImpl(BackendApiService backendApiService) {
+    private final DateTimeUtility dateTimeUtility;
+
+    public EventRemoteDaoImpl(BackendApiService backendApiService, DateTimeUtility dateTimeUtility) {
         this.backendApiService = backendApiService;
+        this.dateTimeUtility = dateTimeUtility;
     }
 
     @Override
@@ -30,7 +31,7 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
     @Override
     public Single<Event> create(Event event) {
-        return backendApiService.createEvent(new EventDto(event))
+        return backendApiService.createEvent(convertEventToEventDto(event))
                 .map(this::convertEventDtoToEvent).subscribeOn(Schedulers.io());
     }
 
@@ -38,10 +39,7 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
         List<Event> events = new ArrayList<>();
 
         for (EventDto eventDto : eventDtos) {
-            final Event event = new Event(eventDto.getId(), eventDto.getOwner(), eventDto.getTitle(), eventDto.getDescription(),
-                    convertMongoDate(eventDto.getStart()), convertMongoDate(eventDto.getEnd()),
-                    new Event.Location(eventDto.getLat(), eventDto.getLon()));
-            events.add(event);
+            events.add(convertEventDtoToEvent(eventDto));
         }
 
         return events;
@@ -49,22 +47,13 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
     private Event convertEventDtoToEvent(EventDto eventDto) {
         return new Event(eventDto.getId(), eventDto.getOwner(), eventDto.getTitle(), eventDto.getDescription(),
-                convertMongoDate(eventDto.getStart()), convertMongoDate(eventDto.getEnd()),
+                dateTimeUtility.convertMongoDate(eventDto.getStart()), dateTimeUtility.convertMongoDate(eventDto.getEnd()),
                 new Event.Location(eventDto.getLat(), eventDto.getLon()));
     }
 
-    private static Date convertMongoDate(String val) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        try {
-            return inputFormat.parse(val);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return new Date();
-    }
-
-    public static String convertToMongoDate(Date date) {
-        SimpleDateFormat outputForm = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        return outputForm.format(date);
+    private EventDto convertEventToEventDto(Event event) {
+        return new EventDto(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                (float) event.getLocation().getLatitude(), (float) event.getLocation().getLongitude(),
+                dateTimeUtility.convertToMongoDate(event.getDate()), dateTimeUtility.convertToMongoDate(event.getEndDate()));
     }
 }

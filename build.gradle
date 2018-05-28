@@ -40,6 +40,8 @@ ext {
     DebugDbVersion = "1.0.3"
     FrescoVersion = "1.9.0"
     GoogleAuthVersion = "15.0.1"
+    GoogleMpsVersion = "15.0.1"
+    GoogleLocationVersion = "15.0.1"
     SecurePreferences = "0.1.4"
 
     JUnitVersion = "4.12"

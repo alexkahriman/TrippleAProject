@@ -49,6 +49,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     private static final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 12;
 
+    private static final int LOCATION_REQUEST_INTERVAL = 60000;
+
+    private static final int LOCATION_REQUEST_SHORT_INTERVAL = 10000;
+
+    private static final int LOCATION_REQUEST_FASTEST_INTERVAL = 5000;
+
     @FragmentArg
     Event event;
 
@@ -79,9 +85,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             showEventLocation();
         } else {
             getCurrentLocation();
-        }
-
-        if (event == null) {
             map.setOnMapClickListener(latLng -> {
                 currentLocation = new Location(LocationManager.GPS_PROVIDER);
                 currentLocation.setLatitude(latLng.latitude);
@@ -102,41 +105,45 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     public void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (!checkLocationPermission()) {
             getLocationPermission();
         } else {
             displayLocationSettingsRequest();
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
                 currentLocation = task.getResult();
                 if (currentLocation == null) {
-                    LocationRequest mLocationRequest = LocationRequest.create();
-                    mLocationRequest.setInterval(60000);
-                    mLocationRequest.setFastestInterval(5000);
-                    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                    LocationCallback mLocationCallback = new LocationCallback() {
-                        @Override
-                        public void onLocationResult(LocationResult locationResult) {
-                            if (locationResult == null) {
-                                return;
-                            }
-                            for (Location location : locationResult.getLocations()) {
-                                if (location != null) {
-                                    currentLocation = location;
-                                    showCurrentLocationOnMap();
-                                    return;
-                                }
-                            }
-                        }
-                    };
-
-                    LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+                    getLastLocation();
                 } else {
                     showCurrentLocationOnMap();
                 }
             });
+        }
+    }
+
+    private void getLastLocation() {
+        if (checkLocationPermission()) {
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setInterval(LOCATION_REQUEST_INTERVAL);
+            locationRequest.setFastestInterval(LOCATION_REQUEST_FASTEST_INTERVAL);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            LocationCallback locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    for (Location location : locationResult.getLocations()) {
+                        if (location != null) {
+                            currentLocation = location;
+                            showCurrentLocationOnMap();
+                            return;
+                        }
+                    }
+                }
+            };
+
+            LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationCallback, null);
         }
     }
 
@@ -219,8 +226,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(10000 / 2);
+        locationRequest.setInterval(LOCATION_REQUEST_SHORT_INTERVAL);
+        locationRequest.setFastestInterval(LOCATION_REQUEST_FASTEST_INTERVAL);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
@@ -238,6 +245,13 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                     break;
             }
         });
+    }
+
+    private boolean checkLocationPermission() {
+        return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     public Location getLocation() {

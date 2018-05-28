@@ -34,14 +34,19 @@ public class EventDaoAdapter implements EventLocalDao {
 
     @Override
     public Flowable<List<Event>> read() {
-        return eventDao.readAll().map(eventDbs -> {
-            List<Event> events = new ArrayList<>();
-            for (EventDb eventDb : eventDbs) {
-                events.add(new Event(eventDb.getId(), eventDb.getOwner(), eventDb.getTitle(), eventDb.getDescription(),
-                        eventDb.getDate(), eventDb.getEndDate(), new Event.Location(eventDb.getLatitude(), eventDb.getLongitude())));
-            }
+        return eventDao.readAll().map(this::convertEventDbsToEvents);
+    }
 
-            return events;
-        });
+    private List<Event> convertEventDbsToEvents(List<EventDb> eventDbs) {
+        List<Event> events = new ArrayList<>();
+
+        for (EventDb eventDb : eventDbs) {
+            final Event event = new Event(eventDb.getId(), eventDb.getOwner(), eventDb.getTitle(), eventDb.getDescription(),
+                    eventDb.getDate(), eventDb.getEndDate(),
+                    new Event.Location(eventDb.getLatitude(), eventDb.getLongitude()));
+            events.add(event);
+        }
+
+        return events;
     }
 }

@@ -24,15 +24,15 @@ public class EventDto {
     public EventDto() {
     }
 
-    public EventDto(Event event) {
-        this.id = event.getId();
-        this.owner = event.getOwner();
-        this.title = event.getTitle();
-        this.description = event.getDescription();
-        this.lat = (float) event.getLocation().getLatitude();
-        this.lon = (float) event.getLocation().getLongitude();
-        this.start = EventRemoteDaoImpl.convertToMongoDate(event.getDate());
-        this.end = EventRemoteDaoImpl.convertToMongoDate(event.getEndDate());
+    public EventDto(long id, String owner, String title, String description, Float lat, Float lon, String start, String end) {
+        this.id = id;
+        this.owner = owner;
+        this.title = title;
+        this.description = description;
+        this.lat = lat;
+        this.lon = lon;
+        this.start = start;
+        this.end = end;
     }
 
     public long getId() {

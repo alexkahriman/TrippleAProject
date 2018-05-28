@@ -1,5 +1,6 @@
 package com.ftn.trippleaproject.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +53,7 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CHECK_SETTINGS:
-                if (resultCode == -1) {
+                if (resultCode == Activity.RESULT_OK) {
                     mapFragment.getCurrentLocation();
                 } else {
                     finish();
