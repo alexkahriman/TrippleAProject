@@ -22,8 +22,10 @@ public class RetrofitClient implements HttpClient {
         final OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder()
                 .addNetworkInterceptor(loggingInterceptor);
 
+        final String token = authenticationUseCase.readToken().blockingFirst();
+
         okHttpBuilder.addInterceptor(chain -> chain.proceed(chain.request().newBuilder()
-                .addHeader("Authorization", authenticationUseCase.readToken().blockingFirst()).build()));
+                .addHeader("Authorization", token).build()));
 
         final OkHttpClient client = okHttpBuilder.build();
 

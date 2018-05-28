@@ -32,8 +32,7 @@ public class NewsArticleRemoteDaoImpl implements NewsArticleRemoteDao {
         final List<NewsArticle> newsArticles = new ArrayList<>();
 
         for (NewsArticleDto dto: newsArticleDtos) {
-            // TODO: Adapt this fully without mocked data.
-            final NewsArticle newsArticle = new NewsArticle(dto.getId(), dto.getTitle(), "https://www.autocar.co.uk/sites/autocar.co.uk/files/audi-rs7_1.jpg", null, new Date());
+            final NewsArticle newsArticle = new NewsArticle(dto.getId(), dto.getTitle(), dto.getImage(), dto.getLink(), new Date());
             newsArticles.add(newsArticle);
         }
 

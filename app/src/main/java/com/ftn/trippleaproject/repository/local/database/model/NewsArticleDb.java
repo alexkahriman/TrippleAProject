@@ -1,5 +1,6 @@
 package com.ftn.trippleaproject.repository.local.database.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 
 import java.util.Date;
@@ -9,11 +10,21 @@ public class NewsArticleDb extends BaseModelDb {
 
     private String title;
 
+    @ColumnInfo(name = "image_url")
+    private String imageUrl;
+
+    private String link;
+
+    private String content;
+
     private Date date;
 
-    public NewsArticleDb(long id, String title, Date date) {
+    public NewsArticleDb(long id, String title, String imageUrl, String link, String content, Date date) {
         super(id);
         this.title = title;
+        this.imageUrl = imageUrl;
+        this.link = link;
+        this.content = content;
         this.date = date;
     }
 
@@ -23,6 +34,30 @@ public class NewsArticleDb extends BaseModelDb {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getDate() {
@@ -37,6 +72,9 @@ public class NewsArticleDb extends BaseModelDb {
     public String toString() {
         return "NewsArticleDb{" +
                 "title='" + title + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", link='" + link + '\'' +
+                ", content='" + content + '\'' +
                 ", date=" + date +
                 "} " + super.toString();
     }

@@ -31,6 +31,5 @@ public class NewsArticleFragment extends Fragment {
     void init() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(newsArticlePartsAdapter);
-        newsArticlePartsAdapter.setNewsArticleParts(newsArticle.getParts());
     }
 }
