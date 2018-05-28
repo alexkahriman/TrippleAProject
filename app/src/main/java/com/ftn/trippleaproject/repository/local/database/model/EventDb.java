@@ -7,6 +7,8 @@ import java.util.Date;
 @Entity(tableName = "event")
 public class EventDb extends BaseModelDb {
 
+    private String owner;
+
     private String title;
 
     private String description;
@@ -19,14 +21,23 @@ public class EventDb extends BaseModelDb {
 
     private double longitude;
 
-    public EventDb(long id, String title, String description, Date date, Date endDate, double latitude, double longitude) {
+    public EventDb(long id, String owner, String title, String description, Date date, Date endDate, double latitude, double longitude) {
         super(id);
+        this.owner = owner;
         this.title = title;
         this.description = description;
         this.date = date;
         this.endDate = endDate;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getTitle() {

@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Event extends BaseModel implements Serializable {
 
+    private String owner;
+
     private String title;
 
     private String description;
@@ -22,6 +24,24 @@ public class Event extends BaseModel implements Serializable {
         this.date = date;
         this.endDate = endDate;
         this.location = location;
+    }
+
+    public Event(long id, String owner, String title, String description, Date date, Date endDate, Location location) {
+        super(id);
+        this.owner = owner;
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.endDate = endDate;
+        this.location = location;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getTitle() {

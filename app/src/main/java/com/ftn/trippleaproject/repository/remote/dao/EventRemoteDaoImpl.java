@@ -38,7 +38,7 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
         List<Event> events = new ArrayList<>();
 
         for (EventDto eventDto : eventDtos) {
-            final Event event = new Event(eventDto.getId(), eventDto.getTitle(), eventDto.getDescription(),
+            final Event event = new Event(eventDto.getId(), eventDto.getOwner(), eventDto.getTitle(), eventDto.getDescription(),
                     convertMongoDate(eventDto.getStart()), convertMongoDate(eventDto.getEnd()),
                     new Event.Location(eventDto.getLat(), eventDto.getLon()));
             events.add(event);
@@ -48,12 +48,12 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
     }
 
     private Event convertEventDtoToEvent(EventDto eventDto) {
-        return new Event(eventDto.getId(), eventDto.getTitle(), eventDto.getDescription(),
+        return new Event(eventDto.getId(), eventDto.getOwner(), eventDto.getTitle(), eventDto.getDescription(),
                 convertMongoDate(eventDto.getStart()), convertMongoDate(eventDto.getEnd()),
                 new Event.Location(eventDto.getLat(), eventDto.getLon()));
     }
 
-    public static Date convertMongoDate(String val) {
+    private static Date convertMongoDate(String val) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         try {
             return inputFormat.parse(val);

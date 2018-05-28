@@ -20,15 +20,15 @@ public class EventDaoAdapter implements EventLocalDao {
 
     @Override
     public void create(Event event) {
-        final EventDb eventDb = new EventDb(event.getId(), event.getTitle(), event.getDescription(), event.getDate(),
-                event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
+        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
         eventDao.create(eventDb);
     }
 
     @Override
     public void update(Event event) {
-        final EventDb eventDb = new EventDb(event.getId(), event.getTitle(), event.getDescription(), event.getDate(),
-                event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
+        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
         eventDao.update(eventDb);
     }
 
@@ -37,8 +37,8 @@ public class EventDaoAdapter implements EventLocalDao {
         return eventDao.readAll().map(eventDbs -> {
             List<Event> events = new ArrayList<>();
             for (EventDb eventDb : eventDbs) {
-                events.add(new Event(eventDb.getId(), eventDb.getTitle(), eventDb.getDescription(), eventDb.getDate(),
-                        eventDb.getEndDate(), new Event.Location(eventDb.getLatitude(), eventDb.getLongitude())));
+                events.add(new Event(eventDb.getId(), eventDb.getOwner(), eventDb.getTitle(), eventDb.getDescription(),
+                        eventDb.getDate(), eventDb.getEndDate(), new Event.Location(eventDb.getLatitude(), eventDb.getLongitude())));
             }
 
             return events;

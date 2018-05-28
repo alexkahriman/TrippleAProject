@@ -17,6 +17,7 @@ public class EventRemoteDaoMock implements EventRemoteDao {
         final List<Event> events = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             events.add(new Event((long) i,
+                    "Owner" + i,
                     "Title" + i,
                     "Description" + i,
                     new Date(),

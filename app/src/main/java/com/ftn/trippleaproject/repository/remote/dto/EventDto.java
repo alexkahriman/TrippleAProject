@@ -25,6 +25,8 @@ public class EventDto {
     }
 
     public EventDto(Event event) {
+        this.id = event.getId();
+        this.owner = event.getOwner();
         this.title = event.getTitle();
         this.description = event.getDescription();
         this.lat = (float) event.getLocation().getLatitude();
