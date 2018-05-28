@@ -6,6 +6,8 @@ import com.ftn.trippleaproject.repository.local.database.dao.room.NewsArticleDao
 import com.ftn.trippleaproject.repository.local.database.model.NewsArticleDb;
 import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLocalDao;
 
+import java.util.List;
+
 public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
 
     private final NewsArticleDao newsArticleDao;
@@ -16,7 +18,22 @@ public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
 
     @Override
     public void create(NewsArticle newsArticle) {
-        final NewsArticleDb newsArticleDb = new NewsArticleDb(newsArticle.getId(), newsArticle.getTitle(), newsArticle.getDate());
-        newsArticleDao.create(newsArticleDb);
+        newsArticleDao.create(convertNewsArticleToNewsArticleDb(newsArticle));
+    }
+
+    @Override
+    public void delete(NewsArticle newsArticle) {
+        newsArticleDao.delete(convertNewsArticleToNewsArticleDb(newsArticle));
+    }
+
+    @Override
+    public void delete(List<NewsArticle> newsArticles) {
+        for (NewsArticle newsArticle : newsArticles) {
+            newsArticleDao.delete(convertNewsArticleToNewsArticleDb(newsArticle));
+        }
+    }
+
+    private NewsArticleDb convertNewsArticleToNewsArticleDb(NewsArticle newsArticle) {
+        return new NewsArticleDb(newsArticle.getId(), newsArticle.getTitle(), newsArticle.getDate());
     }
 }

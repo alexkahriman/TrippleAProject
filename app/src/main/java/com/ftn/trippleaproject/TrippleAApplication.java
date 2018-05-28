@@ -10,6 +10,7 @@ import org.androidannotations.annotations.EApplication;
 
 import com.ftn.trippleaproject.repository.local.LocalRepositoryModule;
 import com.ftn.trippleaproject.repository.remote.RemoteRepositoryModule;
+import com.ftn.trippleaproject.system.DeleteDataJobService;
 import com.ftn.trippleaproject.usecase.UseCaseModule;
 
 @EApplication

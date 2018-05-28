@@ -13,5 +13,9 @@ public interface EventLocalDao {
 
     void update(Event event);
 
+    void delete(Event event);
+
+    void delete(List<Event> events);
+
     Flowable<List<Event>> read();
 }

@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import com.ftn.trippleaproject.repository.local.LocalRepositoryModule;
 import com.ftn.trippleaproject.repository.remote.RemoteRepositoryModule;
+import com.ftn.trippleaproject.system.DeleteDataJobService;
 import com.ftn.trippleaproject.ui.activity.LoginActivity;
 import com.ftn.trippleaproject.ui.fragment.EventFormFragment;
 import com.ftn.trippleaproject.ui.fragment.EventFragment;
@@ -28,4 +29,6 @@ public interface DiComponent {
     void inject(EventFragment eventFragment);
 
     void inject(EventItemView eventItemView);
+
+    void inject(DeleteDataJobService deleteDataJobService);
 }

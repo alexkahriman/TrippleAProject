@@ -50,6 +50,14 @@ public class EventUseCase {
         }.subscribeOn(Schedulers.io());
     }
 
+    public void delete(Event event) {
+        eventLocalDao.delete(event);
+    }
+
+    public void delete(List<Event> events) {
+        eventLocalDao.delete(events);
+    }
+
     public Flowable<List<Event>> readAllLocal() {
         read().blockingSubscribe();
         return eventLocalDao.read().subscribeOn(Schedulers.io());
