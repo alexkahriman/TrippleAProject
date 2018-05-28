@@ -20,35 +20,33 @@ public class EventDaoAdapter implements EventLocalDao {
 
     @Override
     public void create(Event event) {
-
-        final EventDb eventDb = new EventDb(event.getTitle(), event.getDescription(), event.getDate(),
-                event.getLocation().getLatitude(), event.getLocation().getLongitude());
+        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
         eventDao.create(eventDb);
     }
 
     @Override
     public void update(Event event) {
-
-        final EventDb eventDb = new EventDb(event.getTitle(), event.getDescription(), event.getDate(),
-                event.getLocation().getLatitude(), event.getLocation().getLongitude());
+        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
         eventDao.update(eventDb);
     }
 
     @Override
     public Flowable<List<Event>> read() {
+        return eventDao.readAll().map(this::convertEventDbsToEvents);
+    }
 
-        return eventDao.readAll().map(eventDbs -> {
-            List<Event> events = new ArrayList<>();
-            for (EventDb eventDb : eventDbs) {
-                events.add(new Event(eventDb.getId(),
-                        eventDb.getTitle(),
-                        eventDb.getDescription(),
-                        eventDb.getDate(),
-                        new Event.Location(eventDb.getLatitude(), eventDb.getLongitude())));
-            }
+    private List<Event> convertEventDbsToEvents(List<EventDb> eventDbs) {
+        final List<Event> events = new ArrayList<>();
 
-            return events;
-        });
+        for (EventDb eventDb : eventDbs) {
+            final Event event = new Event(eventDb.getId(), eventDb.getOwner(), eventDb.getTitle(), eventDb.getDescription(),
+                    eventDb.getDate(), eventDb.getEndDate(),
+                    new Event.Location(eventDb.getLatitude(), eventDb.getLongitude()));
+            events.add(event);
+        }
 
+        return events;
     }
 }

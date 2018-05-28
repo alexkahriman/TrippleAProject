@@ -12,4 +12,6 @@
     <string name="action_sign_in">Google Sign In</string>
     <string name="server_client_id">CLIENT_ID</string>
     <string name="failed_login_message">Failed to sign in via Google account</string>
+    <string name="event_end">Event end</string>
+    <string name="event_start">Event start</string>
 </resources>

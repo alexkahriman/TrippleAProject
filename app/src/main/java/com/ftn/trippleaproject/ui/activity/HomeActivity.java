@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.system.PrefManager_;
 import com.ftn.trippleaproject.ui.adapter.HomeTabAdapter;
+import com.ftn.trippleaproject.ui.fragment.SettingsFragment;
 import com.ftn.trippleaproject.ui.fragment.SettingsFragment_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -17,7 +18,7 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends AppCompatActivity implements SettingsFragment_.SettingsNavigationSelected {
+public class HomeActivity extends AppCompatActivity implements SettingsFragment.SettingsNavigationSelected {
 
     @ViewById
     TabLayout tabLayout;
