@@ -42,5 +42,4 @@ public class RetrofitClient implements HttpClient {
     public BackendApiService getBackendApiService() {
         return backendApiService;
     }
-
 }

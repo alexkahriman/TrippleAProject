@@ -66,6 +66,11 @@ dependencies {
 
     // Google Play services
     implementation "com.google.android.gms:play-services-auth:$rootProject.GoogleAuthVersion"
+    implementation "com.google.android.gms:play-services-maps:$rootProject.GoogleMpsVersion"
+    implementation "com.google.android.gms:play-services-location:$rootProject.GoogleLocationVersion"
+
+    // Secure Preferences
+    implementation "com.scottyab:secure-preferences-lib:$rootProject.SecurePreferences"
 
     // Secure Preferences
     implementation "com.scottyab:secure-preferences-lib:$rootProject.SecurePreferences"

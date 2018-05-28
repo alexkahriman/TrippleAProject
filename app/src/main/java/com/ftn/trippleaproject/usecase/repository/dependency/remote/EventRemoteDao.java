@@ -9,4 +9,6 @@ import io.reactivex.Single;
 public interface EventRemoteDao {
 
     Single<List<Event>> read();
+
+    Single<Event> create(Event event);
 }

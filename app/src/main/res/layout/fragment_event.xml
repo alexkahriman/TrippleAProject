@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/default_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -16,18 +17,9 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
             android:gravity="center"
-            android:text="Title"
             android:textColor="@android:color/black"
-            android:textSize="24sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_margin"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Details"
-            android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="24sp"
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/description"
@@ -35,9 +27,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
             android:backgroundTint="@color/colorPrimary"
-            android:text="Description"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="Description" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/event_start"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,6 +65,49 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_toEndOf="@id/timeImageView"
+                    android:hint="Set Time"
+                    android:padding="@dimen/small_padding"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/event_end"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/endTimeImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_time"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/endTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_toEndOf="@id/endTimeImageView"
                     android:hint="Set Time"
                     android:padding="@dimen/small_padding"
                     android:textColor="@android:color/black"
@@ -110,11 +153,29 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:src="@drawable/ic_google_maps"
-            android:layout_margin="@dimen/large_margin"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <LinearLayout
+            android:id="@+id/contactLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/small_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin"
+                android:textColor="@android:color/holo_blue_dark"
+                tools:text="acafacafunnyface@gmail.com" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

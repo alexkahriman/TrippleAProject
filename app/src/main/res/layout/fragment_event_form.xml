@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/default_margin"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/eventInfoLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <EditText
@@ -24,6 +26,14 @@
             android:backgroundTint="@color/colorPrimary"
             android:hint="Description" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="Event starts"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +41,7 @@
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/startTime"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/small_margin"
@@ -42,7 +52,7 @@
                 android:padding="@dimen/small_padding" />
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/startDate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/small_margin"
@@ -54,34 +64,62 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/latitude"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
-            android:backgroundTint="@color/colorPrimary"
-            android:hint="Latitude"
-            android:inputType="numberSigned|numberDecimal" />
+            android:text="Event ends"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/longitude"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
-            android:backgroundTint="@color/colorPrimary"
-            android:hint="Longitude"
-            android:inputType="numberSigned|numberDecimal" />
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:layout_weight="0.5"
+                android:background="@drawable/border_text_view"
+                android:gravity="center"
+                android:hint="Set Time"
+                android:padding="@dimen/small_padding" />
+
+            <TextView
+                android:id="@+id/endDate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_weight="0.5"
+                android:background="@drawable/border_text_view"
+                android:gravity="center"
+                android:hint="Set Date"
+                android:padding="5dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <Button
+    <FrameLayout
+        android:id="@+id/mapFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/eventInfoLayout"
+        android:layout_marginTop="@dimen/large_margin" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="add"
-        android:textColor="@android:color/white" />
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/floadting_action_button_margin"
+        android:foregroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_check"
+        app:backgroundTint="@color/colorPrimary" />
 
 </RelativeLayout>

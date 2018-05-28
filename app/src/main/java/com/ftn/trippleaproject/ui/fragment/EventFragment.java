@@ -1,7 +1,9 @@
 package com.ftn.trippleaproject.ui.fragment;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
@@ -41,7 +44,13 @@ public class EventFragment extends Fragment {
     TextView time;
 
     @ViewById
+    TextView endTime;
+
+    @ViewById
     TextView location;
+
+    @ViewById
+    TextView contact;
 
     @Inject
     DateTimeFormatterUseCase dateTimeFormatterUseCase;
@@ -58,6 +67,8 @@ public class EventFragment extends Fragment {
         title.setText(event.getTitle());
         description.setText(event.getDescription());
         time.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getDate()));
+        endTime.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getEndDate()));
+        contact.setText(event.getOwner());
 
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
@@ -69,5 +80,20 @@ public class EventFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Click
+    void contactLayout() {
+        sendEMail(event.getOwner());
+    }
+
+    private void sendEMail(String mail) {
+        final Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("mailto:"));
+        final String[] to = {mail};
+        intent.putExtra(Intent.EXTRA_EMAIL, to);
+        intent.setType("message/rfc822");
+        Intent chooser = Intent.createChooser(intent, "Send E-Mail");
+        this.startActivity(chooser);
     }
 }
