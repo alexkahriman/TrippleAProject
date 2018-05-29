@@ -26,5 +26,5 @@ public interface EventDao {
     Flowable<List<EventDb>> readAll();
 
     @Delete
-    void delete(EventDb event);
+    void delete(EventDb... eventDb);
 }

@@ -16,6 +16,7 @@ import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 import com.ftn.trippleaproject.usecase.repository.NewsArticleUseCase;
 
 import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class DeleteDataJobService extends JobService {
     private static final String TAG = DeleteDataJobService.class.getSimpleName();
 
     private static final int DELETE_DATA_JOB_ID = 101;
+
+    private static final String DELETE_DATA_ID = "delete_data";
 
     @App
     static TrippleAApplication trippleAApplication;
@@ -71,9 +74,11 @@ public class DeleteDataJobService extends JobService {
             return;
         }
 
-        if (isJobServiceOn(jobScheduler)) {
-            return;
-        }
+//        if (isJobServiceOn(jobScheduler)) {
+//            return;
+//        }
+
+        jobScheduler.cancel(DELETE_DATA_JOB_ID);
 
         final long period;
         if (!BuildConfig.DEBUG) {
@@ -103,7 +108,7 @@ public class DeleteDataJobService extends JobService {
     private void deleteData(JobParameters params) {
         checkDeleteExcessNews(params);
         checkDeleteExcessEvents(params);
-        jobFinished(params, false);
+//        jobFinished(params, false);
     }
 
     private void checkDeleteExcessNews(JobParameters jobParameters) {
@@ -128,13 +133,12 @@ public class DeleteDataJobService extends JobService {
     }
 
     private void checkDeleteExcessEvents(JobParameters jobParameters) {
-        final List<Event> events = new ArrayList<>();
-        compositeDisposable.add(eventUseCase.read().subscribe(events::addAll,
+        compositeDisposable.add(eventUseCase.read().subscribe(events -> {
+                    if (events.size() > 5) {
+                        deleteExcessEvents(events);
+                    }
+                },
                 e -> onError(jobParameters, e)));
-
-        if (events.size() > 30) {
-            deleteExcessEvents(events);
-        }
     }
 
     private void deleteExcessEvents(List<Event> events) {
@@ -146,7 +150,7 @@ public class DeleteDataJobService extends JobService {
             }
         }
 
-        eventUseCase.delete(eventsToBeDeleted);
+        eventUseCase.delete(eventsToBeDeleted).subscribe();
     }
 
     private boolean checkEventFinished(Date eventEndDate) {
@@ -169,7 +173,15 @@ public class DeleteDataJobService extends JobService {
 
         @Override
         public int compare(Event o1, Event o2) {
-            return o1.getEndDate().compareTo(o2.getEndDate());
+            if (o1.getEndDate().equals(o2.getEndDate())) {
+                return 0;
+            } else {
+                if (o1.getEndDate().after(o2.getEndDate())) {
+                    return -1;
+                }
+            }
+
+            return 1;
         }
     }
 }

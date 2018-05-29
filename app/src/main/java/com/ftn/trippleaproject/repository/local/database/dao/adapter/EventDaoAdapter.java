@@ -34,10 +34,11 @@ public class EventDaoAdapter implements EventLocalDao {
     }
 
     @Override
-    public void delete(List<Event> events) {
-        for (Event event : events) {
-            eventDao.delete(convertEventToEventDb(event));
-        }
+    public void delete(final List<Event> events) {
+        List<EventDb> eventDbs = convertEventToEventDbs(events);
+        EventDb[] eventArray = new EventDb[eventDbs.size()];
+        eventArray = eventDbs.toArray(eventArray);
+        eventDao.delete(eventArray);
     }
 
     @Override
@@ -56,6 +57,16 @@ public class EventDaoAdapter implements EventLocalDao {
         }
 
         return events;
+    }
+
+    private List<EventDb> convertEventToEventDbs(List<Event> events) {
+        List<EventDb> eventDbs = new ArrayList<>();
+
+        for (Event event : events) {
+            eventDbs.add(convertEventToEventDb(event));
+        }
+
+        return eventDbs;
     }
 
     private EventDb convertEventToEventDb(Event event) {
