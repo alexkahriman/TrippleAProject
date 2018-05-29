@@ -25,13 +25,13 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
     @Override
     public Single<List<Event>> read() {
-        return backendApiService.readEvents()
+        return backendApiService.readEvents().onErrorReturn(throwable -> new ArrayList<>())
                 .map(this::convertEventDtosToEvents).subscribeOn(Schedulers.io());
     }
 
     @Override
     public Single<Event> create(Event event) {
-        return backendApiService.createEvent(convertEventToEventDto(event))
+        return backendApiService.createEvent(convertEventToEventDto(event)).onErrorReturn(throwable -> null)
                 .map(this::convertEventDtoToEvent).subscribeOn(Schedulers.io());
     }
 

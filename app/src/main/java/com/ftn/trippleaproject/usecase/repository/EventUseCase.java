@@ -43,8 +43,10 @@ public class EventUseCase {
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
-                eventRemoteDao.create(event).subscribe(modelEvent ->
-                        eventLocalDao.create(modelEvent));
+                final Event eventResponse = eventRemoteDao.create(event).blockingGet();
+                if (eventResponse != null) {
+                    eventLocalDao.create(eventResponse);
+                }
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());

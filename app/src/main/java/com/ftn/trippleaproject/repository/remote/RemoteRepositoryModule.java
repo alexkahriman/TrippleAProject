@@ -20,12 +20,6 @@ public class RemoteRepositoryModule {
 
     @Provides
     @Singleton
-    DateTimeUtility providesDateTimeUtility() {
-        return new DateTimeUtility();
-    }
-
-    @Provides
-    @Singleton
     HttpClient provideHttpClient(AuthenticationUseCase authenticationUseCase) {
         return new RetrofitClient(authenticationUseCase);
     }
@@ -33,7 +27,13 @@ public class RemoteRepositoryModule {
     @Provides
     @Singleton
     BackendApiService provideBackendApiService(HttpClient httpClient) {
-        return httpClient.getService();
+        return httpClient.getBackendApiService();
+    }
+
+    @Provides
+    @Singleton
+    DateTimeUtility providesDateTimeUtility() {
+        return new DateTimeUtility();
     }
 
     @Provides

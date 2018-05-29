@@ -72,6 +72,9 @@ dependencies {
     // Secure Preferences
     implementation "com.scottyab:secure-preferences-lib:$rootProject.SecurePreferences"
 
+    // Secure Preferences
+    implementation "com.scottyab:secure-preferences-lib:$rootProject.SecurePreferences"
+
     // Tests
     testImplementation "junit:junit:$rootProject.JUnitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.TestRunnerVersion"
