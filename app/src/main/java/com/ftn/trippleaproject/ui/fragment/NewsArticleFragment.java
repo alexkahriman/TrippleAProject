@@ -4,6 +4,7 @@ package com.ftn.trippleaproject.ui.fragment;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
@@ -34,6 +35,9 @@ public class NewsArticleFragment extends Fragment implements Consumer<NewsArticl
     @ViewById
     WebView webView;
 
+    @ViewById
+    ProgressBar progressBar;
+
     @Inject
     NewsArticleUseCase newsArticleUseCase;
 
@@ -52,6 +56,8 @@ public class NewsArticleFragment extends Fragment implements Consumer<NewsArticl
         if (newsArticle.getContent() == null) {
             return;
         }
+
+        progressBar.setVisibility(View.GONE);
 
         webView.loadData(newsArticle.getContent(), "text/html; charset=utf-8", "UTF-8");
     }

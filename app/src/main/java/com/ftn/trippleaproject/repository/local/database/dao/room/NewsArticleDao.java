@@ -15,7 +15,7 @@ import io.reactivex.Flowable;
 @Dao
 public interface NewsArticleDao {
 
-    @Query("SELECT * FROM news_article")
+    @Query("SELECT * FROM news_article ORDER BY date DESC")
     Flowable<List<NewsArticleDb>> read();
 
     @Query("SELECT * FROM news_article WHERE id = :id LIMIT 1")
