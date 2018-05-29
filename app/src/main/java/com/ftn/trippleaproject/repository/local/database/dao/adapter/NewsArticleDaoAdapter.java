@@ -21,7 +21,7 @@ public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
 
     @Override
     public Flowable<List<NewsArticle>> read() {
-        return newsArticleDao.read().map(this::convertNewsArticleDbsToNewsArticles);
+        return newsArticleDao.read().map(this::convertToNewsArticles);
     }
 
     @Override
@@ -30,9 +30,8 @@ public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
     }
 
     @Override
-    public void create(NewsArticle newsArticle) {
-        final NewsArticleDb newsArticleDb = convertToNewsArticleDb(newsArticle);
-        newsArticleDao.create(newsArticleDb);
+    public void create(List<NewsArticle> newsArticles) {
+        newsArticleDao.create(convertToNewsArticleDbs(newsArticles).toArray(new NewsArticleDb[newsArticles.size()]));
     }
 
     @Override
@@ -41,7 +40,19 @@ public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
         newsArticleDao.update(newsArticleDb);
     }
 
-    private List<NewsArticle> convertNewsArticleDbsToNewsArticles(List<NewsArticleDb> newsArticleDbs) {
+    private List<NewsArticleDb> convertToNewsArticleDbs(List<NewsArticle> newsArticles) {
+
+        final List<NewsArticleDb> newsArticlesDbs = new ArrayList<>();
+
+        for (NewsArticle newsArticle: newsArticles) {
+            final NewsArticleDb newsArticleDb = convertToNewsArticleDb(newsArticle);
+            newsArticlesDbs.add(newsArticleDb);
+        }
+
+        return newsArticlesDbs;
+    }
+
+    private List<NewsArticle> convertToNewsArticles(List<NewsArticleDb> newsArticleDbs) {
 
         final List<NewsArticle> newsArticles = new ArrayList<>();
 

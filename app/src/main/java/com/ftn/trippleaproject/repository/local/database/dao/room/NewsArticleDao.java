@@ -22,7 +22,7 @@ public interface NewsArticleDao {
     Flowable<NewsArticleDb> read(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long create(NewsArticleDb newsArticleDb);
+    long[] create(NewsArticleDb... newsArticleDb);
 
     @Update
     void update(NewsArticleDb newsArticleDb);

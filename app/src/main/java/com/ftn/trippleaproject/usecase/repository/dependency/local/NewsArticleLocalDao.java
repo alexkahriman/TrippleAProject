@@ -13,7 +13,7 @@ public interface NewsArticleLocalDao {
 
     Flowable<NewsArticle> read(long id);
 
-    void create(NewsArticle newsArticle);
+    void create(List<NewsArticle> newsArticles);
 
     void update(NewsArticle newsArticle);
 }

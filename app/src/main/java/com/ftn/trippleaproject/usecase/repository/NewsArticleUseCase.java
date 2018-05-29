@@ -36,9 +36,7 @@ public class NewsArticleUseCase {
             @Override
             protected void subscribeActual(Observer observer) {
                 final List<NewsArticle> newsArticles = newsArticleRemoteDao.read().blockingGet();
-                for (NewsArticle newsArticle: newsArticles) {
-                    newsArticleLocalDao.create(newsArticle);
-                }
+                newsArticleLocalDao.create(newsArticles);
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
