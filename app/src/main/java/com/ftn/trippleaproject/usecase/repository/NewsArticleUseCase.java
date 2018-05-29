@@ -5,6 +5,7 @@ import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLo
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleRemoteDao;
 
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -44,7 +45,7 @@ public class NewsArticleUseCase {
 
     private NewsArticle addContentIfMissing(NewsArticle newsArticle) {
 
-        if (newsArticle.getContent() != null) {
+        if (newsArticle.getContent() != null && !Objects.equals(newsArticle.getContent(), "")) {
             return newsArticle;
         }
 
