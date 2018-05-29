@@ -5,6 +5,7 @@ import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLo
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleRemoteDao;
 
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -36,9 +37,7 @@ public class NewsArticleUseCase {
             @Override
             protected void subscribeActual(Observer observer) {
                 final List<NewsArticle> newsArticles = newsArticleRemoteDao.read().blockingGet();
-                for (NewsArticle newsArticle: newsArticles) {
-                    newsArticleLocalDao.create(newsArticle);
-                }
+                newsArticleLocalDao.create(newsArticles);
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
@@ -46,7 +45,7 @@ public class NewsArticleUseCase {
 
     private NewsArticle addContentIfMissing(NewsArticle newsArticle) {
 
-        if (newsArticle.getContent() != null) {
+        if (newsArticle.getContent() != null && !Objects.equals(newsArticle.getContent(), "")) {
             return newsArticle;
         }
 

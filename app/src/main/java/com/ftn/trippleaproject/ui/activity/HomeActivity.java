@@ -9,7 +9,6 @@ import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.system.PrefManager_;
 import com.ftn.trippleaproject.ui.adapter.HomeTabAdapter;
 import com.ftn.trippleaproject.ui.fragment.SettingsFragment;
-import com.ftn.trippleaproject.ui.fragment.SettingsFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -42,6 +41,7 @@ public class HomeActivity extends AppCompatActivity implements SettingsFragment.
     void init() {
         homeTabAdapter.setSettingsNavigationSelected(this);
         pager.setAdapter(homeTabAdapter);
+        pager.setOffscreenPageLimit(homeTabAdapter.getCount());
         tabLayout.setupWithViewPager(pager);
         setTabIcons();
 
