@@ -6,6 +6,7 @@ import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.ftn.trippleaproject.BuildConfig;
@@ -16,7 +17,6 @@ import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 import com.ftn.trippleaproject.usecase.repository.NewsArticleUseCase;
 
 import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 
 import java.util.ArrayList;
@@ -68,8 +68,7 @@ public class DeleteDataJobService extends JobService {
         return true;
     }
 
-    public static void scheduleDeleteDataJobService(Context context) {
-        final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+    public static void scheduleDeleteDataJobService(Context context) { final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         if (jobScheduler == null) {
             return;
         }
@@ -133,12 +132,8 @@ public class DeleteDataJobService extends JobService {
     }
 
     private void checkDeleteExcessEvents(JobParameters jobParameters) {
-        compositeDisposable.add(eventUseCase.read().subscribe(events -> {
-                    if (events.size() > 5) {
-                        deleteExcessEvents(events);
-                    }
-                },
-                e -> onError(jobParameters, e)));
+        final List<Event> events = eventUseCase.readAllLocal().blockingFirst();
+        deleteExcessEvents(events);
     }
 
     private void deleteExcessEvents(List<Event> events) {
