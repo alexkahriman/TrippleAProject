@@ -6,12 +6,15 @@ import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteD
 
 import org.reactivestreams.Subscriber;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.ftn.trippleaproject.system.DeleteDataJobService.NUMBER_OF_EVENTS_TO_KEEP;
 
 public class EventUseCase {
 
@@ -25,14 +28,24 @@ public class EventUseCase {
         this.eventLocalDao = eventLocalDao;
     }
 
-    public Flowable<List<Event>> read() {
+    public Flowable<List<Event>> sync() {
         return new Flowable<List<Event>>() {
             @Override
             protected void subscribeActual(Subscriber<? super List<Event>> subscriber) {
                 final List<Event> events = eventRemoteDao.read().blockingGet();
+                final List<Event> localEvents = readAllLocal().blockingFirst();
                 subscriber.onNext(events);
-                for (Event event : events) {
-                    eventLocalDao.create(event);
+
+                if (localEvents.size() < NUMBER_OF_EVENTS_TO_KEEP) {
+                    for (Event event : events) {
+                        eventLocalDao.create(event);
+                    }
+                } else {
+                    for (Event event : events) {
+                        if (checkEventEndDate(event)) {
+                            eventLocalDao.create(event);
+                        }
+                    }
                 }
                 subscriber.onComplete();
             }
@@ -53,7 +66,7 @@ public class EventUseCase {
     }
 
     public Flowable<List<Event>> readAllLocalAndUpdate() {
-        read().blockingSubscribe();
+        sync().blockingSubscribe();
         return eventLocalDao.read().subscribeOn(Schedulers.io());
     }
 
@@ -79,5 +92,9 @@ public class EventUseCase {
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
+    }
+
+    private boolean checkEventEndDate(Event event) {
+        return event.getEndDate().after(new Date());
     }
 }

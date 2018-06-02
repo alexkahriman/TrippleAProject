@@ -36,9 +36,9 @@ public class DeleteDataJobService extends JobService {
 
     private static final int DELETE_DATA_JOB_ID = 101;
 
-    private static final int NUMBER_OF_NEWS_TO_KEEP = 20;
+    public static final int NUMBER_OF_NEWS_TO_KEEP = 20;
 
-    private static final int NUMBER_OF_EVENTS_TO_KEEP = 10;
+    public static final int NUMBER_OF_EVENTS_TO_KEEP = 10;
 
     @App
     static TrippleAApplication trippleAApplication;

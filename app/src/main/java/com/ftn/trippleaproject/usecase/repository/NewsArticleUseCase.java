@@ -13,6 +13,8 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.ftn.trippleaproject.system.DeleteDataJobService.NUMBER_OF_NEWS_TO_KEEP;
+
 public class NewsArticleUseCase {
 
     private final NewsArticleRemoteDao newsArticleRemoteDao;
@@ -43,7 +45,7 @@ public class NewsArticleUseCase {
             protected void subscribeActual(Observer observer) {
                 final List<NewsArticle> newsArticles = newsArticleRemoteDao.read().blockingGet();
                 final List<NewsArticle> localNewsArticles = readAllLocal().blockingFirst();
-                if (localNewsArticles.size() < 50) {
+                if (localNewsArticles.size() < NUMBER_OF_NEWS_TO_KEEP) {
                     newsArticleLocalDao.create(newsArticles);
                 } else {
                     for (NewsArticle newsArticle : newsArticles) {
