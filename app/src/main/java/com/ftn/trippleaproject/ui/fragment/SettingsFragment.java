@@ -121,26 +121,11 @@ public class SettingsFragment extends Fragment {
         final TextView email = relativeLayout.findViewById(R.id.email);
         final TextView phone = relativeLayout.findViewById(R.id.phone);
 
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tosDialog.dismiss();
-            }
-        });
+        ok.setOnClickListener(view -> tosDialog.dismiss());
 
-        email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendEMail(email.getText().toString());
-            }
-        });
+        email.setOnClickListener(view -> sendEMail(email.getText().toString()));
 
-        phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callPhone(phone.getText().toString());
-            }
-        });
+        phone.setOnClickListener(view -> callPhone(phone.getText().toString()));
 
         dialogBuilder.setView(relativeLayout);
         tosDialog = dialogBuilder.create();
@@ -153,7 +138,7 @@ public class SettingsFragment extends Fragment {
 
         final Window window = tosDialog.getWindow();
         if (window != null) {
-            window.setBackgroundDrawableResource(R.drawable.round_button);
+            window.setBackgroundDrawableResource(R.drawable.round_dialog);
         }
     }
 
@@ -176,26 +161,11 @@ public class SettingsFragment extends Fragment {
         final TextView email = relativeLayout.findViewById(R.id.email);
         final TextView phone = relativeLayout.findViewById(R.id.phone);
 
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                aboutDialog.dismiss();
-            }
-        });
+        ok.setOnClickListener(view -> aboutDialog.dismiss());
 
-        email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendEMail(email.getText().toString());
-            }
-        });
+        email.setOnClickListener(view -> sendEMail(email.getText().toString()));
 
-        phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callPhone(phone.getText().toString());
-            }
-        });
+        phone.setOnClickListener(view -> callPhone(phone.getText().toString()));
 
         dialogBuilder.setView(relativeLayout);
         aboutDialog = dialogBuilder.create();
@@ -208,7 +178,7 @@ public class SettingsFragment extends Fragment {
 
         final Window window = aboutDialog.getWindow();
         if (window != null) {
-            window.setBackgroundDrawableResource(R.drawable.round_button);
+            window.setBackgroundDrawableResource(R.drawable.round_dialog);
         }
     }
 

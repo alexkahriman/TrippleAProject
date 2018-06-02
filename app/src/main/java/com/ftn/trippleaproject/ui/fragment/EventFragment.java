@@ -52,6 +52,12 @@ public class EventFragment extends Fragment {
     @ViewById
     TextView contact;
 
+    @ViewById
+    TextView dateStartMonth;
+
+    @ViewById
+    TextView dateStartDay;
+
     @Inject
     DateTimeFormatterUseCase dateTimeFormatterUseCase;
 
@@ -69,6 +75,9 @@ public class EventFragment extends Fragment {
         time.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getDate()));
         endTime.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getEndDate()));
         contact.setText(event.getOwner());
+
+        dateStartDay.setText(dateTimeFormatterUseCase.eventStartDayFormat(event.getDate()));
+        dateStartMonth.setText(dateTimeFormatterUseCase.eventStartMonthFormat(event.getDate()));
 
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {

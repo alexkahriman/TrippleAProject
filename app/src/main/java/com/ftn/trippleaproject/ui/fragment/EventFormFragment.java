@@ -78,11 +78,9 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if (mapFragment == null) {
-                mapFragment = MapFragment_.builder().event(null).build();
-                mapFragment.setMapFragmentActionListener(this);
-                mapFragment.setRetainInstance(true);
-            }
+            mapFragment = MapFragment_.builder().event(null).build();
+            mapFragment.setMapFragmentActionListener(this);
+            mapFragment.setRetainInstance(true);
             fragmentTransaction.replace(R.id.mapFragmentContainer, mapFragment, MAP_FRAGMENT_TAG);
             fragmentTransaction.commit();
         }

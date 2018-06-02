@@ -47,11 +47,13 @@ public class EventUseCase {
             @Override
             protected void subscribeActual(Observer observer) {
                 eventRemoteDao.create(event).subscribeOn(Schedulers.io()).subscribe(remoteEvent -> {
-                            observer.onNext(remoteEvent);
                             if (remoteEvent != null) {
                                 eventLocalDao.create(remoteEvent);
+                                observer.onNext(remoteEvent);
+                                observer.onComplete();
+                            } else {
+                                observer.onError(new Throwable());
                             }
-                            observer.onComplete();
                         },
                         e -> {
                             onError(e);
