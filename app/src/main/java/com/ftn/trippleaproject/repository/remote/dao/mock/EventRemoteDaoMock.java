@@ -32,4 +32,9 @@ public class EventRemoteDaoMock implements EventRemoteDao {
     public Single<Event> create(Event event) {
         return null;
     }
+
+    @Override
+    public Single<Event> patch(Event event) {
+        return null;
+    }
 }

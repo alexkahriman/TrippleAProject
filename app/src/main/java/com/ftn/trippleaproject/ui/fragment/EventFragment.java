@@ -4,19 +4,25 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
+import com.ftn.trippleaproject.usecase.repository.EventUseCase;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.IgnoreWhen;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
@@ -25,8 +31,11 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+
 @EFragment(R.layout.fragment_event)
-public class EventFragment extends Fragment {
+public class EventFragment extends Fragment implements Consumer<Event> {
 
     @App
     TrippleAApplication application;
@@ -61,15 +70,21 @@ public class EventFragment extends Fragment {
     @Inject
     DateTimeFormatterUseCase dateTimeFormatterUseCase;
 
+    @Inject
+    EventUseCase eventUseCase;
+
     @AfterViews
     void init() {
-
         application.getDiComponent().inject(this);
 
         if (event == null) {
             return;
         }
 
+        eventUseCase.read(event.getId()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+    }
+
+    private void setupUI() {
         title.setText(event.getTitle());
         description.setText(event.getDescription());
         time.setText(dateTimeFormatterUseCase.dateTimeFormat(event.getDate()));
@@ -104,5 +119,12 @@ public class EventFragment extends Fragment {
         intent.setType("message/rfc822");
         Intent chooser = Intent.createChooser(intent, "Send E-Mail");
         this.startActivity(chooser);
+    }
+
+    @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
+    @Override
+    public void accept(Event event) throws Exception {
+        this.event = event;
+        setupUI();
     }
 }

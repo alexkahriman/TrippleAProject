@@ -11,4 +11,6 @@ public interface EventRemoteDao {
     Single<List<Event>> read();
 
     Single<Event> create(Event event);
+
+    Single<Event> patch(Event event);
 }

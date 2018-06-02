@@ -14,4 +14,6 @@ public interface EventLocalDao {
     void update(Event event);
 
     Flowable<List<Event>> read();
+
+    Flowable<Event> read(long id);
 }

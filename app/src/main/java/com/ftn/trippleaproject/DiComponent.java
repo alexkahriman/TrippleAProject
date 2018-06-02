@@ -9,6 +9,7 @@ import com.ftn.trippleaproject.ui.activity.LoginActivity;
 import com.ftn.trippleaproject.ui.fragment.EventFormFragment;
 import com.ftn.trippleaproject.ui.fragment.EventFragment;
 import com.ftn.trippleaproject.ui.fragment.EventsFragment;
+import com.ftn.trippleaproject.ui.fragment.MapFragment;
 import com.ftn.trippleaproject.ui.fragment.NewsArticleFragment;
 import com.ftn.trippleaproject.ui.fragment.NewsFeedFragment;
 import com.ftn.trippleaproject.ui.view.EventItemView;
@@ -31,4 +32,6 @@ public interface DiComponent {
     void inject(EventFragment eventFragment);
 
     void inject(EventItemView eventItemView);
+
+    void inject(MapFragment mapFragment);
 }

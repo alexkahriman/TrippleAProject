@@ -42,11 +42,37 @@ public class EventUseCase {
         }.subscribeOn(Schedulers.io());
     }
 
+    public Flowable<Event> read(long id) {
+        return eventLocalDao.read(id).subscribeOn(Schedulers.io());
+    }
+
     public Observable create(Event event) {
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
                 eventRemoteDao.create(event).subscribeOn(Schedulers.io()).subscribe(remoteEvent -> {
+                            if (remoteEvent != null) {
+                                eventLocalDao.create(remoteEvent);
+                                observer.onNext(remoteEvent);
+                                observer.onComplete();
+                            } else {
+                                observer.onError(new Throwable());
+                            }
+                        },
+                        e -> {
+                            onError(e);
+                            observer.onError(e);
+                        });
+
+            }
+        }.subscribeOn(Schedulers.io());
+    }
+
+    public Observable patch(Event event) {
+        return new Observable() {
+            @Override
+            protected void subscribeActual(Observer observer) {
+                eventRemoteDao.patch(event).subscribeOn(Schedulers.io()).subscribe(remoteEvent -> {
                             if (remoteEvent != null) {
                                 eventLocalDao.create(remoteEvent);
                                 observer.onNext(remoteEvent);

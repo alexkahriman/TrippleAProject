@@ -19,6 +19,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.FragmentByTag;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
@@ -62,6 +63,9 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     @FragmentArg
     Event event;
 
+    @FragmentArg
+    boolean edit;
+
     @FragmentByTag(MAP_FRAGMENT_TAG)
     MapFragment mapFragment;
 
@@ -78,7 +82,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            mapFragment = MapFragment_.builder().event(null).build();
+            mapFragment = MapFragment_.builder().event(event).edit(edit).build();
             mapFragment.setMapFragmentActionListener(this);
             mapFragment.setRetainInstance(true);
             fragmentTransaction.replace(R.id.mapFragmentContainer, mapFragment, MAP_FRAGMENT_TAG);
@@ -169,28 +173,49 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     @Click
     void add() {
         if (!checkEditTextNullValues()) {
-            Toast.makeText(getContext(), "Please fill in all required data", Toast.LENGTH_SHORT).show();
+            showToast("Please fill in all required data");
             return;
         }
 
-        final Event event = new Event(1,
-                title.getText().toString(),
-                description.getText().toString(),
-                calendar.getTime(),
-                endCalendar.getTime(),
-                new Event.Location(mapFragment.getLocation().getLatitude(),
-                        mapFragment.getLocation().getLongitude()));
+        if (edit) {
+            final Event event = new Event(this.event.getId(),
+                    title.getText().toString(),
+                    description.getText().toString(),
+                    calendar.getTime(),
+                    endCalendar.getTime(),
+                    new Event.Location(mapFragment.getLocation().getLatitude(),
+                            mapFragment.getLocation().getLongitude()));
 
-        eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> {
-                    if (eventFormFragmentActionListener != null) {
-                        eventFormFragmentActionListener.finishActivity();
-                    }
-                },
-                e -> {
-                    if (eventFormFragmentActionListener != null) {
-                        eventFormFragmentActionListener.finishActivityOnError();
-                    }
-                });
+            eventUseCase.patch(event).subscribeOn(Schedulers.io()).subscribe(object -> {
+                        if (eventFormFragmentActionListener != null) {
+                            eventFormFragmentActionListener.finishActivity();
+                        }
+                    },
+                    e -> {
+                        if (eventFormFragmentActionListener != null) {
+                            eventFormFragmentActionListener.finishActivityOnError();
+                        }
+                    });
+        } else {
+            final Event event = new Event(1,
+                    title.getText().toString(),
+                    description.getText().toString(),
+                    calendar.getTime(),
+                    endCalendar.getTime(),
+                    new Event.Location(mapFragment.getLocation().getLatitude(),
+                            mapFragment.getLocation().getLongitude()));
+
+            eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> {
+                        if (eventFormFragmentActionListener != null) {
+                            eventFormFragmentActionListener.finishActivity();
+                        }
+                    },
+                    e -> {
+                        if (eventFormFragmentActionListener != null) {
+                            eventFormFragmentActionListener.finishActivityOnError();
+                        }
+                    });
+        }
     }
 
     private boolean checkEditTextNullValues() {
@@ -237,5 +262,10 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         void finishActivity();
 
         void finishActivityOnError();
+    }
+
+    @UiThread
+    void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 }

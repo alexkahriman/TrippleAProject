@@ -20,11 +20,14 @@ public class EventFormActivity extends AppCompatActivity implements EventFormFra
     @Extra
     Event event;
 
+    @Extra
+    boolean edit;
+
     @AfterViews
     void init() {
         final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        final EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).build();
+        final EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).edit(edit).build();
         fragmentTransaction.replace(R.id.eventFormFragmentContainer, eventFormFragment);
         eventFormFragment.setEventFormFragmentActionListener(this);
 
