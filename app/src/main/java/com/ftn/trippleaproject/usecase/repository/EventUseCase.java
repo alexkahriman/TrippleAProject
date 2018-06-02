@@ -6,6 +6,7 @@ import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteD
 
 import org.reactivestreams.Subscriber;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -43,8 +44,16 @@ public class EventUseCase {
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
-                eventRemoteDao.create(event).subscribe(modelEvent ->
-                        eventLocalDao.create(modelEvent));
+                eventRemoteDao.create(event).subscribe(modelEvent -> {
+                    List<Event> events = readAllLocal().blockingFirst();
+                    if (events.size() > 12) {
+                        if (checkEventEndDate(modelEvent)) {
+                            eventLocalDao.create(modelEvent);
+                        }
+                    } else {
+                        eventLocalDao.create(modelEvent);
+                    }
+                });
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
@@ -58,7 +67,7 @@ public class EventUseCase {
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
-
+                eventLocalDao.delete(events);
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
@@ -71,5 +80,9 @@ public class EventUseCase {
 
     public Flowable<List<Event>> readAllLocal() {
         return eventLocalDao.read().subscribeOn(Schedulers.io());
+    }
+
+    private boolean checkEventEndDate(Event event) {
+        return !event.getEndDate().before(new Date());
     }
 }

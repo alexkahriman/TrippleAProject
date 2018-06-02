@@ -7,13 +7,10 @@ import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.ui.fragment.EventFormFragment;
 import com.ftn.trippleaproject.ui.fragment.EventFormFragment_;
-import com.ftn.trippleaproject.ui.fragment.MapFragment;
-import com.ftn.trippleaproject.ui.fragment.MapFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.FragmentByTag;
 
 @EActivity(R.layout.actrivity_event_form)
 public class EventFormActivity extends AppCompatActivity implements EventFormFragment.EventFormFragmentActionListener {

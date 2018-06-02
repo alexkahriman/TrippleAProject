@@ -37,8 +37,6 @@ public class DeleteDataJobService extends JobService {
 
     private static final int DELETE_DATA_JOB_ID = 101;
 
-    private static final String DELETE_DATA_ID = "delete_data";
-
     @App
     static TrippleAApplication trippleAApplication;
 
@@ -73,9 +71,9 @@ public class DeleteDataJobService extends JobService {
             return;
         }
 
-//        if (isJobServiceOn(jobScheduler)) {
-//            return;
-//        }
+        if (isJobServiceOn(jobScheduler)) {
+            return;
+        }
 
         jobScheduler.cancel(DELETE_DATA_JOB_ID);
 
@@ -107,12 +105,12 @@ public class DeleteDataJobService extends JobService {
     private void deleteData(JobParameters params) {
         checkDeleteExcessNews(params);
         checkDeleteExcessEvents(params);
-//        jobFinished(params, false);
+        jobFinished(params, false);
     }
 
     private void checkDeleteExcessNews(JobParameters jobParameters) {
         final List<NewsArticle> newsArticles = new ArrayList<>();
-        compositeDisposable.add(newsArticleUseCase.read()
+        compositeDisposable.add(newsArticleUseCase.readAllLocal()
                 .subscribe(newsArticles::addAll,
                         e -> onError(jobParameters, e)));
 

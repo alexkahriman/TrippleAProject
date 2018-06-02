@@ -5,7 +5,11 @@ import com.ftn.trippleaproject.domain.NewsArticle;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public interface NewsArticleLocalDao {
+
+    Flowable<List<NewsArticle>> readAll();
 
     void create(NewsArticle newsArticle);
 

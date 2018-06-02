@@ -10,7 +10,6 @@ import com.ftn.trippleaproject.system.DeleteDataJobService;
 import com.ftn.trippleaproject.system.PrefManager_;
 import com.ftn.trippleaproject.ui.adapter.HomeTabAdapter;
 import com.ftn.trippleaproject.ui.fragment.SettingsFragment;
-import com.ftn.trippleaproject.ui.fragment.SettingsFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

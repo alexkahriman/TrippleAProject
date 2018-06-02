@@ -6,11 +6,11 @@ import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleR
 
 import org.reactivestreams.Subscriber;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewsArticleUseCase {
@@ -30,12 +30,23 @@ public class NewsArticleUseCase {
             protected void subscribeActual(Subscriber<? super List<NewsArticle>> subscriber) {
                 final List<NewsArticle> newsArticles = newsArticleRemoteDao.read().blockingGet();
                 subscriber.onNext(newsArticles);
+                List<NewsArticle> localNewsArticles = readAllLocal().blockingFirst();
                 for (NewsArticle newsArticle : newsArticles) {
-                    newsArticleLocalDao.create(newsArticle);
+                    if (localNewsArticles.size() > 50) {
+                        if (checkNewsArticleDate(newsArticle)) {
+                            newsArticleLocalDao.create(newsArticle);
+                        }
+                    } else {
+                        newsArticleLocalDao.create(newsArticle);
+                    }
                 }
                 subscriber.onComplete();
             }
         }.subscribeOn(Schedulers.io());
+    }
+
+    public Flowable<List<NewsArticle>> readAllLocal() {
+        return newsArticleLocalDao.readAll().subscribeOn(Schedulers.io());
     }
 
     public void delete(NewsArticle newsArticle) {
@@ -44,5 +55,12 @@ public class NewsArticleUseCase {
 
     public void delete(List<NewsArticle> newsArticles) {
         newsArticleLocalDao.delete(newsArticles);
+    }
+
+    private boolean checkNewsArticleDate(NewsArticle newsArticle) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_MONTH, 5);
+        return !newsArticle.getDate().before(calendar.getTime());
     }
 }

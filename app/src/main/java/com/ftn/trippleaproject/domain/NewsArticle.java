@@ -17,6 +17,11 @@ public class NewsArticle extends BaseModel implements Serializable {
 
     private Date date;
 
+    public NewsArticle(long id, Date date) {
+        super(id);
+        this.date = date;
+    }
+
     public NewsArticle(int id, String title, String imageUrl, List<NewsArticlePart> parts, Date date) {
         super(id);
         this.title = title;
