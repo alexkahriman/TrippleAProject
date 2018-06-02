@@ -9,14 +9,10 @@ import com.ftn.trippleaproject.repository.local.database.dao.room.EventDao;
 import com.ftn.trippleaproject.repository.local.database.dao.room.NewsArticleDao;
 import com.ftn.trippleaproject.repository.local.database.model.EventDb;
 import com.ftn.trippleaproject.repository.local.database.model.NewsArticleDb;
-import com.ftn.trippleaproject.repository.local.database.model.articlepart.ImageNewsArticlePartDb;
-import com.ftn.trippleaproject.repository.local.database.model.articlepart.TextNewsArticlePartDb;
 
 @Database(entities = {
         NewsArticleDb.class,
-        EventDb.class,
-        TextNewsArticlePartDb.class,
-        ImageNewsArticlePartDb.class},
+        EventDb.class},
         version = 1,
         exportSchema = false)
 

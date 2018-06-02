@@ -20,12 +20,16 @@ public class EventDaoAdapter implements EventLocalDao {
 
     @Override
     public void create(Event event) {
-        eventDao.create(convertEventToEventDb(event));
+        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
+        eventDao.create(eventDb);
     }
 
     @Override
     public void update(Event event) {
-        eventDao.update(convertEventToEventDb(event));
+        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
+        eventDao.update(eventDb);
     }
 
     @Override
@@ -34,11 +38,10 @@ public class EventDaoAdapter implements EventLocalDao {
     }
 
     @Override
-    public void delete(final List<Event> events) {
-        List<EventDb> eventDbs = convertEventToEventDbs(events);
-        EventDb[] eventArray = new EventDb[eventDbs.size()];
-        eventArray = eventDbs.toArray(eventArray);
-        eventDao.delete(eventArray);
+    public void delete(List<Event> events) {
+        for(Event event : events) {
+            eventDao.delete(convertEventToEventDb(event));
+        }
     }
 
     @Override
@@ -59,17 +62,8 @@ public class EventDaoAdapter implements EventLocalDao {
         return events;
     }
 
-    private List<EventDb> convertEventToEventDbs(List<Event> events) {
-        List<EventDb> eventDbs = new ArrayList<>();
-
-        for (Event event : events) {
-            eventDbs.add(convertEventToEventDb(event));
-        }
-
-        return eventDbs;
-    }
-
-    private EventDb convertEventToEventDb(Event event) {
+    private EventDb convertEventToEventDb(Event event)
+    {
         return new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
                 event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
     }

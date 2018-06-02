@@ -9,11 +9,17 @@ import io.reactivex.Flowable;
 
 public interface NewsArticleLocalDao {
 
-    Flowable<List<NewsArticle>> readAll();
+    Flowable<List<NewsArticle>> read();
+
+    Flowable<NewsArticle> read(long id);
+
+    void create(List<NewsArticle> newsArticles);
 
     void create(NewsArticle newsArticle);
 
-    void delete(NewsArticle newsArticle);
+    void update(NewsArticle newsArticle);
 
-    void delete(List<NewsArticle> newsArticleList);
+    void delete(List<NewsArticle> newsArticles);
+
+    void delete(NewsArticle newsArticle);
 }

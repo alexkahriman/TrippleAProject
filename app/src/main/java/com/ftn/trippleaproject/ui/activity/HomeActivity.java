@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity implements SettingsFragment.
 
         homeTabAdapter.setSettingsNavigationSelected(this);
         pager.setAdapter(homeTabAdapter);
+        pager.setOffscreenPageLimit(homeTabAdapter.getCount());
         tabLayout.setupWithViewPager(pager);
         setTabIcons();
 

@@ -6,7 +6,6 @@ import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 
 import com.ftn.trippleaproject.BuildConfig;
@@ -37,6 +36,10 @@ public class DeleteDataJobService extends JobService {
 
     private static final int DELETE_DATA_JOB_ID = 101;
 
+    private static final int NUMBER_OF_NEWS_TO_KEEP = 20;
+
+    private static final int NUMBER_OF_EVENTS_TO_KEEP = 10;
+
     @App
     static TrippleAApplication trippleAApplication;
 
@@ -66,14 +69,15 @@ public class DeleteDataJobService extends JobService {
         return true;
     }
 
-    public static void scheduleDeleteDataJobService(Context context) { final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+    public static void scheduleDeleteDataJobService(Context context) {
+        final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         if (jobScheduler == null) {
             return;
         }
 
-        if (isJobServiceOn(jobScheduler)) {
-            return;
-        }
+//        if (isJobServiceOn(jobScheduler)) {
+//            return;
+//        }
 
         jobScheduler.cancel(DELETE_DATA_JOB_ID);
 
@@ -104,7 +108,7 @@ public class DeleteDataJobService extends JobService {
 
     private void deleteData(JobParameters params) {
         checkDeleteExcessNews(params);
-        checkDeleteExcessEvents(params);
+        checkDeleteExcessEvents();
         jobFinished(params, false);
     }
 
@@ -114,7 +118,7 @@ public class DeleteDataJobService extends JobService {
                 .subscribe(newsArticles::addAll,
                         e -> onError(jobParameters, e)));
 
-        if (newsArticles.size() > 50) {
+        if (newsArticles.size() > NUMBER_OF_NEWS_TO_KEEP) {
             deleteExcessNews(newsArticles);
         }
     }
@@ -122,32 +126,29 @@ public class DeleteDataJobService extends JobService {
     private void deleteExcessNews(List<NewsArticle> newsArticles) {
         Collections.sort(newsArticles, new NewsArticleDateComparator());
         final List<NewsArticle> newsArticlesToBeDeleted = new ArrayList<>();
-        for (int i = 50; i < newsArticles.size(); i++) {
+        for (int i = NUMBER_OF_NEWS_TO_KEEP; i < newsArticles.size(); i++) {
             newsArticlesToBeDeleted.add(newsArticles.get(i));
         }
 
-        newsArticleUseCase.delete(newsArticlesToBeDeleted);
+        newsArticleUseCase.delete(newsArticlesToBeDeleted).blockingSubscribe();
     }
 
-    private void checkDeleteExcessEvents(JobParameters jobParameters) {
+    private void checkDeleteExcessEvents() {
         final List<Event> events = eventUseCase.readAllLocal().blockingFirst();
-        deleteExcessEvents(events);
+
+        if (events.size() > NUMBER_OF_EVENTS_TO_KEEP) {
+            deleteExcessEvents(events);
+        }
     }
 
     private void deleteExcessEvents(List<Event> events) {
         Collections.sort(events, new EventEndDateComparator());
         final List<Event> eventsToBeDeleted = new ArrayList<>();
-        for (Event event : events) {
-            if (checkEventFinished(event.getEndDate())) {
-                eventsToBeDeleted.add(event);
-            }
+        for (int i = NUMBER_OF_EVENTS_TO_KEEP; i < events.size(); i++) {
+            eventsToBeDeleted.add(events.get(i));
         }
 
-        eventUseCase.delete(eventsToBeDeleted).subscribe();
-    }
-
-    private boolean checkEventFinished(Date eventEndDate) {
-        return eventEndDate.before(new Date());
+        eventUseCase.delete(eventsToBeDeleted).blockingSubscribe();
     }
 
     private void onError(JobParameters jobParameters, Throwable throwable) {
@@ -158,7 +159,15 @@ public class DeleteDataJobService extends JobService {
     private class NewsArticleDateComparator implements Comparator<NewsArticle> {
         @Override
         public int compare(NewsArticle o1, NewsArticle o2) {
-            return o1.getDate().compareTo(o2.getDate());
+            if (o1.getDate().equals(o2.getDate())) {
+                return 0;
+            } else {
+                if (o1.getDate().after(o2.getDate())) {
+                    return -1;
+                }
+            }
+
+            return 1;
         }
     }
 

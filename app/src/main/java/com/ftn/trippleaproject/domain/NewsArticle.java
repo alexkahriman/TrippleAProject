@@ -2,9 +2,6 @@ package com.ftn.trippleaproject.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import com.ftn.trippleaproject.domain.articlepart.NewsArticlePart;
 
 
 public class NewsArticle extends BaseModel implements Serializable {
@@ -13,20 +10,26 @@ public class NewsArticle extends BaseModel implements Serializable {
 
     private String imageUrl;
 
-    private List<NewsArticlePart> parts;
+    private String link;
+
+    private String content;
 
     private Date date;
 
-    public NewsArticle(long id, Date date) {
-        super(id);
-        this.date = date;
-    }
-
-    public NewsArticle(int id, String title, String imageUrl, List<NewsArticlePart> parts, Date date) {
+    public NewsArticle(long id, String title, String imageUrl, String link, Date date) {
         super(id);
         this.title = title;
         this.imageUrl = imageUrl;
-        this.parts = parts;
+        this.link = link;
+        this.date = date;
+    }
+
+    public NewsArticle(long id, String title, String imageUrl, String link, String content, Date date) {
+        super(id);
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.link = link;
+        this.content = content;
         this.date = date;
     }
 
@@ -46,12 +49,20 @@ public class NewsArticle extends BaseModel implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public List<NewsArticlePart> getParts() {
-        return parts;
+    public String getLink() {
+        return link;
     }
 
-    public void setParts(List<NewsArticlePart> parts) {
-        this.parts = parts;
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getDate() {
@@ -64,11 +75,12 @@ public class NewsArticle extends BaseModel implements Serializable {
 
     @Override
     public String toString() {
-        return "NewsArticleDb{" +
+        return "NewsArticle{" +
                 "title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", parts=" + parts +
+                ", link='" + link + '\'' +
+                ", content='" + content + '\'' +
                 ", date=" + date +
-                '}';
+                "} " + super.toString();
     }
 }

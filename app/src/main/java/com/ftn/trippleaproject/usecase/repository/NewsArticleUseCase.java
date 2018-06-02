@@ -4,13 +4,13 @@ import com.ftn.trippleaproject.domain.NewsArticle;
 import com.ftn.trippleaproject.usecase.repository.dependency.local.NewsArticleLocalDao;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.NewsArticleRemoteDao;
 
-import org.reactivestreams.Subscriber;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewsArticleUseCase {
@@ -25,42 +25,73 @@ public class NewsArticleUseCase {
     }
 
     public Flowable<List<NewsArticle>> read() {
-        return new Flowable<List<NewsArticle>>() {
+        sync().subscribe();
+        return newsArticleLocalDao.read().subscribeOn(Schedulers.io());
+    }
+
+    public Flowable<List<NewsArticle>> readAllLocal() {
+        return newsArticleLocalDao.read().subscribeOn(Schedulers.io());
+    }
+
+    public Flowable<NewsArticle> read(long id) {
+        return newsArticleLocalDao.read(id).map(this::addContentIfMissing).subscribeOn(Schedulers.io());
+    }
+
+    private Observable sync() {
+        return new Observable() {
             @Override
-            protected void subscribeActual(Subscriber<? super List<NewsArticle>> subscriber) {
+            protected void subscribeActual(Observer observer) {
                 final List<NewsArticle> newsArticles = newsArticleRemoteDao.read().blockingGet();
-                subscriber.onNext(newsArticles);
-                List<NewsArticle> localNewsArticles = readAllLocal().blockingFirst();
-                for (NewsArticle newsArticle : newsArticles) {
-                    if (localNewsArticles.size() > 50) {
+                final List<NewsArticle> localNewsArticles = readAllLocal().blockingFirst();
+                if (localNewsArticles.size() < 50) {
+                    newsArticleLocalDao.create(newsArticles);
+                } else {
+                    for (NewsArticle newsArticle : newsArticles) {
                         if (checkNewsArticleDate(newsArticle)) {
                             newsArticleLocalDao.create(newsArticle);
                         }
-                    } else {
-                        newsArticleLocalDao.create(newsArticle);
                     }
                 }
-                subscriber.onComplete();
+                observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
     }
 
-    public Flowable<List<NewsArticle>> readAllLocal() {
-        return newsArticleLocalDao.readAll().subscribeOn(Schedulers.io());
+    public Observable delete(NewsArticle newsArticle) {
+        return new Observable() {
+            @Override
+            protected void subscribeActual(Observer observer) {
+                newsArticleLocalDao.delete(newsArticle);
+                observer.onComplete();
+            }
+        }.subscribeOn(Schedulers.io());
     }
 
-    public void delete(NewsArticle newsArticle) {
-        newsArticleLocalDao.delete(newsArticle);
+    public Observable delete(List<NewsArticle> newsArticles) {
+        return new Observable() {
+            @Override
+            protected void subscribeActual(Observer observer) {
+                newsArticleLocalDao.delete(newsArticles);
+                observer.onComplete();
+            }
+        }.subscribeOn(Schedulers.io());
     }
 
-    public void delete(List<NewsArticle> newsArticles) {
-        newsArticleLocalDao.delete(newsArticles);
+    private NewsArticle addContentIfMissing(NewsArticle newsArticle) {
+
+        if (newsArticle.getContent() != null && !Objects.equals(newsArticle.getContent(), "")) {
+            return newsArticle;
+        }
+
+        final String content = newsArticleRemoteDao.readContent(newsArticle).blockingGet();
+        newsArticle.setContent(content);
+        newsArticleLocalDao.update(newsArticle);
+        return newsArticle;
     }
 
     private boolean checkNewsArticleDate(NewsArticle newsArticle) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_MONTH, 5);
+        calendar.add(Calendar.DAY_OF_MONTH, -5);
         return !newsArticle.getDate().before(calendar.getTime());
     }
 }
