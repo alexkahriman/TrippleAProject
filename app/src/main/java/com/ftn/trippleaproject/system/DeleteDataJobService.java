@@ -72,12 +72,7 @@ public class DeleteDataJobService extends JobService {
 
         jobScheduler.cancel(DELETE_DATA_JOB_ID);
 
-        final long period;
-        if (!BuildConfig.DEBUG) {
-            period = TimeUnit.HOURS.toMillis(24);
-        } else {
-            period = TimeUnit.MINUTES.toMillis(15);
-        }
+        final long period = !BuildConfig.DEBUG ? TimeUnit.HOURS.toMillis(24): TimeUnit.MINUTES.toMillis(15);
 
         jobScheduler.schedule(new JobInfo.Builder(DELETE_DATA_JOB_ID,
                 new ComponentName(context, DeleteDataJobService_.class))

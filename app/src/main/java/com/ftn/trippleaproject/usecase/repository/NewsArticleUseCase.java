@@ -92,7 +92,7 @@ public class NewsArticleUseCase {
     }
 
     private boolean checkNewsArticleDate(NewsArticle newsArticle) {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -5);
         return !newsArticle.getDate().before(calendar.getTime());
     }
