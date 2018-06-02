@@ -20,16 +20,19 @@ public class EventDaoAdapter implements EventLocalDao {
 
     @Override
     public void create(Event event) {
-        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
-                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
-        eventDao.create(eventDb);
+        eventDao.create(convertEventToEventDb(event));
+    }
+
+    @Override
+    public void create(List<Event> events) {
+        for (Event event : events) {
+            eventDao.create(convertEventToEventDb(event));
+        }
     }
 
     @Override
     public void update(Event event) {
-        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
-                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
-        eventDao.update(eventDb);
+        eventDao.update(convertEventToEventDb(event));
     }
 
     @Override

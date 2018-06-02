@@ -37,15 +37,9 @@ public class EventUseCase {
                 subscriber.onNext(events);
 
                 if (localEvents.size() < NUMBER_OF_EVENTS_TO_KEEP) {
-                    for (Event event : events) {
-                        eventLocalDao.create(event);
-                    }
+                    eventLocalDao.create(events);
                 } else {
-                    for (Event event : events) {
-                        if (checkEventEndDate(event)) {
-                            eventLocalDao.create(event);
-                        }
-                    }
+                    checkAndCreateEvents(events);
                 }
                 subscriber.onComplete();
             }
@@ -92,6 +86,14 @@ public class EventUseCase {
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());
+    }
+
+    private void checkAndCreateEvents(List<Event> events) {
+        for (Event event : events) {
+            if (checkEventEndDate(event)) {
+                eventLocalDao.create(event);
+            }
+        }
     }
 
     private boolean checkEventEndDate(Event event) {

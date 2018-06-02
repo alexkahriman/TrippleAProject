@@ -30,5 +30,5 @@ public interface NewsArticleDao {
     void update(NewsArticleDb newsArticleDb);
 
     @Delete
-    void delete(NewsArticleDb newsArticle);
+    void delete(NewsArticleDb... newsArticle);
 }

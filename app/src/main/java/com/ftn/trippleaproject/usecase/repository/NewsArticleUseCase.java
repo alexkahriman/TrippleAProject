@@ -17,6 +17,8 @@ import static com.ftn.trippleaproject.system.DeleteDataJobService.NUMBER_OF_NEWS
 
 public class NewsArticleUseCase {
 
+    private static final int DAYS_AGO_THAT_MAKE_NEWS_RELEVANTE = -5;
+
     private final NewsArticleRemoteDao newsArticleRemoteDao;
 
     private final NewsArticleLocalDao newsArticleLocalDao;
@@ -48,11 +50,7 @@ public class NewsArticleUseCase {
                 if (localNewsArticles.size() < NUMBER_OF_NEWS_TO_KEEP) {
                     newsArticleLocalDao.create(newsArticles);
                 } else {
-                    for (NewsArticle newsArticle : newsArticles) {
-                        if (checkNewsArticleDate(newsArticle)) {
-                            newsArticleLocalDao.create(newsArticle);
-                        }
-                    }
+                    checkAndCreateNewsArticles(newsArticles);
                 }
                 observer.onComplete();
             }
@@ -91,9 +89,17 @@ public class NewsArticleUseCase {
         return newsArticle;
     }
 
+    private void checkAndCreateNewsArticles(List<NewsArticle> newsArticles) {
+        for (NewsArticle newsArticle : newsArticles) {
+            if (checkNewsArticleDate(newsArticle)) {
+                newsArticleLocalDao.create(newsArticle);
+            }
+        }
+    }
+
     private boolean checkNewsArticleDate(NewsArticle newsArticle) {
         final Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -5);
+        calendar.add(Calendar.DAY_OF_MONTH, DAYS_AGO_THAT_MAKE_NEWS_RELEVANTE);
         return !newsArticle.getDate().before(calendar.getTime());
     }
 }

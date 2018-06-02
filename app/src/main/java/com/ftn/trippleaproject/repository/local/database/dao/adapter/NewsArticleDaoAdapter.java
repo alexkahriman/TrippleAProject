@@ -47,9 +47,7 @@ public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
 
     @Override
     public void delete(List<NewsArticle> newsArticles) {
-        for (NewsArticle newsArticle : newsArticles) {
-            newsArticleDao.delete(convertToNewsArticleDb(newsArticle));
-        }
+        newsArticleDao.delete(convertToNewsArticleDbs(newsArticles).toArray(new NewsArticleDb[newsArticles.size()]));
     }
 
     @Override

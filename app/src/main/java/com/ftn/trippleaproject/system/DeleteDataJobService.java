@@ -11,6 +11,8 @@ import com.ftn.trippleaproject.BuildConfig;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.domain.NewsArticle;
+import com.ftn.trippleaproject.system.comparator.EventEndDateComparator;
+import com.ftn.trippleaproject.system.comparator.NewsArticleDateComparator;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 import com.ftn.trippleaproject.usecase.repository.NewsArticleUseCase;
 
@@ -134,34 +136,4 @@ public class DeleteDataJobService extends JobService {
         eventUseCase.delete(eventsToBeDeleted).blockingSubscribe();
     }
 
-    private class NewsArticleDateComparator implements Comparator<NewsArticle> {
-        @Override
-        public int compare(NewsArticle o1, NewsArticle o2) {
-            if (o1.getDate().equals(o2.getDate())) {
-                return 0;
-            } else {
-                if (o1.getDate().after(o2.getDate())) {
-                    return -1;
-                }
-            }
-
-            return 1;
-        }
-    }
-
-    private class EventEndDateComparator implements Comparator<Event> {
-
-        @Override
-        public int compare(Event o1, Event o2) {
-            if (o1.getEndDate().equals(o2.getEndDate())) {
-                return 0;
-            } else {
-                if (o1.getEndDate().after(o2.getEndDate())) {
-                    return -1;
-                }
-            }
-
-            return 1;
-        }
-    }
 }

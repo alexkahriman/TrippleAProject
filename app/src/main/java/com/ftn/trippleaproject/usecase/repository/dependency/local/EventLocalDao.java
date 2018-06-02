@@ -10,7 +10,9 @@ import io.reactivex.Observable;
 
 public interface EventLocalDao {
 
-    void create(Event event);
+    void create(Event events);
+
+    void create(List<Event> event);
 
     void update(Event event);
 
