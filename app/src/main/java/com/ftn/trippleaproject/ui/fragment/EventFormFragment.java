@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
@@ -23,6 +24,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Calendar;
 
 import javax.inject.Inject;
+
+import io.reactivex.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_event_form)
 public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener {
@@ -168,6 +171,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     @Click
     void add() {
         if (!checkEditTextNullValues()) {
+            Toast.makeText(getContext(), "Please fill in all required data", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -179,11 +183,16 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
                 new Event.Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
 
-        eventUseCase.create(event).blockingSubscribe();
-
-        if (eventFormFragmentActionListener != null) {
-            eventFormFragmentActionListener.finishActivity();
-        }
+        eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> {
+                    if (eventFormFragmentActionListener != null) {
+                        eventFormFragmentActionListener.finishActivity();
+                    }
+                },
+                e -> {
+                    if (eventFormFragmentActionListener != null) {
+                        eventFormFragmentActionListener.finishActivityOnError();
+                    }
+                });
     }
 
     private boolean checkEditTextNullValues() {
@@ -228,5 +237,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
 
     public interface EventFormFragmentActionListener {
         void finishActivity();
+
+        void finishActivityOnError();
     }
 }
