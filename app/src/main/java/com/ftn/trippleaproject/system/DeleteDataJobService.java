@@ -6,7 +6,6 @@ import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
-import android.util.Log;
 
 import com.ftn.trippleaproject.BuildConfig;
 import com.ftn.trippleaproject.TrippleAApplication;
@@ -21,18 +20,13 @@ import org.androidannotations.annotations.EService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.CompositeDisposable;
-
 @EService
 public class DeleteDataJobService extends JobService {
-
-    private static final String TAG = DeleteDataJobService.class.getSimpleName();
 
     private static final int DELETE_DATA_JOB_ID = 101;
 
@@ -49,8 +43,6 @@ public class DeleteDataJobService extends JobService {
     @Inject
     EventUseCase eventUseCase;
 
-    protected final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     @Override
     public void onCreate() {
         trippleAApplication.getDiComponent().inject(this);
@@ -65,7 +57,6 @@ public class DeleteDataJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        compositeDisposable.clear();
         return true;
     }
 
@@ -75,9 +66,9 @@ public class DeleteDataJobService extends JobService {
             return;
         }
 
-//        if (isJobServiceOn(jobScheduler)) {
-//            return;
-//        }
+        if (isJobServiceOn(jobScheduler)) {
+            return;
+        }
 
         jobScheduler.cancel(DELETE_DATA_JOB_ID);
 
@@ -107,16 +98,13 @@ public class DeleteDataJobService extends JobService {
     }
 
     private void deleteData(JobParameters params) {
-        checkDeleteExcessNews(params);
+        checkDeleteExcessNews();
         checkDeleteExcessEvents();
         jobFinished(params, false);
     }
 
-    private void checkDeleteExcessNews(JobParameters jobParameters) {
-        final List<NewsArticle> newsArticles = new ArrayList<>();
-        compositeDisposable.add(newsArticleUseCase.readAllLocal()
-                .subscribe(newsArticles::addAll,
-                        e -> onError(jobParameters, e)));
+    private void checkDeleteExcessNews() {
+        final List<NewsArticle> newsArticles = newsArticleUseCase.readAllLocal().blockingFirst();
 
         if (newsArticles.size() > NUMBER_OF_NEWS_TO_KEEP) {
             deleteExcessNews(newsArticles);
@@ -149,11 +137,6 @@ public class DeleteDataJobService extends JobService {
         }
 
         eventUseCase.delete(eventsToBeDeleted).blockingSubscribe();
-    }
-
-    private void onError(JobParameters jobParameters, Throwable throwable) {
-        jobFinished(jobParameters, true);
-        Log.e(TAG, throwable.toString());
     }
 
     private class NewsArticleDateComparator implements Comparator<NewsArticle> {
