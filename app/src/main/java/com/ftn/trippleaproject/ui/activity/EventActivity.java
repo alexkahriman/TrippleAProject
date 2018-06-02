@@ -22,10 +22,15 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentByTag;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @EActivity(R.layout.activity_event)
 public class EventActivity extends AppCompatActivity implements MapFragment.MapFragmentActionListener {
 
     public static final int REQUEST_CHECK_SETTINGS = 33;
+
+    private static final int MINUTES_UNTIL_EVENT_CAN_BE_EDITED = -30;
 
     @Extra
     Event event;
@@ -54,13 +59,25 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
 
         fragmentTransaction.commit();
 
-        checkLoggedInUser();
+        checkEventCanBeEdited();
+    }
+
+    private void checkEventCanBeEdited() {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, MINUTES_UNTIL_EVENT_CAN_BE_EDITED);
+        if (event.getDate().after(calendar.getTime())) {
+            checkLoggedInUser();
+        } else {
+            edit.setVisibility(View.GONE);
+        }
     }
 
     private void checkLoggedInUser() {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null && acct.getEmail() != null) {
             edit.setVisibility((acct.getEmail().equals(event.getOwner())) ? View.VISIBLE : View.GONE);
+        } else {
+            edit.setVisibility(View.GONE);
         }
     }
 

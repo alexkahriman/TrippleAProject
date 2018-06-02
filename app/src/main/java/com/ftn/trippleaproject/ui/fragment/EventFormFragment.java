@@ -178,43 +178,47 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         }
 
         if (edit) {
-            final Event event = new Event(this.event.getId(),
-                    title.getText().toString(),
-                    description.getText().toString(),
-                    calendar.getTime(),
-                    endCalendar.getTime(),
-                    new Event.Location(mapFragment.getLocation().getLatitude(),
-                            mapFragment.getLocation().getLongitude()));
-
-            eventUseCase.patch(event).subscribeOn(Schedulers.io()).subscribe(object -> {
-                        if (eventFormFragmentActionListener != null) {
-                            eventFormFragmentActionListener.finishActivity();
-                        }
-                    },
-                    e -> {
-                        if (eventFormFragmentActionListener != null) {
-                            eventFormFragmentActionListener.finishActivityOnError();
-                        }
-                    });
+            patchEvent();
         } else {
-            final Event event = new Event(1,
-                    title.getText().toString(),
-                    description.getText().toString(),
-                    calendar.getTime(),
-                    endCalendar.getTime(),
-                    new Event.Location(mapFragment.getLocation().getLatitude(),
-                            mapFragment.getLocation().getLongitude()));
+            createEvent();
+        }
+    }
 
-            eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> {
-                        if (eventFormFragmentActionListener != null) {
-                            eventFormFragmentActionListener.finishActivity();
-                        }
-                    },
-                    e -> {
-                        if (eventFormFragmentActionListener != null) {
-                            eventFormFragmentActionListener.finishActivityOnError();
-                        }
-                    });
+    private void createEvent() {
+        final Event event = new Event(1,
+                title.getText().toString(),
+                description.getText().toString(),
+                calendar.getTime(),
+                endCalendar.getTime(),
+                new Event.Location(mapFragment.getLocation().getLatitude(),
+                        mapFragment.getLocation().getLongitude()));
+
+        eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
+                e -> onError());
+    }
+
+    private void patchEvent() {
+        final Event event = new Event(this.event.getId(),
+                title.getText().toString(),
+                description.getText().toString(),
+                calendar.getTime(),
+                endCalendar.getTime(),
+                new Event.Location(mapFragment.getLocation().getLatitude(),
+                        mapFragment.getLocation().getLongitude()));
+
+        eventUseCase.patch(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
+                e -> onError());
+    }
+
+    private void onSuccess() {
+        if (eventFormFragmentActionListener != null) {
+            eventFormFragmentActionListener.finishActivity();
+        }
+    }
+
+    private void onError() {
+        if (eventFormFragmentActionListener != null) {
+            eventFormFragmentActionListener.finishActivityOnError();
         }
     }
 
