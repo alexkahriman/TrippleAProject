@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBuIBjoGJXcTK6LXlgZ-4GZpBLM1j3uo-A"/>
+            android:value="MAPS_KEY"/>
 
         <activity android:name=".ui.activity.LoginActivity_"
                   android:noHistory="true">
