@@ -17,14 +17,15 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.system.PrefManager_;
+import com.ftn.trippleaproject.ui.activity.LoginActivity_;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-
-import com.ftn.trippleaproject.R;
-import com.ftn.trippleaproject.system.PrefManager_;
 
 @EFragment(R.layout.fragment_settings)
 public class SettingsFragment extends Fragment {
@@ -37,14 +38,16 @@ public class SettingsFragment extends Fragment {
     @Pref
     PrefManager_ prefManager;
 
+    private Context context;
+
     private AlertDialog tosDialog;
 
     private AlertDialog aboutDialog;
 
     @AfterViews
     void init() {
-
         checkBox.setChecked(prefManager.startWithEvents().get());
+        this.context = getContext();
         buildTosDialog();
         buildAboutDialog();
     }
@@ -54,6 +57,13 @@ public class SettingsFragment extends Fragment {
         if (settingsNavigationSelected != null) {
             settingsNavigationSelected.newsFeedSelected();
         }
+    }
+
+    @Click
+    void logoutCardView() {
+        LoginActivity_.intent(this)
+                .flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
+                .start();
     }
 
     @Click
@@ -103,12 +113,11 @@ public class SettingsFragment extends Fragment {
     }
 
     private void buildTosDialog() {
-        Context context = getContext();
         if (context == null) {
             return;
         }
 
-        final String chars = getContext().getResources().getString(R.string.terms_of_service);
+        final String chars = getString(R.string.terms_of_service);
         final SpannableString str = new SpannableString(chars);
         str.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimary)), 0, chars.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -116,7 +125,7 @@ public class SettingsFragment extends Fragment {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setTitle(str);
 
-        final RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.dialog_terms_of_service, null);
+        final RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.dialog_terms_of_service, null);
         final Button ok = relativeLayout.findViewById(R.id.ok);
         final TextView email = relativeLayout.findViewById(R.id.email);
         final TextView phone = relativeLayout.findViewById(R.id.phone);
@@ -145,10 +154,10 @@ public class SettingsFragment extends Fragment {
         dialogBuilder.setView(relativeLayout);
         tosDialog = dialogBuilder.create();
 
-        int textColorId = getResources().getIdentifier("alertMessage", "id", "android");
+        final int textColorId = getResources().getIdentifier("alertMessage", "id", "android");
         final TextView textColor = tosDialog.findViewById(textColorId);
         if (textColor != null) {
-            textColor.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            textColor.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
         final Window window = tosDialog.getWindow();
@@ -158,12 +167,11 @@ public class SettingsFragment extends Fragment {
     }
 
     private void buildAboutDialog() {
-        Context context = getContext();
         if (context == null) {
             return;
         }
 
-        final String chars = getContext().getResources().getString(R.string.about);
+        final String chars = getString(R.string.about);
         final SpannableString str = new SpannableString(chars);
         str.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimary)), 0, chars.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -171,7 +179,7 @@ public class SettingsFragment extends Fragment {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setTitle(str);
 
-        final RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.dialog_terms_of_service, null);
+        final RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.dialog_terms_of_service, null);
         final Button ok = relativeLayout.findViewById(R.id.ok);
         final TextView email = relativeLayout.findViewById(R.id.email);
         final TextView phone = relativeLayout.findViewById(R.id.phone);
@@ -200,10 +208,10 @@ public class SettingsFragment extends Fragment {
         dialogBuilder.setView(relativeLayout);
         aboutDialog = dialogBuilder.create();
 
-        int textColorId = getResources().getIdentifier("alertMessage", "id", "android");
+        final int textColorId = getResources().getIdentifier("alertMessage", "id", "android");
         final TextView textColor = aboutDialog.findViewById(textColorId);
         if (textColor != null) {
-            textColor.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            textColor.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
         final Window window = aboutDialog.getWindow();
