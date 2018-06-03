@@ -19,6 +19,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.FragmentByTag;
+import org.androidannotations.annotations.IgnoreWhen;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -26,10 +27,12 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_event_form)
-public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener {
+public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener, Consumer<Event>{
 
     private static final String MAP_FRAGMENT_TAG = "mapFragment";
 
@@ -78,6 +81,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     @AfterViews
     void init() {
         application.getDiComponent().inject(this);
+        eventUseCase.read(event.getId()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 
         final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
@@ -101,7 +105,9 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         if (event == null) {
             return;
         }
+    }
 
+    private void setEventUI() {
         title.setText(event.getTitle());
         description.setText(event.getDescription());
 
@@ -260,6 +266,13 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     @Override
     public void permissionDenied() {
         eventFormFragmentActionListener.finishActivity();
+    }
+
+    @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
+    @Override
+    public void accept(Event event) {
+        this.event = event;
+        setEventUI();
     }
 
     public interface EventFormFragmentActionListener {
