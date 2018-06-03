@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,6 +43,15 @@ public class DateTimeUtilityTest {
 
         // Assert
         assertThat(date, equalTo(this.date));
+    }
+
+    @Test
+    public void testConvertMongoDateFail() {
+        //Act
+        final Date date = dateTimeUtility.convertMongoDate("Testing to fail");
+
+        // Assert
+        assertThat(date, not(this.date));
     }
 
     @Test

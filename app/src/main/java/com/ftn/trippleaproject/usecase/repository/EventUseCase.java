@@ -63,7 +63,6 @@ public class EventUseCase {
                             onError(e);
                             observer.onError(e);
                         });
-
             }
         }.subscribeOn(Schedulers.io());
     }

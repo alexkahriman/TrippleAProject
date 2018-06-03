@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subscribers.TestSubscriber;
 
@@ -29,10 +30,10 @@ import static org.mockito.Mockito.when;
 public class EventUseCaseTest {
 
     @Mock
-    EventLocalDao eventLocalDao;
+    private EventLocalDao eventLocalDao;
 
     @Mock
-    EventRemoteDao eventRemoteDao;
+    private EventRemoteDao eventRemoteDao;
 
     private EventUseCase eventUseCase;
 
@@ -64,11 +65,114 @@ public class EventUseCaseTest {
 
         // Assert
         verify(eventLocalDao, times(2)).read();
+        verify(eventRemoteDao, times(2)).read();
         eventsFlowable.assertNoErrors().assertValue(foundTestEvents -> {
             assertThat(foundTestEvents.get(0).getId(), equalTo(1L));
             assertThat(foundTestEvents.get(1).getId(), equalTo(2L));
             return true;
         });
         assertThat(localEvents.size(), equalTo(2));
+    }
+
+    @Test
+    public void testReadByIdLocal() {
+        // Arrange
+        when(eventLocalDao.read(ArgumentMatchers.any(Long.class))).thenReturn(Flowable.just(event));
+
+        // Act
+        final TestSubscriber<Event> eventFlowable = eventUseCase.read(event.getId()).test();
+        final Event localEvent = eventUseCase.read(event.getId()).blockingFirst();
+
+        // Assert
+        verify(eventLocalDao, times(2)).read(event.getId());
+        eventFlowable.assertNoErrors().assertValue(foundTestEvent -> {
+            assertThat(foundTestEvent.getId(), equalTo(1L));
+            return true;
+        });
+        assertThat(localEvent.getId(), equalTo(1L));
+    }
+
+    @Test
+    public void testRead() {
+        // Arrange
+        List<Event> testEvents = new ArrayList<>();
+        testEvents.add(event);
+        testEvents.add(event1);
+
+        when(eventRemoteDao.read()).thenReturn(Single.just(testEvents));
+
+        // Act
+        final TestSubscriber<List<Event>> eventsFlowable = eventUseCase.read().test();
+        final List<Event> localEvents = eventUseCase.read().blockingFirst();
+
+        // Assert
+        verify(eventLocalDao, times(4)).create(ArgumentMatchers.any(Event.class));
+        verify(eventRemoteDao, times(2)).read();
+        eventsFlowable.assertNoErrors().assertValue(foundTestEvents -> {
+            assertThat(foundTestEvents.get(0).getId(), equalTo(1L));
+            assertThat(foundTestEvents.get(1).getId(), equalTo(2L));
+            return true;
+        });
+        assertThat(localEvents.size(), equalTo(2));
+    }
+
+    @Test
+    public void testCreate() {
+        // Arrange
+        when(eventRemoteDao.create(ArgumentMatchers.any(Event.class))).thenReturn(Single.just(event));
+
+        // Act
+        eventUseCase.create(event).blockingSubscribe();
+
+        // Assert
+        verify(eventRemoteDao, times(1)).create(event);
+        verify(eventLocalDao, times(1)).create(event);
+    }
+
+    @Test
+    public void testCreateFail() {
+        // Arrange
+        when(eventRemoteDao.create(ArgumentMatchers.any(Event.class))).thenReturn(Single.error(new Throwable()));
+
+        // Act
+        try {
+            eventUseCase.create(event).blockingSubscribe();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Assert
+        verify(eventRemoteDao, times(1)).create(event);
+        verify(eventLocalDao, times(0)).create(event);
+    }
+
+    @Test
+    public void testPatch() {
+        // Arrange
+        when(eventRemoteDao.patch(ArgumentMatchers.any(Event.class))).thenReturn(Single.just(event));
+
+        // Act
+        eventUseCase.patch(event).blockingSubscribe();
+
+        // Assert
+        verify(eventRemoteDao, times(1)).patch(event);
+        verify(eventLocalDao, times(1)).create(event);
+    }
+
+    @Test
+    public void testPatchFail() {
+        // Arrange
+        when(eventRemoteDao.patch(ArgumentMatchers.any(Event.class))).thenReturn(Single.error(new Throwable()));
+
+        // Act
+        try {
+            eventUseCase.patch(event).blockingSubscribe();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Assert
+        verify(eventRemoteDao, times(1)).patch(event);
+        verify(eventLocalDao, times(0)).create(event);
     }
 }
