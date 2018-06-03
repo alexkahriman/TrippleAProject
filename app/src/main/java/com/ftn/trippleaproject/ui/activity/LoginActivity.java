@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
-import com.ftn.trippleaproject.usecase.repository.AuthenticationUseCase;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,8 +21,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 
-import javax.inject.Inject;
-
 /**
  * A login screen that offers login via email/password.
  */
@@ -37,9 +34,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @App
     TrippleAApplication application;
-
-    @Inject
-    AuthenticationUseCase authenticationUseCase;
 
     @AfterViews
     void init() {

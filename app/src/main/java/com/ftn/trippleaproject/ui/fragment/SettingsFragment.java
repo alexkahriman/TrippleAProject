@@ -17,19 +17,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.system.PrefManager_;
 import com.ftn.trippleaproject.ui.activity.LoginActivity_;
+import com.ftn.trippleaproject.usecase.repository.AuthenticationUseCase;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import javax.inject.Inject;
+
 @EFragment(R.layout.fragment_settings)
 public class SettingsFragment extends Fragment {
 
-    private SettingsNavigationSelected settingsNavigationSelected;
+    @App
+    TrippleAApplication application;
 
     @ViewById
     CheckBox checkBox;
@@ -37,14 +43,20 @@ public class SettingsFragment extends Fragment {
     @Pref
     PrefManager_ prefManager;
 
+    private SettingsNavigationSelected settingsNavigationSelected;
+
     private Context context;
 
     private AlertDialog tosDialog;
 
     private AlertDialog aboutDialog;
 
+    @Inject
+    AuthenticationUseCase authenticationUseCase;
+
     @AfterViews
     void init() {
+        application.getDiComponent().inject(this);
         checkBox.setChecked(prefManager.startWithEvents().get());
         this.context = getContext();
         buildTosDialog();
@@ -60,6 +72,7 @@ public class SettingsFragment extends Fragment {
 
     @Click
     void logoutCardView() {
+        authenticationUseCase.deleteToken();
         LoginActivity_.intent(this)
                 .flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
                 .start();
