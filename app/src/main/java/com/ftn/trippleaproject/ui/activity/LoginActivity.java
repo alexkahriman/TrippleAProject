@@ -52,19 +52,15 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
         googleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
     }
 
     void updateUI(GoogleSignInAccount account) {
-        if (account != null) {
+        if (account != null && account.getIdToken() != null) {
             HomeActivity_.intent(this).start();
             Log.i(TAG, account.getIdToken());
-            authenticationUseCase.writeToken(account.getIdToken()).subscribe();
             Toast.makeText(
                     getApplicationContext(),
-                    "Successfuly signed in",
+                    "Successfully signed in",
                     Toast.LENGTH_SHORT
             ).show();
         } else {
