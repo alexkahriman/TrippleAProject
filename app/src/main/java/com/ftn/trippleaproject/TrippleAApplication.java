@@ -25,7 +25,7 @@ public class TrippleAApplication extends Application {
         // TODO: This seems to be deprecated. Fix this when time allows for it.
         diComponent = DaggerDiComponent.builder()
                 .useCaseModule(new UseCaseModule())
-                .remoteRepositoryModule(new RemoteRepositoryModule())
+                .remoteRepositoryModule(new RemoteRepositoryModule(this))
                 .localRepositoryModule(new LocalRepositoryModule(this))
                 .build();
 

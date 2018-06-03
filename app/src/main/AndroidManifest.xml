@@ -19,12 +19,11 @@
         android:theme="@style/AppTheme">
 
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="GOOGLE_MAPS_KEY"/>
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBuIBjoGJXcTK6LXlgZ-4GZpBLM1j3uo-A"/>
 
-        <activity
-            android:name=".ui.activity.LoginActivity_"
-            android:noHistory="true">
+        <activity android:name=".ui.activity.LoginActivity_"
+                  android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
