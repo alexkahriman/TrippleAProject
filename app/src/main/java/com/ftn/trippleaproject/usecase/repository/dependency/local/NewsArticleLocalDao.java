@@ -15,5 +15,11 @@ public interface NewsArticleLocalDao {
 
     void create(List<NewsArticle> newsArticles);
 
+    void create(NewsArticle newsArticle);
+
     void update(NewsArticle newsArticle);
+
+    void delete(List<NewsArticle> newsArticles);
+
+    void delete(NewsArticle newsArticle);
 }

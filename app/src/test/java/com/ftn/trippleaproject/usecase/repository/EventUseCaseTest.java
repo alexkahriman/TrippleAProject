@@ -1,6 +1,9 @@
 package com.ftn.trippleaproject.usecase.repository;
 
+import android.text.format.DateUtils;
+
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 
@@ -14,12 +17,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subscribers.TestSubscriber;
 
+import static com.ftn.trippleaproject.system.DeleteDataJobService.NUMBER_OF_EVENTS_TO_KEEP;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.times;
@@ -38,10 +43,10 @@ public class EventUseCaseTest {
     private EventUseCase eventUseCase;
 
     private final Event event = new Event(1, "owner", "title", "desc",
-            new Date(), new Date(), new Event.Location(1, 1));
+            new Date(), new Date(new Date().getTime() + TimeUnit.DAYS.toMillis(1)), new Location(1, 1));
 
     private final Event event1 = new Event(2, "owner1", "title1", "desc1",
-            new Date(), new Date(), new Event.Location(2, 2));
+            new Date(), new Date(), new Location(2, 2));
 
     @Before
     public void setUp() {
@@ -57,7 +62,6 @@ public class EventUseCaseTest {
         testEvents.add(event1);
 
         when(eventLocalDao.read()).thenReturn(Flowable.just(testEvents));
-        when(eventRemoteDao.read()).thenReturn(Single.just(testEvents));
 
         // Act
         final TestSubscriber<List<Event>> eventsFlowable = eventUseCase.readAllLocal().test();
@@ -65,7 +69,6 @@ public class EventUseCaseTest {
 
         // Assert
         verify(eventLocalDao, times(2)).read();
-        verify(eventRemoteDao, times(2)).read();
         eventsFlowable.assertNoErrors().assertValue(foundTestEvents -> {
             assertThat(foundTestEvents.get(0).getId(), equalTo(1L));
             assertThat(foundTestEvents.get(1).getId(), equalTo(2L));
@@ -93,20 +96,21 @@ public class EventUseCaseTest {
     }
 
     @Test
-    public void testRead() {
+    public void testReadLocalAndUpdate() {
         // Arrange
         List<Event> testEvents = new ArrayList<>();
         testEvents.add(event);
         testEvents.add(event1);
 
         when(eventRemoteDao.read()).thenReturn(Single.just(testEvents));
+        when(eventLocalDao.read()).thenReturn(Flowable.just(testEvents));
 
         // Act
-        final TestSubscriber<List<Event>> eventsFlowable = eventUseCase.read().test();
-        final List<Event> localEvents = eventUseCase.read().blockingFirst();
+        final TestSubscriber<List<Event>> eventsFlowable = eventUseCase.readAllLocalAndUpdate().test();
+        final List<Event> localEvents = eventUseCase.readAllLocalAndUpdate().blockingFirst();
 
         // Assert
-        verify(eventLocalDao, times(4)).create(ArgumentMatchers.any(Event.class));
+        verify(eventLocalDao, times(2)).create(testEvents);
         verify(eventRemoteDao, times(2)).read();
         eventsFlowable.assertNoErrors().assertValue(foundTestEvents -> {
             assertThat(foundTestEvents.get(0).getId(), equalTo(1L));
@@ -114,6 +118,33 @@ public class EventUseCaseTest {
             return true;
         });
         assertThat(localEvents.size(), equalTo(2));
+    }
+
+    @Test
+    public void testReadLocalAndUpdateOverLimit() {
+        // Arrange
+        List<Event> testEvents = new ArrayList<>();
+        for (int i = 0; i < NUMBER_OF_EVENTS_TO_KEEP / 2 + 1; i++) {
+            testEvents.add(event);
+            testEvents.add(event1);
+        }
+
+        when(eventRemoteDao.read()).thenReturn(Single.just(testEvents));
+        when(eventLocalDao.read()).thenReturn(Flowable.just(testEvents));
+
+        // Act
+        final TestSubscriber<List<Event>> eventsFlowable = eventUseCase.readAllLocalAndUpdate().test();
+        final List<Event> localEvents = eventUseCase.readAllLocalAndUpdate().blockingFirst();
+
+        // Assert
+        verify(eventLocalDao, times(42)).create(ArgumentMatchers.any(Event.class));
+        verify(eventRemoteDao, times(2)).read();
+        eventsFlowable.assertNoErrors().assertValue(foundTestEvents -> {
+            assertThat(foundTestEvents.get(0).getId(), equalTo(1L));
+            assertThat(foundTestEvents.get(1).getId(), equalTo(2L));
+            return true;
+        });
+        assertThat(localEvents.size(), equalTo(42));
     }
 
     @Test
@@ -174,5 +205,28 @@ public class EventUseCaseTest {
         // Assert
         verify(eventRemoteDao, times(1)).patch(event);
         verify(eventLocalDao, times(0)).create(event);
+    }
+
+    @Test
+    public void testDelete() {
+        // Act
+        eventUseCase.delete(event).blockingSubscribe();
+
+        // Assert
+        verify(eventLocalDao, times(1)).delete(event);
+    }
+
+    @Test
+    public void testDeleteBatch() {
+        // Arrange
+        List<Event> testEvents = new ArrayList<>();
+        testEvents.add(event);
+        testEvents.add(event1);
+
+        // Act
+        eventUseCase.delete(testEvents).blockingSubscribe();
+
+        // Assert
+        verify(eventLocalDao, times(1)).delete(testEvents);
     }
 }

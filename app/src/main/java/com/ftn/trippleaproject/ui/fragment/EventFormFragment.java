@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 
@@ -32,7 +33,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_event_form)
-public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener, Consumer<Event>{
+public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener, Consumer<Event> {
 
     private static final String MAP_FRAGMENT_TAG = "mapFragment";
 
@@ -177,7 +178,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     }
 
     @Click
-    void add() {
+    void confirm() {
         if (!checkEditTextNullValues()) {
             showToast("Please fill in all required data");
             return;
@@ -196,7 +197,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
                 description.getText().toString(),
                 calendar.getTime(),
                 endCalendar.getTime(),
-                new Event.Location(mapFragment.getLocation().getLatitude(),
+                new Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
 
         eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
@@ -209,9 +210,8 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
                 description.getText().toString(),
                 calendar.getTime(),
                 endCalendar.getTime(),
-                new Event.Location(mapFragment.getLocation().getLatitude(),
+                new Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
-
         eventUseCase.patch(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
                 e -> onError());
     }

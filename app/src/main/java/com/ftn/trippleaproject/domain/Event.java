@@ -17,6 +17,8 @@ public class Event extends BaseModel implements Serializable {
 
     private Location location;
 
+    public Event() { }
+
     public Event(long id, String title, String description, Date date, Date endDate, Location location) {
         super(id);
         this.title = title;
@@ -82,44 +84,5 @@ public class Event extends BaseModel implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public static class Location implements Serializable {
-
-        public double latitude;
-
-        public double longitude;
-
-        public Location() {
-        }
-
-        public Location(double latitude, double longitude) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-
-        public double getLatitude() {
-            return latitude;
-        }
-
-        public void setLatitude(double latitude) {
-            this.latitude = latitude;
-        }
-
-        public double getLongitude() {
-            return longitude;
-        }
-
-        public void setLongitude(double longitude) {
-            this.longitude = longitude;
-        }
-
-        @Override
-        public String toString() {
-            return "Location{" +
-                    "latitude=" + latitude +
-                    ", longitude=" + longitude +
-                    '}';
-        }
     }
 }

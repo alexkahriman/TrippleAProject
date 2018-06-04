@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
 
 import org.androidannotations.annotations.App;
@@ -70,7 +71,7 @@ public class EventOnMapItemView extends RelativeLayout {
         void eventSelected(Event event);
     }
 
-    private String getGeoLocation(Event.Location location) {
+    private String getGeoLocation(Location location) {
         final String cityName = "Current location";
         final Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {

@@ -3,6 +3,7 @@
     package="com.ftn.trippleaproject">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -19,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBuIBjoGJXcTK6LXlgZ-4GZpBLM1j3uo-A" />
+            android:value="MAPS_KEY" />
 
         <activity
             android:name=".ui.activity.LoginActivity_"
@@ -36,6 +37,16 @@
         <activity android:name=".ui.activity.EventFormActivity_" />
         <activity android:name=".ui.activity.HomeActivity_" />
         <activity android:name=".ui.activity.EventsOnMapActivity_" />
+
+        <service
+            android:name=".system.DeleteDataJobService_"
+            android:label="Delete data job service"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".system.AlarmBroadcastReceiver_"
+            android:enabled="true" />
+
     </application>
 
 </manifest>
