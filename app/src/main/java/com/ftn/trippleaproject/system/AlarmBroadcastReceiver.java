@@ -31,7 +31,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
     @ReceiverAction(actions = CHANNEL_ID)
     void showNotification(
-            @ReceiverAction.Extra("event.id") String sid,
+            @ReceiverAction.Extra("event.id") long id,
             @ReceiverAction.Extra("event.title") String title,
             @ReceiverAction.Extra("event.description") String description,
             Context context,
@@ -53,8 +53,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                 .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0)) // necessary evil
                 .build();
 
-        final int id = (sid == null) ? 0 : Integer.valueOf(sid);
-        notificationManager.notify(id, notification);
+        notificationManager.notify((int) id, notification);
     }
 
 
