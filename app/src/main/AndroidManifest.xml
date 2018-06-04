@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="MAPS_KEY"/>
+            android:value="MAP_KEY" />
 
         <activity android:name=".ui.activity.LoginActivity_"
                   android:noHistory="true">
@@ -40,6 +40,10 @@
             android:name=".system.DeleteDataJobService_"
             android:label="Delete data job service"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".system.AlarmBroadcastReceiver_"
+            android:enabled="true" />
 
     </application>
 

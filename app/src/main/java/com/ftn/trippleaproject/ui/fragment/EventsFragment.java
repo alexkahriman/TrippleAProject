@@ -1,5 +1,8 @@
 package com.ftn.trippleaproject.ui.fragment;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.system.AlarmBroadcastReceiver_;
 import com.ftn.trippleaproject.ui.activity.EventActivity_;
 import com.ftn.trippleaproject.ui.activity.EventFormActivity_;
 import com.ftn.trippleaproject.ui.adapter.EventsAdapter;
@@ -19,9 +23,11 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.IgnoreWhen;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -44,9 +50,11 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
     @Inject
     EventUseCase eventUseCase;
 
+    @SystemService
+    AlarmManager alarmManager;
+
     @AfterViews
     void init() {
-
         application.getDiComponent().inject(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -60,7 +68,21 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
     @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
     @Override
     public void accept(List<Event> events) throws Exception {
+        final String action = getString(R.string.alarm_id);
         eventsAdapter.setEvents(events);
+        for (Event event : events) {
+            if (event.getEndDate().getTime() > System.currentTimeMillis()) {
+                final Intent intent = new Intent(this.getContext(), AlarmBroadcastReceiver_.class);
+                intent.setAction(action);
+                intent.putExtra("event.id", event.getId());
+                intent.putExtra("event.title", event.getTitle());
+                intent.putExtra("event.description", event.getDescription());
+
+                final PendingIntent pendingIntent =
+                        PendingIntent.getBroadcast(this.getContext(), (int) event.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, event.getDate().getTime() - AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
+            }
+        }
     }
 
     @Click
