@@ -72,9 +72,9 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
     }
 
     private void checkLoggedInUser() {
-        final GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null && acct.getEmail() != null) {
-            edit.setVisibility((acct.getEmail().equals(event.getOwner())) ? View.VISIBLE : View.GONE);
+        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null && account.getEmail() != null) {
+            edit.setVisibility((account.getEmail().equals(event.getOwner())) ? View.VISIBLE : View.GONE);
         } else {
             edit.setVisibility(View.GONE);
         }
