@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/white"
     android:padding="@dimen/default_padding">
 
     <ScrollView
@@ -75,6 +75,6 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/round_button"
         android:text="@string/ok"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/white" />
 
 </RelativeLayout>

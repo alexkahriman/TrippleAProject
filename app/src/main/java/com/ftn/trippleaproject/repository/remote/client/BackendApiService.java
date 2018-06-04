@@ -10,6 +10,7 @@ import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
@@ -26,4 +27,7 @@ public interface BackendApiService {
 
     @POST("events")
     Single<EventDto> createEvent(@Body EventDto event);
+
+    @PATCH("events")
+    Single<EventDto> patchEvent(@Body EventDto event);
 }

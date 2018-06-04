@@ -159,7 +159,7 @@ public class SettingsFragment extends Fragment {
 
         final Window window = tosDialog.getWindow();
         if (window != null) {
-            window.setBackgroundDrawableResource(R.drawable.round_button);
+            window.setBackgroundDrawableResource(R.drawable.round_dialog);
         }
     }
 
@@ -198,7 +198,7 @@ public class SettingsFragment extends Fragment {
 
         final Window window = aboutDialog.getWindow();
         if (window != null) {
-            window.setBackgroundDrawableResource(R.drawable.round_button);
+            window.setBackgroundDrawableResource(R.drawable.round_dialog);
         }
     }
 

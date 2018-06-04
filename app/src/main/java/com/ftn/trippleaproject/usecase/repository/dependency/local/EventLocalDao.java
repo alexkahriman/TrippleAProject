@@ -21,4 +21,6 @@ public interface EventLocalDao {
     void delete(List<Event> events);
 
     Flowable<List<Event>> read();
+
+    Flowable<Event> read(long id);
 }

@@ -36,6 +36,12 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
                 .map(this::convertEventDtoToEvent).subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Single<Event> patch(Event event) {
+        return backendApiService.patchEvent(convertEventToEventDto(event)).onErrorReturn(throwable -> null)
+                .map(this::convertEventDtoToEvent).subscribeOn(Schedulers.io());
+    }
+
     private List<Event> convertEventDtosToEvents(List<EventDto> eventDtos) {
         final List<Event> events = new ArrayList<>();
 

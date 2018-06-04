@@ -25,6 +25,9 @@ public interface EventDao {
     @Query("SELECT * FROM event")
     Flowable<List<EventDb>> readAll();
 
+    @Query("SELECT * FROM event WHERE id = :id LIMIT 1")
+    Flowable<EventDb> read(long id);
+
     @Delete
     void delete(EventDb... eventDb);
 }
