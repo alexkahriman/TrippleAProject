@@ -90,6 +90,7 @@ public class EventsOnMapFragment extends Fragment implements EventOnMapItemView.
         eventsOnMapAdapter.setEventOnMapActionListener(this);
 
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(eventsOnMapAdapter);
 
@@ -113,6 +114,13 @@ public class EventsOnMapFragment extends Fragment implements EventOnMapItemView.
 
     private void highlightEventOnMap(int position) {
         if (position != RecyclerView.NO_POSITION) {
+            if (currentMarker != null
+                    && currentMarker.hashCode() == markers.get(position).hashCode()) {
+                return;
+            }
+            if (currentMarker == null) {
+                currentMarker = markers.get(position);
+            }
             previousMarker = currentMarker;
             currentMarker = markers.get(position);
             previousMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
@@ -145,7 +153,6 @@ public class EventsOnMapFragment extends Fragment implements EventOnMapItemView.
         }
 
         previousMarker = markers.get(0);
-        currentMarker = markers.get(0);
         highlightEventOnMap(0);
     }
 }
