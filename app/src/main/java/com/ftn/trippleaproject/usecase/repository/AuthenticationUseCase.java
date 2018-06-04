@@ -24,4 +24,8 @@ public class AuthenticationUseCase {
             }
         }.subscribeOn(Schedulers.io());
     }
+
+    public void deleteToken() {
+        authenticationRemoteDao.deleteToken();
+    }
 }

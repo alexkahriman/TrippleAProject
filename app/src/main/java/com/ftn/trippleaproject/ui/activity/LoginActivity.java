@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
-import com.ftn.trippleaproject.usecase.repository.AuthenticationUseCase;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -20,8 +19,7 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
-
-import javax.inject.Inject;
+import org.androidannotations.annotations.UiThread;
 
 /**
  * A login screen that offers login via email/password.
@@ -36,9 +34,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @App
     TrippleAApplication application;
-
-    @Inject
-    AuthenticationUseCase authenticationUseCase;
 
     @AfterViews
     void init() {
@@ -58,17 +53,9 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null && account.getIdToken() != null) {
             HomeActivity_.intent(this).start();
             Log.i(TAG, account.getIdToken());
-            Toast.makeText(
-                    getApplicationContext(),
-                    "Successfully signed in",
-                    Toast.LENGTH_SHORT
-            ).show();
+            showToast("Successfully signed in");
         } else {
-            Toast.makeText(
-                    getApplicationContext(),
-                    getString(R.string.failed_login_message),
-                    Toast.LENGTH_SHORT
-            ).show();
+            showToast(getString(R.string.failed_login_message));
         }
     }
 
@@ -92,6 +79,11 @@ public class LoginActivity extends AppCompatActivity {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }
+    }
+
+    @UiThread
+    void showToast(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 }
 

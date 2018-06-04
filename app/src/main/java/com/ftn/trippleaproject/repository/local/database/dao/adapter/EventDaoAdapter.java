@@ -20,16 +20,29 @@ public class EventDaoAdapter implements EventLocalDao {
 
     @Override
     public void create(Event event) {
-        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
-                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
-        eventDao.create(eventDb);
+        eventDao.create(convertEventToEventDb(event));
+    }
+
+    @Override
+    public void create(List<Event> events) {
+        for (Event event : events) {
+            eventDao.create(convertEventToEventDb(event));
+        }
     }
 
     @Override
     public void update(Event event) {
-        final EventDb eventDb = new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
-                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
-        eventDao.update(eventDb);
+        eventDao.update(convertEventToEventDb(event));
+    }
+
+    @Override
+    public void delete(Event event) {
+        eventDao.delete(convertEventToEventDb(event));
+    }
+
+    @Override
+    public void delete(List<Event> events) {
+        eventDao.delete(convertEventsToEventDbs(events).toArray(new EventDb[events.size()]));
     }
 
     @Override
@@ -56,5 +69,18 @@ public class EventDaoAdapter implements EventLocalDao {
         }
 
         return events;
+    }
+
+    private List<EventDb> convertEventsToEventDbs(List<Event> events) {
+        List<EventDb> eventDbs = new ArrayList<>();
+        for (Event event : events) {
+            eventDbs.add(convertEventToEventDb(event));
+        }
+        return eventDbs;
+    }
+
+    private EventDb convertEventToEventDb(Event event) {
+        return new EventDb(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
+                event.getDate(), event.getEndDate(), event.getLocation().getLatitude(), event.getLocation().getLongitude());
     }
 }

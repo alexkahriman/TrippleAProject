@@ -3,6 +3,7 @@
     package="com.ftn.trippleaproject">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -21,6 +22,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBuIBjoGJXcTK6LXlgZ-4GZpBLM1j3uo-A"/>
 
+
         <activity android:name=".ui.activity.LoginActivity_"
                   android:noHistory="true">
             <intent-filter>
@@ -34,6 +36,12 @@
         <activity android:name=".ui.activity.NewsArticleActivity_" />
         <activity android:name=".ui.activity.EventFormActivity_" />
         <activity android:name=".ui.activity.HomeActivity_" />
+
+        <service
+            android:name=".system.DeleteDataJobService_"
+            android:label="Delete data job service"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 
 </manifest>

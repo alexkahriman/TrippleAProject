@@ -35,16 +35,31 @@ public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
     }
 
     @Override
+    public void create(NewsArticle newsArticle) {
+        newsArticleDao.create(convertToNewsArticleDb(newsArticle));
+    }
+
+    @Override
     public void update(NewsArticle newsArticle) {
         final NewsArticleDb newsArticleDb = convertToNewsArticleDb(newsArticle);
         newsArticleDao.update(newsArticleDb);
+    }
+
+    @Override
+    public void delete(List<NewsArticle> newsArticles) {
+        newsArticleDao.delete(convertToNewsArticleDbs(newsArticles).toArray(new NewsArticleDb[newsArticles.size()]));
+    }
+
+    @Override
+    public void delete(NewsArticle newsArticle) {
+        newsArticleDao.delete(convertToNewsArticleDb(newsArticle));
     }
 
     private List<NewsArticleDb> convertToNewsArticleDbs(List<NewsArticle> newsArticles) {
 
         final List<NewsArticleDb> newsArticlesDbs = new ArrayList<>();
 
-        for (NewsArticle newsArticle: newsArticles) {
+        for (NewsArticle newsArticle : newsArticles) {
             final NewsArticleDb newsArticleDb = convertToNewsArticleDb(newsArticle);
             newsArticlesDbs.add(newsArticleDb);
         }
@@ -56,7 +71,7 @@ public class NewsArticleDaoAdapter implements NewsArticleLocalDao {
 
         final List<NewsArticle> newsArticles = new ArrayList<>();
 
-        for (NewsArticleDb newsArticleDb: newsArticleDbs) {
+        for (NewsArticleDb newsArticleDb : newsArticleDbs) {
             final NewsArticle newsArticle = convertToNewsArticle(newsArticleDb);
             newsArticles.add(newsArticle);
         }

@@ -52,7 +52,7 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(eventsAdapter);
 
-        eventUseCase.readAllLocal().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+        eventUseCase.readAllLocalAndUpdate().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 
         eventsAdapter.setEventActionListener(this);
     }
