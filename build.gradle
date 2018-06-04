@@ -47,4 +47,5 @@ ext {
     JUnitVersion = "4.12"
     TestRunnerVersion = "1.0.1"
     EspressoVersion = "3.0.1"
+    MockitoVersion = "2.15.0"
 }

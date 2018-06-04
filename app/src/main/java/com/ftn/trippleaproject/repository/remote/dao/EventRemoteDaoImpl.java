@@ -54,13 +54,13 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
     private Event convertEventDtoToEvent(EventDto eventDto) {
         return new Event(eventDto.getId(), eventDto.getOwner(), eventDto.getTitle(), eventDto.getDescription(),
-                dateTimeUtility.convertMongoDate(eventDto.getStart()), dateTimeUtility.convertMongoDate(eventDto.getEnd()),
+                dateTimeUtility.convertDate(eventDto.getStart()), dateTimeUtility.convertDate(eventDto.getEnd()),
                 new Location(eventDto.getLat(), eventDto.getLon()));
     }
 
     private EventDto convertEventToEventDto(Event event) {
         return new EventDto(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
                 (float) event.getLocation().getLatitude(), (float) event.getLocation().getLongitude(),
-                dateTimeUtility.convertToMongoDate(event.getDate()), dateTimeUtility.convertToMongoDate(event.getEndDate()));
+                dateTimeUtility.convertToDate(event.getDate()), dateTimeUtility.convertToDate(event.getEndDate()));
     }
 }

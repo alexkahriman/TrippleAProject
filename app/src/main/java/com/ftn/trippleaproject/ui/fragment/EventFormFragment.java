@@ -82,7 +82,6 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     @AfterViews
     void init() {
         application.getDiComponent().inject(this);
-        eventUseCase.read(event.getId()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 
         final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
@@ -106,6 +105,8 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         if (event == null) {
             return;
         }
+
+        eventUseCase.read(event.getId()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
     }
 
     private void setEventUI() {
