@@ -1,6 +1,7 @@
 package com.ftn.trippleaproject.repository.remote.dao.mock;
 
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class EventRemoteDaoMock implements EventRemoteDao {
                     "Description" + i,
                     new Date(),
                     new Date(),
-                    new Event.Location(1, 2)));
+                    new Location(1, 2)));
         }
 
         return Single.just(events);

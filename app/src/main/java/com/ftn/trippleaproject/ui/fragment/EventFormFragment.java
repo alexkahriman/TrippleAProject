@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 
@@ -196,7 +197,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
                 description.getText().toString(),
                 calendar.getTime(),
                 endCalendar.getTime(),
-                new Event.Location(mapFragment.getLocation().getLatitude(),
+                new Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
 
         eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
@@ -209,7 +210,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
                 description.getText().toString(),
                 calendar.getTime(),
                 endCalendar.getTime(),
-                new Event.Location(mapFragment.getLocation().getLatitude(),
+                new Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
 
         eventUseCase.patch(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
