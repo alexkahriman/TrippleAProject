@@ -7,6 +7,8 @@ public abstract class BaseModel implements Serializable {
 
     private long id;
 
+    public BaseModel() { }
+
     public BaseModel(long id) {
         this.id = id;
     }
