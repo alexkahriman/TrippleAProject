@@ -37,7 +37,7 @@ public class DateTimeUtilityTest {
     }
 
     @Test
-    public void testConvertMongoDate() {
+    public void testConvertDate() {
         //Act
         final Date date = dateTimeUtility.convertMongoDate(dateText);
 
@@ -46,7 +46,7 @@ public class DateTimeUtilityTest {
     }
 
     @Test
-    public void testConvertMongoDateFail() {
+    public void testConvertDateFail() {
         //Act
         final Date date = dateTimeUtility.convertMongoDate("Testing to fail");
 
@@ -55,7 +55,7 @@ public class DateTimeUtilityTest {
     }
 
     @Test
-    public void testConvertToMongoDate() {
+    public void testConvertToDate() {
         //Act
         final String dateText = dateTimeUtility.convertToMongoDate(date);
 
