@@ -13,6 +13,7 @@ import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.system.AlarmBroadcastReceiver_;
 import com.ftn.trippleaproject.ui.activity.EventActivity_;
 import com.ftn.trippleaproject.ui.activity.EventFormActivity_;
+import com.ftn.trippleaproject.ui.activity.EventsOnMapActivity_;
 import com.ftn.trippleaproject.ui.adapter.EventsAdapter;
 import com.ftn.trippleaproject.ui.view.EventItemView;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
@@ -92,6 +93,11 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
     @Click
     void addEvent() {
         EventFormActivity_.intent(getContext()).start();
+    }
+
+    @Click
+    void viewAllEvents() {
+        EventsOnMapActivity_.intent(getContext()).start();
     }
 
     @Override

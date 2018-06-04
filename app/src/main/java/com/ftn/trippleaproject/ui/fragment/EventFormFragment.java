@@ -212,7 +212,6 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
                 endCalendar.getTime(),
                 new Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
-
         eventUseCase.patch(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
                 e -> onError());
     }

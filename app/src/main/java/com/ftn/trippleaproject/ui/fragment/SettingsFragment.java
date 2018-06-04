@@ -176,16 +176,10 @@ public class SettingsFragment extends Fragment {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setTitle(str);
 
-        final RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.dialog_terms_of_service, null);
+        final RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.dialog_about, null);
         final Button ok = relativeLayout.findViewById(R.id.ok);
-        final TextView email = relativeLayout.findViewById(R.id.email);
-        final TextView phone = relativeLayout.findViewById(R.id.phone);
 
         ok.setOnClickListener(view -> aboutDialog.dismiss());
-
-        email.setOnClickListener(view -> sendEMail(email.getText().toString()));
-
-        phone.setOnClickListener(view -> callPhone(phone.getText().toString()));
 
         dialogBuilder.setView(relativeLayout);
         aboutDialog = dialogBuilder.create();

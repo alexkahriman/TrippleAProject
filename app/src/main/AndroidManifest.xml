@@ -22,7 +22,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="MAPS_KEY" />
 
-
         <activity
             android:name=".ui.activity.LoginActivity_"
             android:noHistory="true">
@@ -37,6 +36,7 @@
         <activity android:name=".ui.activity.NewsArticleActivity_" />
         <activity android:name=".ui.activity.EventFormActivity_" />
         <activity android:name=".ui.activity.HomeActivity_" />
+        <activity android:name=".ui.activity.EventsOnMapActivity_" />
 
         <service
             android:name=".system.DeleteDataJobService_"
