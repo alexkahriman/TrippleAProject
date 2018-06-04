@@ -14,4 +14,5 @@
     <string name="failed_login_message">Failed to sign in via Google account</string>
     <string name="event_end">Event end</string>
     <string name="event_start">Event start</string>
+    <string name="alarm_id">com.ftm.trippleaproject.alarms</string>
 </resources>

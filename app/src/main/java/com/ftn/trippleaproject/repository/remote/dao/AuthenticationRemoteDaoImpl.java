@@ -23,9 +23,9 @@ public class AuthenticationRemoteDaoImpl implements AuthenticationRemoteDao {
     @Override
     public String readToken() {
         try {
-            final GoogleSignInAccount account = client.silentSignIn().getResult(ApiException.class);
+            final GoogleSignInAccount account = client.silentSignIn().getResult();
             return account.getIdToken();
-        } catch (ApiException e) {
+        } catch (Exception e) {
             Log.w(TAG, e.getMessage());
             return "";
         }
