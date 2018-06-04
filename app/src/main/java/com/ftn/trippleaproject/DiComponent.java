@@ -3,6 +3,7 @@ package com.ftn.trippleaproject;
 import com.ftn.trippleaproject.repository.local.LocalRepositoryModule;
 import com.ftn.trippleaproject.repository.remote.RemoteRepositoryModule;
 import com.ftn.trippleaproject.system.DeleteDataJobService;
+import com.ftn.trippleaproject.system.SystemModule;
 import com.ftn.trippleaproject.ui.activity.LoginActivity;
 import com.ftn.trippleaproject.ui.fragment.EventFormFragment;
 import com.ftn.trippleaproject.ui.fragment.EventFragment;
@@ -17,7 +18,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {UseCaseModule.class, RemoteRepositoryModule.class, LocalRepositoryModule.class})
+@Component(modules = {UseCaseModule.class, RemoteRepositoryModule.class, LocalRepositoryModule.class, SystemModule.class})
 @Singleton
 public interface DiComponent {
 

@@ -41,6 +41,11 @@
             android:label="Delete data job service"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <service
+            android:name=".system.geofence.GeoFenceTransitionsIntentService_"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <receiver
             android:name=".system.AlarmBroadcastReceiver_"
             android:enabled="true" />
