@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="MAPS_KEY" />
+            android:value="AIzaSyBuIBjoGJXcTK6LXlgZ-4GZpBLM1j3uo-A" />
 
         <activity
             android:name=".ui.activity.LoginActivity_"
@@ -32,7 +32,9 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.EventActivity_" />
+        <activity
+            android:name=".ui.activity.EventActivity_"
+            android:launchMode="singleTop" />
         <activity android:name=".ui.activity.NewsArticleActivity_" />
         <activity android:name=".ui.activity.EventFormActivity_" />
         <activity android:name=".ui.activity.HomeActivity_" />

@@ -55,6 +55,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         }
 
         final Intent intent = EventActivity_.intent(context).event(event).get();
+        final PendingIntent pendingIntent = PendingIntent
+                .getActivity(context, (int) event.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         final Notification notification = new NotificationCompat.Builder(context, channelId)
                 .setAutoCancel(true)
@@ -62,7 +64,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
                 .setContentTitle(event.getTitle())
                 .setContentText(event.getDescription())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0)) // necessary evil
+                .setContentIntent(pendingIntent)
                 .build();
 
         notificationManager.notify((int) event.getId(), notification);
