@@ -1,6 +1,7 @@
 package com.ftn.trippleaproject.repository.remote.dao;
 
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.repository.remote.client.BackendApiService;
 import com.ftn.trippleaproject.repository.remote.dto.EventDto;
 import com.ftn.trippleaproject.repository.remote.util.DateTimeUtility;
@@ -48,7 +49,7 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
     private Event convertEventDtoToEvent(EventDto eventDto) {
         return new Event(eventDto.getId(), eventDto.getOwner(), eventDto.getTitle(), eventDto.getDescription(),
                 dateTimeUtility.convertMongoDate(eventDto.getStart()), dateTimeUtility.convertMongoDate(eventDto.getEnd()),
-                new Event.Location(eventDto.getLat(), eventDto.getLon()));
+                new Location(eventDto.getLat(), eventDto.getLon()));
     }
 
     private EventDto convertEventToEventDto(Event event) {
