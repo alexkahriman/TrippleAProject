@@ -66,25 +66,7 @@ public class EventsOnMapFragment extends Fragment implements EventOnMapItemView.
     void init() {
         trippleAApplication.getDiComponent().inject(this);
 
-        if (mapFragment == null) {
-            mapFragment = SupportMapFragment.newInstance();
-            mapFragment.getMapAsync(googleMap -> {
-                map = googleMap;
-                eventUseCase.readAllLocal().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
-
-                map.setOnMarkerClickListener(marker -> {
-                    for (int i = 0; i < markers.size(); i++) {
-                        if (marker.hashCode() == markers.get(i).hashCode()) {
-                            recyclerView.smoothScrollToPosition(i);
-                            highlightEventOnMap(i);
-                            break;
-                        }
-                    }
-
-                    return false;
-                });
-            });
-        }
+        setupMap();
 
         getChildFragmentManager().beginTransaction().replace(R.id.map, mapFragment).commit();
         eventsOnMapAdapter.setEventOnMapActionListener(this);
@@ -110,6 +92,29 @@ public class EventsOnMapFragment extends Fragment implements EventOnMapItemView.
         });
 
         eventsOnMapAdapter.setEventOnMapActionListener(this);
+    }
+
+    private void setupMap() {
+        if (mapFragment != null) {
+            return;
+        }
+        mapFragment = SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(googleMap -> {
+            map = googleMap;
+            eventUseCase.readAllLocal().observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+
+            map.setOnMarkerClickListener(marker -> {
+                for (int i = 0; i < markers.size(); i++) {
+                    if (marker.hashCode() == markers.get(i).hashCode()) {
+                        recyclerView.smoothScrollToPosition(i);
+                        highlightEventOnMap(i);
+                        break;
+                    }
+                }
+
+                return false;
+            });
+        });
     }
 
     private void highlightEventOnMap(int position) {
@@ -152,7 +157,9 @@ public class EventsOnMapFragment extends Fragment implements EventOnMapItemView.
                     .title(event.getTitle())));
         }
 
-        previousMarker = markers.get(0);
-        highlightEventOnMap(0);
+        if (!events.isEmpty()) {
+            previousMarker = markers.get(0);
+            highlightEventOnMap(0);
+        }
     }
 }
