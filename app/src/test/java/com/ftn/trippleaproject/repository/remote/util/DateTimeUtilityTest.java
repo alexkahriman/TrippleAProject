@@ -39,7 +39,7 @@ public class DateTimeUtilityTest {
     @Test
     public void testConvertDate() {
         //Act
-        final Date date = dateTimeUtility.convertMongoDate(dateText);
+        final Date date = dateTimeUtility.convertDate(dateText);
 
         // Assert
         assertThat(date, equalTo(this.date));
@@ -48,7 +48,7 @@ public class DateTimeUtilityTest {
     @Test
     public void testConvertDateFail() {
         //Act
-        final Date date = dateTimeUtility.convertMongoDate("Testing to fail");
+        final Date date = dateTimeUtility.convertDate("Testing to fail");
 
         // Assert
         assertThat(date, not(this.date));
@@ -57,7 +57,7 @@ public class DateTimeUtilityTest {
     @Test
     public void testConvertToDate() {
         //Act
-        final String dateText = dateTimeUtility.convertToMongoDate(date);
+        final String dateText = dateTimeUtility.convertToDate(date);
 
         // Assert
         assertThat(dateText, equalTo(DateTimeUtilityTest.dateText));

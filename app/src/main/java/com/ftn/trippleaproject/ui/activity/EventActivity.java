@@ -29,7 +29,7 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
 
     public static final int REQUEST_CHECK_SETTINGS = 33;
 
-    private static final int REVERSE_MINUTES_UNTIL_EVENT_CAN_BE_EDITED = -30;
+    private static final int MINUTES_UNTIL_EVENT_CAN_BE_EDITED = 30;
 
     @Extra
     Event event;
@@ -63,7 +63,7 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
 
     private void checkEventCanBeEdited() {
         final Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, REVERSE_MINUTES_UNTIL_EVENT_CAN_BE_EDITED);
+        calendar.add(Calendar.MINUTE, MINUTES_UNTIL_EVENT_CAN_BE_EDITED);
         if (event.getDate().after(calendar.getTime())) {
             checkLoggedInUser();
         } else {
