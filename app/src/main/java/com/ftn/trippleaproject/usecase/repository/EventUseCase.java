@@ -26,12 +26,11 @@ public class EventUseCase {
     private final EventLocalDao eventLocalDao;
 
     public EventUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao) {
-
         this.eventRemoteDao = eventRemoteDao;
         this.eventLocalDao = eventLocalDao;
     }
 
-    public Flowable<List<Event>> sync() {
+    private Flowable<List<Event>> sync() {
         return new Flowable<List<Event>>() {
             @Override
             protected void subscribeActual(Subscriber<? super List<Event>> subscriber) {
