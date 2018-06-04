@@ -5,7 +5,7 @@
     <string name="phone">+38166290494</string>
     <string name="about">About</string>
     <string name="terms_of_service">Terms of Service</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="contact">Contact:</string>
 
     <!-- Strings related to login -->
@@ -15,4 +15,5 @@
     <string name="event_end">Event end</string>
     <string name="event_start">Event start</string>
     <string name="view_all_events">View all events</string>
+    <string name="alarm_id">com.ftm.trippleaproject.alarms</string>
 </resources>

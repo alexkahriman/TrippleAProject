@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.system.DeleteDataJobService;
 import com.ftn.trippleaproject.system.PrefManager_;
 import com.ftn.trippleaproject.ui.adapter.HomeTabAdapter;
 import com.ftn.trippleaproject.ui.fragment.SettingsFragment;
@@ -39,6 +40,8 @@ public class HomeActivity extends AppCompatActivity implements SettingsFragment.
 
     @AfterViews
     void init() {
+        DeleteDataJobService.scheduleDeleteDataJobService(this);
+
         homeTabAdapter.setSettingsNavigationSelected(this);
         pager.setAdapter(homeTabAdapter);
         pager.setOffscreenPageLimit(homeTabAdapter.getCount());

@@ -94,11 +94,11 @@ public class EventFragment extends Fragment implements Consumer<Event> {
         dateStartDay.setText(dateTimeFormatterUseCase.eventStartDayFormat(event.getDate()));
         dateStartMonth.setText(dateTimeFormatterUseCase.eventStartMonthFormat(event.getDate()));
 
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        final Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(event.getLocation().getLatitude(),
+            final List<Address> addresses = geocoder.getFromLocation(event.getLocation().getLatitude(),
                     event.getLocation().getLongitude(), 1);
-            String cityName = addresses.get(0).getAddressLine(0);
+            final String cityName = addresses.get(0).getAddressLine(0);
 
             location.setText(cityName);
         } catch (IOException e) {
@@ -117,7 +117,7 @@ public class EventFragment extends Fragment implements Consumer<Event> {
         final String[] to = {mail};
         intent.putExtra(Intent.EXTRA_EMAIL, to);
         intent.setType("message/rfc822");
-        Intent chooser = Intent.createChooser(intent, "Send E-Mail");
+        final Intent chooser = Intent.createChooser(intent, "Send E-Mail");
         this.startActivity(chooser);
     }
 

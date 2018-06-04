@@ -32,7 +32,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_event_form)
-public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener, Consumer<Event>{
+public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener, Consumer<Event> {
 
     private static final String MAP_FRAGMENT_TAG = "mapFragment";
 
@@ -177,7 +177,7 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     }
 
     @Click
-    void add() {
+    void confirm() {
         if (!checkEditTextNullValues()) {
             showToast("Please fill in all required data");
             return;
