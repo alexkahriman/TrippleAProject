@@ -81,13 +81,4 @@ public class HomeActivity extends BaseActivity implements SettingsFragment.Setti
     public void eventsSelected() {
         pager.setCurrentItem(1, true);
     }
-
-    @Override
-    protected void onPermissionGranted() {
-
-    }
-
-    @Override
-    protected void onPermissionDenied() {
-    }
 }

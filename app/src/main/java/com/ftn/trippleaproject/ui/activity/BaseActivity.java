@@ -81,7 +81,11 @@ public abstract  class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected abstract void onPermissionGranted();
+    protected void onPermissionGranted() {
 
-    protected abstract void onPermissionDenied();
+    }
+
+    protected void onPermissionDenied() {
+
+    }
 }
