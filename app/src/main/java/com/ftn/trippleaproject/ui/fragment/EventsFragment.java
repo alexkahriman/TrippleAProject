@@ -71,7 +71,7 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
         final String action = getString(R.string.alarm_id);
         eventsAdapter.setEvents(events);
         for (Event event : events) {
-            if (event.getEndDate().getTime() > System.currentTimeMillis()) {
+            if (event.getEndDate().getTime() > System.currentTimeMillis() + AlarmManager.INTERVAL_HALF_HOUR) {
                 final Intent intent = new Intent(this.getContext(), AlarmBroadcastReceiver_.class);
                 intent.setAction(action);
                 intent.putExtra("event.id", event.getId());
@@ -84,8 +84,8 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
                 intent.putExtra("event.lon", event.getLocation().getLongitude());
 
                 final PendingIntent pendingIntent =
-                        PendingIntent.getBroadcast(this.getContext(), (int) event.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, event.getDate().getTime() - AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
+                        PendingIntent.getBroadcast(getContext(), (int) event.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, event.getDate().getTime() - AlarmManager.INTERVAL_HALF_HOUR, pendingIntent);
             }
         }
     }

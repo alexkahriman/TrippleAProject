@@ -3,6 +3,7 @@ package com.ftn.trippleaproject.ui.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.ftn.trippleaproject.R;
@@ -47,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
         googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     void updateUI(GoogleSignInAccount account) {

@@ -55,10 +55,6 @@ import static com.ftn.trippleaproject.ui.activity.EventActivity.REQUEST_CHECK_SE
 @EFragment(R.layout.fragment_map)
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, Consumer<Event> {
 
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 11;
-
-    private static final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 12;
-
     private static final int LOCATION_REQUEST_INTERVAL = 60000;
 
     private static final int LOCATION_REQUEST_SHORT_INTERVAL = 10000;
@@ -84,8 +80,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private Location currentLocation;
-
-    private MapFragmentActionListener mapFragmentActionListener;
 
     @AfterViews
     void init() {
@@ -137,9 +131,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     public void getCurrentLocation() {
-        if (!checkLocationPermission()) {
-            getLocationPermission();
-        } else {
+        if (checkLocationPermission()) {
             displayLocationSettingsRequest();
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
                 currentLocation = task.getResult();
@@ -187,57 +179,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
         map.addMarker(marker);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 18.0f));
-    }
-
-    private void getLocationPermission() {
-        // Checks to see if the user has granted permissions for ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION
-        // If they are granted, we can continue with location access, if not, user shall be prompted for their activation
-        if (ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        // Check to see if user has granted ACCESS_FINE_LOCATION, if not request permission for it
-        if (ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Request permission for ACCESS_FINE_LOCATION
-            requestPermissions(new String[]{ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            return;
-        }
-
-        // Check to see if user has granted ACCESS_COARSE_LOCATION, if not request permission for it
-        if (ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Request permission for ACCESS_COARSE_LOCATION
-            requestPermissions(new String[]{ACCESS_COARSE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getCurrentLocation();
-                } else {
-                    mapFragmentActionListener.permissionDenied();
-                }
-                break;
-            }
-            case PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getCurrentLocation();
-                } else {
-                    mapFragmentActionListener.permissionDenied();
-                }
-            }
-        }
     }
 
     private String getGeoLocation(Location location) {
@@ -290,18 +231,10 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         return currentLocation;
     }
 
-    public void setMapFragmentActionListener(MapFragmentActionListener mapFragmentActionListener) {
-        this.mapFragmentActionListener = mapFragmentActionListener;
-    }
-
     @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
     @Override
     public void accept(Event event) {
         this.event = event;
         showEventLocation();
-    }
-
-    public interface MapFragmentActionListener {
-        void permissionDenied();
     }
 }

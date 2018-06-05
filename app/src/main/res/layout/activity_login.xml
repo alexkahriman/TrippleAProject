@@ -10,7 +10,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/login_background"
+        android:background="@drawable/login_background"
         android:scaleType="centerCrop"/>
 
     <Button

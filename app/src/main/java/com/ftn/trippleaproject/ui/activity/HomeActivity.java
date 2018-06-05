@@ -18,7 +18,7 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends AppCompatActivity implements SettingsFragment.SettingsNavigationSelected {
+public class HomeActivity extends BaseActivity implements SettingsFragment.SettingsNavigationSelected {
 
     @ViewById
     TabLayout tabLayout;
@@ -51,6 +51,8 @@ public class HomeActivity extends AppCompatActivity implements SettingsFragment.
         if (prefManager.startWithEvents().get()) {
             pager.setCurrentItem(1);
         }
+
+        checkPermissions();
     }
 
     private void setTabIcons() {
@@ -79,5 +81,4 @@ public class HomeActivity extends AppCompatActivity implements SettingsFragment.
     public void eventsSelected() {
         pager.setCurrentItem(1, true);
     }
-
 }
