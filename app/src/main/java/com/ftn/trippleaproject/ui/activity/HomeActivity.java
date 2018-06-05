@@ -83,6 +83,11 @@ public class HomeActivity extends BaseActivity implements SettingsFragment.Setti
     }
 
     @Override
+    protected void onPermissionGranted() {
+
+    }
+
+    @Override
     protected void onPermissionDenied() {
     }
 }

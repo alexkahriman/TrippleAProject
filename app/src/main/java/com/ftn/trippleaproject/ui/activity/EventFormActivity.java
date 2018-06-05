@@ -24,15 +24,7 @@ public class EventFormActivity extends BaseActivity implements EventFormFragment
 
     @AfterViews
     void init() {
-        if (checkPermissions()) {
-            final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-            final EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).edit(edit).build();
-            fragmentTransaction.replace(R.id.eventFormFragmentContainer, eventFormFragment);
-            eventFormFragment.setEventFormFragmentActionListener(this);
-
-            fragmentTransaction.commit();
-        }
+        checkPermissions();
     }
 
     @Override
@@ -50,6 +42,17 @@ public class EventFormActivity extends BaseActivity implements EventFormFragment
     @UiThread
     void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPermissionGranted() {
+        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        final EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).edit(edit).build();
+        fragmentTransaction.replace(R.id.eventFormFragmentContainer, eventFormFragment);
+        eventFormFragment.setEventFormFragmentActionListener(this);
+
+        fragmentTransaction.commit();
     }
 
     @Override

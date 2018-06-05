@@ -15,12 +15,12 @@ public abstract  class BaseActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 12;
 
-    public boolean checkPermissions() {
+    public void checkPermissions() {
         if (!checkLocationPermission()) {
             getLocationPermission();
+        } else {
+            onPermissionGranted();
         }
-
-        return true;
     }
 
     private void getLocationPermission() {
@@ -80,6 +80,8 @@ public abstract  class BaseActivity extends AppCompatActivity {
             }
         }
     }
+
+    protected abstract void onPermissionGranted();
 
     protected abstract void onPermissionDenied();
 }
