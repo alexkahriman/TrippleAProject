@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
@@ -73,6 +74,6 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Log.i("Testing", intent.toString() + " - " + System.currentTimeMillis());
     }
 }
