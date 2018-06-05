@@ -3,11 +3,16 @@ package com.ftn.trippleaproject.usecase.repository;
 import android.util.Log;
 
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.usecase.business.GeoFenceUseCase;
+import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceNotificationProvider;
 import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 
 import org.reactivestreams.Subscriber;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +21,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.ftn.trippleaproject.system.DeleteDataJobService.NUMBER_OF_EVENTS_TO_KEEP;
-
 public class EventUseCase {
 
     private static final String TAG = EventUseCase.class.getSimpleName();
@@ -25,9 +28,16 @@ public class EventUseCase {
 
     private final EventLocalDao eventLocalDao;
 
-    public EventUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao) {
+    private final GeoFenceUseCase geoFenceUseCase;
+
+    private final GeoFenceNotificationProvider geoFenceNotificationProvider;
+
+    public EventUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao,
+                        GeoFenceUseCase geoFenceUseCase, GeoFenceNotificationProvider geoFenceNotificationProvider) {
         this.eventRemoteDao = eventRemoteDao;
         this.eventLocalDao = eventLocalDao;
+        this.geoFenceUseCase = geoFenceUseCase;
+        this.geoFenceNotificationProvider = geoFenceNotificationProvider;
     }
 
     private Flowable<List<Event>> sync() {
@@ -35,14 +45,8 @@ public class EventUseCase {
             @Override
             protected void subscribeActual(Subscriber<? super List<Event>> subscriber) {
                 final List<Event> events = eventRemoteDao.read().blockingGet();
-                final List<Event> localEvents = readAllLocal().blockingFirst();
                 subscriber.onNext(events);
-
-                if (localEvents.size() < NUMBER_OF_EVENTS_TO_KEEP) {
-                    eventLocalDao.create(events);
-                } else {
-                    checkAndCreateEvents(events);
-                }
+                checkAndCreateEvents(events);
                 subscriber.onComplete();
             }
         }.subscribeOn(Schedulers.io());
@@ -124,12 +128,35 @@ public class EventUseCase {
         }.subscribeOn(Schedulers.io());
     }
 
+    public Observable approachingEvent(long eventId) {
+        return new Observable() {
+            @Override
+            protected void subscribeActual(Observer observer) {
+
+                final Event event = eventLocalDao.read(eventId).blockingFirst();
+                if (event == null) {
+                    return;
+                }
+
+                geoFenceNotificationProvider.createNotificationForEvent(event);
+
+                observer.onComplete();
+            }
+        }.subscribeOn(Schedulers.io());
+    }
+
     private void checkAndCreateEvents(List<Event> events) {
+
+        final List<Event> validEvents = new ArrayList<>();
+
         for (Event event : events) {
             if (checkEventEndDate(event)) {
                 eventLocalDao.create(event);
+                validEvents.add(event);
             }
         }
+
+        geoFenceUseCase.addGeoFence(validEvents).subscribe();
     }
 
     private boolean checkEventEndDate(Event event) {

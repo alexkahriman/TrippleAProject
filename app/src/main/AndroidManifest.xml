@@ -49,6 +49,11 @@
             android:name=".system.AlarmBroadcastReceiver_"
             android:enabled="true" />
 
+        <receiver
+            android:name=".system.geofence.GeoFenceBroadcastReceiver_"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>

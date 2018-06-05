@@ -10,10 +10,13 @@
 
     <!-- Strings related to login -->
     <string name="action_sign_in">Google Sign In</string>
-    <string name="server_client_id">CLIENT_ID</string>
+    <string name="server_client_id">SERVER_CLIENT_SECRET</string>
     <string name="failed_login_message">Failed to sign in via Google account</string>
     <string name="event_end">Event end</string>
     <string name="event_start">Event start</string>
     <string name="view_all_events">View all events</string>
     <string name="alarm_id">com.ftm.trippleaproject.alarms</string>
+    <string name="approach_id">com.ftm.trippleaproject.approach</string>
+    <string name="event_approach">An event is starting near you soon</string>
+
 </resources>

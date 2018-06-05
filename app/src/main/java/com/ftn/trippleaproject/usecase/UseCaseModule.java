@@ -1,6 +1,9 @@
 package com.ftn.trippleaproject.usecase;
 
 import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
+import com.ftn.trippleaproject.usecase.business.GeoFenceUseCase;
+import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceNotificationProvider;
+import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceProvider;
 import com.ftn.trippleaproject.usecase.repository.AuthenticationUseCase;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 import com.ftn.trippleaproject.usecase.repository.NewsArticleUseCase;
@@ -28,8 +31,10 @@ public class UseCaseModule {
     @Provides
     @Singleton
     EventUseCase provideEventCrudUseCase(EventRemoteDao eventRemoteDao,
-                                         EventLocalDao eventLocalDao) {
-        return new EventUseCase(eventRemoteDao, eventLocalDao);
+                                         EventLocalDao eventLocalDao,
+                                         GeoFenceUseCase geoFenceUseCase,
+                                         GeoFenceNotificationProvider geoFenceNotificationProvider) {
+        return new EventUseCase(eventRemoteDao, eventLocalDao, geoFenceUseCase, geoFenceNotificationProvider);
     }
 
     @Provides
@@ -40,7 +45,13 @@ public class UseCaseModule {
 
     @Provides
     @Singleton
-    DateTimeFormatterUseCase providesDateTimeFormatterUseCase() {
+    DateTimeFormatterUseCase provideDateTimeFormatterUseCase() {
         return new DateTimeFormatterUseCase();
+    }
+
+    @Provides
+    @Singleton
+    GeoFenceUseCase provideGeoFenceUseCase(GeoFenceProvider geoFenceProvider) {
+        return new GeoFenceUseCase(geoFenceProvider);
     }
 }
