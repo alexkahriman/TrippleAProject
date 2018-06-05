@@ -73,7 +73,7 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
         for (Event event : events) {
             if (event.getEndDate().getTime() > System.currentTimeMillis() + AlarmManager.INTERVAL_HALF_HOUR) {
                 final Intent intent = new Intent(this.getContext(), AlarmBroadcastReceiver_.class);
-//                intent.setAction(action);
+                intent.setAction(action);
                 intent.putExtra("event.id", event.getId());
                 intent.putExtra("event.owner", event.getOwner());
                 intent.putExtra("event.title", event.getTitle());
