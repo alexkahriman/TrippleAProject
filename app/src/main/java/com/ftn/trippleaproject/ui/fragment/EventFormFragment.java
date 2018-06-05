@@ -33,7 +33,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_event_form)
-public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener, Consumer<Event> {
+public class EventFormFragment extends Fragment implements Consumer<Event> {
 
     private static final String MAP_FRAGMENT_TAG = "mapFragment";
 
@@ -87,7 +87,6 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         if (fragmentManager != null) {
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mapFragment = MapFragment_.builder().event(event).edit(edit).build();
-            mapFragment.setMapFragmentActionListener(this);
             mapFragment.setRetainInstance(true);
             fragmentTransaction.replace(R.id.mapFragmentContainer, mapFragment, MAP_FRAGMENT_TAG);
             fragmentTransaction.commit();
@@ -262,11 +261,6 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         calendar.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.MONTH, date.get(Calendar.MONTH));
         calendar.set(Calendar.YEAR, date.get(Calendar.YEAR));
-    }
-
-    @Override
-    public void permissionDenied() {
-        eventFormFragmentActionListener.finishActivity();
     }
 
     @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)

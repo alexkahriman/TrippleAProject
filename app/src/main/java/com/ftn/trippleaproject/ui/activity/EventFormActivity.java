@@ -1,7 +1,6 @@
 package com.ftn.trippleaproject.ui.activity;
 
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.ftn.trippleaproject.R;
@@ -15,7 +14,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 
 @EActivity(R.layout.actrivity_event_form)
-public class EventFormActivity extends AppCompatActivity implements EventFormFragment.EventFormFragmentActionListener {
+public class EventFormActivity extends BaseActivity implements EventFormFragment.EventFormFragmentActionListener {
 
     @Extra
     Event event;
@@ -25,13 +24,15 @@ public class EventFormActivity extends AppCompatActivity implements EventFormFra
 
     @AfterViews
     void init() {
-        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (checkPermissions()) {
+            final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        final EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).edit(edit).build();
-        fragmentTransaction.replace(R.id.eventFormFragmentContainer, eventFormFragment);
-        eventFormFragment.setEventFormFragmentActionListener(this);
+            final EventFormFragment eventFormFragment = EventFormFragment_.builder().event(event).edit(edit).build();
+            fragmentTransaction.replace(R.id.eventFormFragmentContainer, eventFormFragment);
+            eventFormFragment.setEventFormFragmentActionListener(this);
 
-        fragmentTransaction.commit();
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
@@ -49,5 +50,11 @@ public class EventFormActivity extends AppCompatActivity implements EventFormFra
     @UiThread
     void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPermissionDenied() {
+        showToast("Please allow Locations to continue");
+        finish();
     }
 }

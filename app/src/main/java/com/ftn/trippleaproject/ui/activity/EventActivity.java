@@ -25,7 +25,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Calendar;
 
 @EActivity(R.layout.activity_event)
-public class EventActivity extends AppCompatActivity implements MapFragment.MapFragmentActionListener {
+public class EventActivity extends AppCompatActivity {
 
     public static final int REQUEST_CHECK_SETTINGS = 33;
 
@@ -52,7 +52,6 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
 
         fragmentTransaction.replace(R.id.eventFragmentContainer, EventFragment_.builder().event(event).build());
         mapFragment = MapFragment_.builder().event(event).build();
-        mapFragment.setMapFragmentActionListener(this);
         mapFragment.setRetainInstance(true);
         fragmentTransaction.replace(R.id.mapFragmentContainer, mapFragment, MAP_FRAGMENT_TAG);
 
@@ -95,10 +94,5 @@ public class EventActivity extends AppCompatActivity implements MapFragment.MapF
     @Click
     void edit() {
         EventFormActivity_.intent(this).event(event).edit(true).start();
-    }
-
-    @Override
-    public void permissionDenied() {
-        finish();
     }
 }
