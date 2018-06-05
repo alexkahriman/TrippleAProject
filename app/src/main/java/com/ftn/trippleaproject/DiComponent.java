@@ -4,6 +4,7 @@ import com.ftn.trippleaproject.repository.local.LocalRepositoryModule;
 import com.ftn.trippleaproject.repository.remote.RemoteRepositoryModule;
 import com.ftn.trippleaproject.system.DeleteDataJobService;
 import com.ftn.trippleaproject.system.SystemModule;
+import com.ftn.trippleaproject.system.geofence.GeoFenceBroadcastReceiver;
 import com.ftn.trippleaproject.ui.activity.LoginActivity;
 import com.ftn.trippleaproject.ui.fragment.EventFormFragment;
 import com.ftn.trippleaproject.ui.fragment.EventFragment;
@@ -48,4 +49,6 @@ public interface DiComponent {
     void inject(SettingsFragment settingsFragment);
 
     void inject(DeleteDataJobService deleteDataJobService);
+
+    void inject(GeoFenceBroadcastReceiver geoFenceBroadcastReceiver);
 }

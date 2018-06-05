@@ -2,7 +2,9 @@ package com.ftn.trippleaproject.system;
 
 import android.content.Context;
 
+import com.ftn.trippleaproject.system.geofence.GeoFenceNotificationProviderImpl;
 import com.ftn.trippleaproject.system.geofence.GeoFenceProviderImpl;
+import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceNotificationProvider;
 import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceProvider;
 
 import javax.inject.Singleton;
@@ -23,5 +25,11 @@ public class SystemModule {
     @Singleton
     GeoFenceProvider provideGeoFenceProvider() {
         return new GeoFenceProviderImpl(context);
+    }
+
+    @Provides
+    @Singleton
+    GeoFenceNotificationProvider provideGeoFenceNotificationProvider() {
+        return new GeoFenceNotificationProviderImpl(context);
     }
 }

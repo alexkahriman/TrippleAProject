@@ -4,11 +4,14 @@ import android.util.Log;
 
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.usecase.business.GeoFenceUseCase;
+import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceNotificationProvider;
 import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
 import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteDao;
 
 import org.reactivestreams.Subscriber;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,10 +30,14 @@ public class EventUseCase {
 
     private final GeoFenceUseCase geoFenceUseCase;
 
-    public EventUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao, GeoFenceUseCase geoFenceUseCase) {
+    private final GeoFenceNotificationProvider geoFenceNotificationProvider;
+
+    public EventUseCase(EventRemoteDao eventRemoteDao, EventLocalDao eventLocalDao,
+                        GeoFenceUseCase geoFenceUseCase, GeoFenceNotificationProvider geoFenceNotificationProvider) {
         this.eventRemoteDao = eventRemoteDao;
         this.eventLocalDao = eventLocalDao;
         this.geoFenceUseCase = geoFenceUseCase;
+        this.geoFenceNotificationProvider = geoFenceNotificationProvider;
     }
 
     private Flowable<List<Event>> sync() {
@@ -116,6 +123,23 @@ public class EventUseCase {
             @Override
             protected void subscribeActual(Observer observer) {
                 eventLocalDao.delete(event);
+                observer.onComplete();
+            }
+        }.subscribeOn(Schedulers.io());
+    }
+
+    public Observable approachingEvent(long eventId) {
+        return new Observable() {
+            @Override
+            protected void subscribeActual(Observer observer) {
+
+                final Event event = eventLocalDao.read(eventId).blockingFirst();
+                if (event == null) {
+                    return;
+                }
+
+                geoFenceNotificationProvider.createNotificationForEvent(event);
+
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());

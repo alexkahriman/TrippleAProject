@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 
-import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceProvider;
 import com.google.android.gms.location.Geofence;
@@ -21,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.ftn.trippleaproject.system.geofence.Constants.EVENT_ID_PREFIX;
+
 public class GeoFenceProviderImpl implements GeoFenceProvider {
 
     private static final String TAG = GeoFenceProviderImpl.class.getSimpleName();
-
-    private static final String EVENT_ID_PREFIX = "event-";
 
     private static final float GEO_FENCE_RADIUS = 200f;
 
@@ -90,7 +89,7 @@ public class GeoFenceProviderImpl implements GeoFenceProvider {
         if (geoFencePendingIntent != null) {
             return geoFencePendingIntent;
         }
-        final Intent intent = new Intent(context.getApplicationContext(), GeoFenceBroadcastReceiver.class);
+        final Intent intent = new Intent(context.getApplicationContext(), GeoFenceBroadcastReceiver_.class);
 
         geoFencePendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
