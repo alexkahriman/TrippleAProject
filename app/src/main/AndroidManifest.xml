@@ -20,10 +20,11 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="MAP_KEY" />
+            android:value="AIzaSyBuIBjoGJXcTK6LXlgZ-4GZpBLM1j3uo-A" />
 
-        <activity android:name=".ui.activity.LoginActivity_"
-                  android:noHistory="true">
+        <activity
+            android:name=".ui.activity.LoginActivity_"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,14 +42,14 @@
             android:label="Delete data job service"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <service
-            android:name=".system.geofence.GeoFenceTransitionsIntentService_"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <receiver
             android:name=".system.AlarmBroadcastReceiver_"
             android:enabled="true" />
+
+        <receiver
+            android:name=".system.geofence.GeoFenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
     </application>
 

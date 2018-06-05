@@ -4,6 +4,8 @@ package com.ftn.trippleaproject.usecase.business;
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.usecase.business.dependency.GeoFenceProvider;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
@@ -16,11 +18,11 @@ public class GeoFenceUseCase {
         this.geoFenceProvider = geoFenceProvider;
     }
 
-    public Observable addGeoFence(Event event) {
+    public Observable addGeoFence(List<Event> events) {
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
-                geoFenceProvider.addGeoFence(event);
+                geoFenceProvider.addGeoFences(events);
                 observer.onComplete();
             }
         }.subscribeOn(Schedulers.io());

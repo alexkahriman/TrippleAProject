@@ -7,6 +7,7 @@ import com.ftn.trippleaproject.usecase.repository.dependency.remote.EventRemoteD
 
 import org.reactivestreams.Subscriber;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +15,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.ftn.trippleaproject.system.DeleteDataJobService.NUMBER_OF_EVENTS_TO_KEEP;
 
 public class EventUseCase {
 
@@ -36,14 +35,8 @@ public class EventUseCase {
             @Override
             protected void subscribeActual(Subscriber<? super List<Event>> subscriber) {
                 final List<Event> events = eventRemoteDao.read().blockingGet();
-                final List<Event> localEvents = readAllLocal().blockingFirst();
                 subscriber.onNext(events);
-
-                if (localEvents.size() < NUMBER_OF_EVENTS_TO_KEEP) {
-                    eventLocalDao.create(events);
-                } else {
-                    checkAndCreateEvents(events);
-                }
+                checkAndCreateEvents(events);
                 subscriber.onComplete();
             }
         }.subscribeOn(Schedulers.io());
@@ -92,12 +85,17 @@ public class EventUseCase {
     }
 
     private void checkAndCreateEvents(List<Event> events) {
+
+        final List<Event> validEvents = new ArrayList<>();
+
         for (Event event : events) {
             if (checkEventEndDate(event)) {
                 eventLocalDao.create(event);
-                geoFenceUseCase.addGeoFence(event);
+                validEvents.add(event);
             }
         }
+
+        geoFenceUseCase.addGeoFence(validEvents).subscribe();
     }
 
     private boolean checkEventEndDate(Event event) {

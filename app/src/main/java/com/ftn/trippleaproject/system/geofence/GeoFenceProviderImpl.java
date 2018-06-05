@@ -17,7 +17,9 @@ import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class GeoFenceProviderImpl implements GeoFenceProvider {
 
@@ -25,7 +27,7 @@ public class GeoFenceProviderImpl implements GeoFenceProvider {
 
     private static final String EVENT_ID_PREFIX = "event-";
 
-    private static final int GEO_FENCE_RADIUS = 200;
+    private static final float GEO_FENCE_RADIUS = 200f;
 
     private final Context context;
 
@@ -35,19 +37,24 @@ public class GeoFenceProviderImpl implements GeoFenceProvider {
 
     public GeoFenceProviderImpl(Context context) {
         this.context = context;
-        geofencingClient = LocationServices.getGeofencingClient(context);
+        geofencingClient = LocationServices.getGeofencingClient(context.getApplicationContext());
     }
 
     @Override
-    public void addGeoFence(Event event) {
+    public void addGeoFences(List<Event> events) {
 
         if (!checkPermissions()) {
-            Log.e(TAG, context.getString(R.string.insufficient_permissions));
+            Log.e(TAG, "Lacking fine location permission for geo fencing.");
             return;
         }
 
-        final Geofence geofence = createGeoFence(event);
-        final GeofencingRequest request = createGeoFenceRequest(geofence);
+        final List<Geofence> geoFences = new ArrayList<>();
+
+        for (Event event: events) {
+            geoFences.add(createGeoFence(event));
+        }
+
+        final GeofencingRequest request = createGeoFenceRequest(geoFences);
 
         geofencingClient.addGeofences(request, getGeoFencePendingIntent());
     }
@@ -62,16 +69,17 @@ public class GeoFenceProviderImpl implements GeoFenceProvider {
         final Geofence.Builder builder = new Geofence.Builder();
         builder.setRequestId(EVENT_ID_PREFIX + event.getId());
         builder.setCircularRegion(event.getLocation().getLatitude(), event.getLocation().getLongitude(), GEO_FENCE_RADIUS);
-        builder.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER);
+        builder.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT);
+        builder.setExpirationDuration(Geofence.NEVER_EXPIRE);
 
         return builder.build();
     }
 
-    private GeofencingRequest createGeoFenceRequest(Geofence geofence) {
+    private GeofencingRequest createGeoFenceRequest(List<Geofence> geoFences) {
 
         final GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofence(geofence);
+        builder.addGeofences(geoFences);
 
         return builder.build();
     }
@@ -82,9 +90,9 @@ public class GeoFenceProviderImpl implements GeoFenceProvider {
         if (geoFencePendingIntent != null) {
             return geoFencePendingIntent;
         }
-        final Intent intent = new Intent(context, GeoFenceBroadcastReceiver.class);
+        final Intent intent = new Intent(context.getApplicationContext(), GeoFenceBroadcastReceiver.class);
 
-        geoFencePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        geoFencePendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return geoFencePendingIntent;
     }
