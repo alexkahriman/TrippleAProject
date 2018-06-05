@@ -1,5 +1,7 @@
 package com.ftn.trippleaproject.usecase.repository;
 
+import android.util.Log;
+
 import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.usecase.business.GeoFenceUseCase;
 import com.ftn.trippleaproject.usecase.repository.dependency.local.EventLocalDao;
@@ -18,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EventUseCase {
 
+    private static final String TAG = EventUseCase.class.getSimpleName();
     private final EventRemoteDao eventRemoteDao;
 
     private final EventLocalDao eventLocalDao;
@@ -42,15 +45,49 @@ public class EventUseCase {
         }.subscribeOn(Schedulers.io());
     }
 
+    public Flowable<Event> read(long id) {
+        return eventLocalDao.read(id).subscribeOn(Schedulers.io());
+    }
+
     public Observable create(Event event) {
         return new Observable() {
             @Override
             protected void subscribeActual(Observer observer) {
-                final Event eventResponse = eventRemoteDao.create(event).blockingGet();
-                if (eventResponse != null) {
-                    eventLocalDao.create(eventResponse);
-                }
-                observer.onComplete();
+                eventRemoteDao.create(event).subscribeOn(Schedulers.io()).subscribe(remoteEvent -> {
+                            if (remoteEvent != null) {
+                                eventLocalDao.create(remoteEvent);
+                                observer.onNext(remoteEvent);
+                                observer.onComplete();
+                            } else {
+                                observer.onError(new Throwable());
+                            }
+                        },
+                        e -> {
+                            onError(e);
+                            observer.onError(e);
+                        });
+            }
+        }.subscribeOn(Schedulers.io());
+    }
+
+    public Observable patch(Event event) {
+        return new Observable() {
+            @Override
+            protected void subscribeActual(Observer observer) {
+                eventRemoteDao.patch(event).subscribeOn(Schedulers.io()).subscribe(remoteEvent -> {
+                            if (remoteEvent != null) {
+                                eventLocalDao.create(remoteEvent);
+                                observer.onNext(remoteEvent);
+                                observer.onComplete();
+                            } else {
+                                observer.onError(new Throwable());
+                            }
+                        },
+                        e -> {
+                            onError(e);
+                            observer.onError(e);
+                        });
+
             }
         }.subscribeOn(Schedulers.io());
     }
@@ -100,5 +137,9 @@ public class EventUseCase {
 
     private boolean checkEventEndDate(Event event) {
         return event.getEndDate().after(new Date());
+    }
+
+    private void onError(Throwable e) {
+        Log.e(TAG, e.toString(), e);
     }
 }

@@ -4,10 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/viewAllEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="@dimen/small_padding"
+        android:text="@string/view_all_events"
+        android:textColor="@color/white" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/viewAllEvents" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addEvent"

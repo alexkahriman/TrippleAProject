@@ -9,7 +9,7 @@ public class DateTimeUtility {
 
     private static final String DATE_TIME_REMOTE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-    public Date convertMongoDate(String val) {
+    public Date convertDate(String val) {
         SimpleDateFormat inputFormat = new SimpleDateFormat(DATE_TIME_REMOTE_FORMAT, Locale.getDefault());
         try {
             return inputFormat.parse(val);
@@ -19,7 +19,7 @@ public class DateTimeUtility {
         return new Date();
     }
 
-    public String convertToMongoDate(Date date) {
+    public String convertToDate(Date date) {
         SimpleDateFormat outputForm = new SimpleDateFormat(DATE_TIME_REMOTE_FORMAT, Locale.getDefault());
         return outputForm.format(date);
     }

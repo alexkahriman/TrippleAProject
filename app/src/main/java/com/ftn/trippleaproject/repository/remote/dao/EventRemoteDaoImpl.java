@@ -1,6 +1,7 @@
 package com.ftn.trippleaproject.repository.remote.dao;
 
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.repository.remote.client.BackendApiService;
 import com.ftn.trippleaproject.repository.remote.dto.EventDto;
 import com.ftn.trippleaproject.repository.remote.util.DateTimeUtility;
@@ -35,6 +36,12 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
                 .map(this::convertEventDtoToEvent).subscribeOn(Schedulers.io());
     }
 
+    @Override
+    public Single<Event> patch(Event event) {
+        return backendApiService.patchEvent(convertEventToEventDto(event)).onErrorReturn(throwable -> null)
+                .map(this::convertEventDtoToEvent).subscribeOn(Schedulers.io());
+    }
+
     private List<Event> convertEventDtosToEvents(List<EventDto> eventDtos) {
         final List<Event> events = new ArrayList<>();
 
@@ -47,13 +54,13 @@ public class EventRemoteDaoImpl implements EventRemoteDao {
 
     private Event convertEventDtoToEvent(EventDto eventDto) {
         return new Event(eventDto.getId(), eventDto.getOwner(), eventDto.getTitle(), eventDto.getDescription(),
-                dateTimeUtility.convertMongoDate(eventDto.getStart()), dateTimeUtility.convertMongoDate(eventDto.getEnd()),
-                new Event.Location(eventDto.getLat(), eventDto.getLon()));
+                dateTimeUtility.convertDate(eventDto.getStart()), dateTimeUtility.convertDate(eventDto.getEnd()),
+                new Location(eventDto.getLat(), eventDto.getLon()));
     }
 
     private EventDto convertEventToEventDto(Event event) {
         return new EventDto(event.getId(), event.getOwner(), event.getTitle(), event.getDescription(),
                 (float) event.getLocation().getLatitude(), (float) event.getLocation().getLongitude(),
-                dateTimeUtility.convertToMongoDate(event.getDate()), dateTimeUtility.convertToMongoDate(event.getEndDate()));
+                dateTimeUtility.convertToDate(event.getDate()), dateTimeUtility.convertToDate(event.getEndDate()));
     }
 }

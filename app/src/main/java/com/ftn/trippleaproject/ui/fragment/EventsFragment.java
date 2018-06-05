@@ -13,6 +13,7 @@ import com.ftn.trippleaproject.domain.Event;
 import com.ftn.trippleaproject.system.AlarmBroadcastReceiver_;
 import com.ftn.trippleaproject.ui.activity.EventActivity_;
 import com.ftn.trippleaproject.ui.activity.EventFormActivity_;
+import com.ftn.trippleaproject.ui.activity.EventsOnMapActivity_;
 import com.ftn.trippleaproject.ui.adapter.EventsAdapter;
 import com.ftn.trippleaproject.ui.view.EventItemView;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
@@ -27,7 +28,6 @@ import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -75,8 +75,13 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
                 final Intent intent = new Intent(this.getContext(), AlarmBroadcastReceiver_.class);
                 intent.setAction(action);
                 intent.putExtra("event.id", event.getId());
+                intent.putExtra("event.owner", event.getOwner());
                 intent.putExtra("event.title", event.getTitle());
                 intent.putExtra("event.description", event.getDescription());
+                intent.putExtra("event.date", event.getDate());
+                intent.putExtra("event.endDate", event.getEndDate());
+                intent.putExtra("event.lat", event.getLocation().getLatitude());
+                intent.putExtra("event.lon", event.getLocation().getLongitude());
 
                 final PendingIntent pendingIntent =
                         PendingIntent.getBroadcast(this.getContext(), (int) event.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -88,6 +93,11 @@ public class EventsFragment extends Fragment implements Consumer<List<Event>>,
     @Click
     void addEvent() {
         EventFormActivity_.intent(getContext()).start();
+    }
+
+    @Click
+    void viewAllEvents() {
+        EventsOnMapActivity_.intent(getContext()).start();
     }
 
     @Override

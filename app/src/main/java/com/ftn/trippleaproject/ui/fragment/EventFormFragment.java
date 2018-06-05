@@ -5,10 +5,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ftn.trippleaproject.R;
 import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.domain.Location;
 import com.ftn.trippleaproject.usecase.business.DateTimeFormatterUseCase;
 import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 
@@ -18,14 +20,20 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.FragmentByTag;
+import org.androidannotations.annotations.IgnoreWhen;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 @EFragment(R.layout.fragment_event_form)
-public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener {
+public class EventFormFragment extends Fragment implements MapFragment.MapFragmentActionListener, Consumer<Event> {
 
     private static final String MAP_FRAGMENT_TAG = "mapFragment";
 
@@ -59,6 +67,9 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     @FragmentArg
     Event event;
 
+    @FragmentArg
+    boolean edit;
+
     @FragmentByTag(MAP_FRAGMENT_TAG)
     MapFragment mapFragment;
 
@@ -75,11 +86,9 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         final FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if (mapFragment == null) {
-                mapFragment = MapFragment_.builder().event(null).build();
-                mapFragment.setMapFragmentActionListener(this);
-                mapFragment.setRetainInstance(true);
-            }
+            mapFragment = MapFragment_.builder().event(event).edit(edit).build();
+            mapFragment.setMapFragmentActionListener(this);
+            mapFragment.setRetainInstance(true);
             fragmentTransaction.replace(R.id.mapFragmentContainer, mapFragment, MAP_FRAGMENT_TAG);
             fragmentTransaction.commit();
         }
@@ -97,6 +106,10 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
             return;
         }
 
+        eventUseCase.read(event.getId()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+    }
+
+    private void setEventUI() {
         title.setText(event.getTitle());
         description.setText(event.getDescription());
 
@@ -166,23 +179,53 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
     }
 
     @Click
-    void add() {
+    void confirm() {
         if (!checkEditTextNullValues()) {
+            showToast("Please fill in all required data");
             return;
         }
 
+        if (edit) {
+            patchEvent();
+        } else {
+            createEvent();
+        }
+    }
+
+    private void createEvent() {
         final Event event = new Event(1,
                 title.getText().toString(),
                 description.getText().toString(),
                 calendar.getTime(),
                 endCalendar.getTime(),
-                new Event.Location(mapFragment.getLocation().getLatitude(),
+                new Location(mapFragment.getLocation().getLatitude(),
                         mapFragment.getLocation().getLongitude()));
 
-        eventUseCase.create(event).blockingSubscribe();
+        eventUseCase.create(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
+                e -> onError());
+    }
 
+    private void patchEvent() {
+        final Event event = new Event(this.event.getId(),
+                title.getText().toString(),
+                description.getText().toString(),
+                calendar.getTime(),
+                endCalendar.getTime(),
+                new Location(mapFragment.getLocation().getLatitude(),
+                        mapFragment.getLocation().getLongitude()));
+        eventUseCase.patch(event).subscribeOn(Schedulers.io()).subscribe(object -> onSuccess(),
+                e -> onError());
+    }
+
+    private void onSuccess() {
         if (eventFormFragmentActionListener != null) {
             eventFormFragmentActionListener.finishActivity();
+        }
+    }
+
+    private void onError() {
+        if (eventFormFragmentActionListener != null) {
+            eventFormFragmentActionListener.finishActivityOnError();
         }
     }
 
@@ -226,7 +269,21 @@ public class EventFormFragment extends Fragment implements MapFragment.MapFragme
         eventFormFragmentActionListener.finishActivity();
     }
 
+    @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
+    @Override
+    public void accept(Event event) {
+        this.event = event;
+        setEventUI();
+    }
+
     public interface EventFormFragmentActionListener {
         void finishActivity();
+
+        void finishActivityOnError();
+    }
+
+    @UiThread
+    void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 }

@@ -12,7 +12,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.ftn.trippleaproject.R;
+import com.ftn.trippleaproject.TrippleAApplication;
 import com.ftn.trippleaproject.domain.Event;
+import com.ftn.trippleaproject.usecase.repository.EventUseCase;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
@@ -32,19 +34,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.IgnoreWhen;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.ftn.trippleaproject.ui.activity.EventActivity.REQUEST_CHECK_SETTINGS;
 
 @EFragment(R.layout.fragment_map)
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
+public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, Consumer<Event> {
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 11;
 
@@ -56,8 +65,17 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     private static final int LOCATION_REQUEST_FASTEST_INTERVAL = 5000;
 
+    @App
+    TrippleAApplication trippleAApplication;
+
+    @Inject
+    EventUseCase eventUseCase;
+
     @FragmentArg
     Event event;
+
+    @FragmentArg
+    boolean edit;
 
     private GoogleMap map;
 
@@ -71,11 +89,17 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @AfterViews
     void init() {
+        trippleAApplication.getDiComponent().inject(this);
+
         context = getContext();
         if (context != null) {
             fusedLocationProviderClient = new FusedLocationProviderClient(context);
         }
         this.getMapAsync(this);
+
+        if (event != null) {
+            eventUseCase.read(event.getId()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+        }
     }
 
     @Override
@@ -86,12 +110,15 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             showEventLocation();
         } else {
             getCurrentLocation();
+        }
+
+        if (event == null || edit) {
             map.setOnMapClickListener(latLng -> {
                 currentLocation = new Location(LocationManager.GPS_PROVIDER);
                 currentLocation.setLatitude(latLng.latitude);
                 currentLocation.setLongitude(latLng.longitude);
 
-                MarkerOptions marker = new MarkerOptions().position(latLng).title(getGeoLocation(currentLocation));
+                final MarkerOptions marker = new MarkerOptions().position(latLng).title(getGeoLocation(currentLocation));
                 map.clear();
                 map.addMarker(marker);
             });
@@ -99,8 +126,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     private void showEventLocation() {
+        map.clear();
         final LatLng latLng = new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude());
         final MarkerOptions marker = new MarkerOptions().position(latLng).title(event.getTitle());
+        currentLocation = new Location(LocationManager.GPS_PROVIDER);
+        currentLocation.setLatitude(event.getLocation().getLatitude());
+        currentLocation.setLongitude(event.getLocation().getLongitude());
         map.addMarker(marker);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18.0f));
     }
@@ -261,6 +292,13 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     public void setMapFragmentActionListener(MapFragmentActionListener mapFragmentActionListener) {
         this.mapFragmentActionListener = mapFragmentActionListener;
+    }
+
+    @IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
+    @Override
+    public void accept(Event event) {
+        this.event = event;
+        showEventLocation();
     }
 
     public interface MapFragmentActionListener {
